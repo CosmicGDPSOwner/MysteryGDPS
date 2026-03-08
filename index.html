@@ -43,6 +43,15 @@
         .logo { font-family: 'Montserrat'; font-size: 2.3rem; font-weight: 900; background: var(--main-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; transition: 0.3s; }
         .logo:hover { transform: scale(1.05); filter: brightness(1.2); }
         .nav-right { display: flex; align-items: center; gap: 20px; }
+        
+        /* Кнопка критериев */
+        #verifyBtn { 
+            background: rgba(255, 0, 127, 0.1); border: 2px solid var(--accent-pink); color: white; 
+            padding: 10px 20px; border-radius: 12px; cursor: pointer; font-weight: 700; transition: 0.3s;
+            text-decoration: none; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;
+        }
+        #verifyBtn:hover { background: var(--accent-pink); box-shadow: 0 0 20px rgba(255, 0, 127, 0.4); transform: translateY(-2px); }
+
         .social-link { color: white; font-size: 2rem; transition: 0.3s; opacity: 0.8; text-decoration: none; }
         .social-link:hover { opacity: 1; transform: scale(1.2); color: var(--accent-blue); }
         #langBtn { background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.2); color: white; padding: 12px 25px; border-radius: 12px; cursor: pointer; font-weight: 900; transition: 0.3s; }
@@ -58,8 +67,16 @@
         .search-icon { position: absolute; left: 35px; top: 50%; transform: translateY(-50%); color: #888; }
 
         /* СПИСОК */
-        .hero { width: 100%; display: flex; justify-content: center; align-items: center; padding: 60px 20px; text-align: center; }
+        .hero { width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 60px 20px; text-align: center; }
         .hero h1 { font-family: 'Montserrat'; font-size: clamp(2.5rem, 8vw, 5.5rem); margin: 0; text-transform: uppercase; letter-spacing: 5px; text-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        
+        /* Текст TOP 50 */
+        .top-50-text { 
+            color: #ff3333; font-family: 'Montserrat'; font-weight: 900; font-size: 2rem; 
+            margin-top: 10px; text-shadow: 0 0 15px rgba(255, 51, 51, 0.5); 
+            letter-spacing: 10px; animation: pulse 2s infinite; display: block;
+        }
+        @keyframes pulse { 0% { opacity: 0.6; transform: scale(0.98); } 50% { opacity: 1; transform: scale(1); } 100% { opacity: 0.6; transform: scale(0.98); } }
 
         .container { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 40px; padding: 20px; }
         .card { 
@@ -88,18 +105,15 @@
         .btn-more { width: 100%; padding: 18px; background: var(--main-grad); border: none; color: white; border-radius: 15px; cursor: pointer; font-weight: 900; font-size: 1.1rem; text-transform: uppercase; transition: 0.3s; }
         .btn-more:hover { filter: brightness(1.2); box-shadow: 0 5px 20px rgba(255, 0, 127, 0.4); }
 
-        /* ТАБЫ */
         .mode-tabs { display: flex; justify-content: center; gap: 20px; margin-bottom: 50px; }
         .tab-btn { padding: 18px 45px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #888; border-radius: 18px; font-weight: 900; font-size: 1.1rem; cursor: pointer; transition: 0.3s; }
         .tab-btn.active { background: white; color: black; box-shadow: 0 10px 25px rgba(255,255,255,0.2); transform: translateY(-3px); }
 
-        /* АДМИНКА */
         .admin-form { display: none; background: #121220; padding: 40px; border-radius: 30px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2000; width: 95%; max-width: 500px; border: 2px solid var(--accent-blue); box-shadow: 0 0 100px rgba(0,0,0,0.9); }
         .admin-form input, .admin-form select { width: 100%; padding: 15px; margin: 10px 0; background: #1a1a2a; border: 1px solid #333; color: white; border-radius: 12px; }
         #admin-trigger { position: fixed; bottom: 30px; right: 30px; opacity: 0.1; cursor: pointer; font-size: 2.5rem; z-index: 1000; background: none; border: none; color: white; transition: 0.3s; }
         #admin-trigger:hover { opacity: 1; transform: rotate(90deg); color: var(--accent-blue); }
 
-        /* МОДАЛКА И ТОСТ */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 3000; backdrop-filter: blur(15px); }
         .modal-content { background: #1a1a24; margin: 5vh auto; padding: 45px; max-width: 800px; width: 92%; border-radius: 35px; border: 1px solid #333; position: relative; box-shadow: 0 0 60px rgba(0,0,0,0.5); }
         .victor-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #12121a; margin-bottom: 10px; border-radius: 15px; border-left: 5px solid var(--accent-pink); transition: 0.3s; }
@@ -116,8 +130,9 @@
     <div class="bg-wrapper"><div class="grid-overlay"></div><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
 
     <nav class="navbar">
-        <div class="logo" onclick="location.reload()">Mysteryx GDPS</div>
+        <div class="logo" onclick="location.reload()">Mysteryx</div>
         <div class="nav-right">
+            <a href="https://t.me/mysteryxgdps/11198/11199" id="verifyBtn" target="_blank">Критерии Верифа</a>
             <a href="https://t.me/mysteryxgdps" target="_blank" class="social-link"><i class="fab fa-telegram"></i></a>
             <a href="https://www.youtube.com/@lichigmdj98" target="_blank" class="social-link"><i class="fab fa-youtube"></i></a>
             <button onclick="toggleLang()" id="langBtn">РУС</button>
@@ -125,7 +140,10 @@
     </nav>
 
     <section id="listSection">
-        <div class="hero"><h1 id="txtHero">DEMON LIST</h1></div>
+        <div class="hero">
+            <h1 id="txtHero">DEMON LIST</h1>
+            <div class="top-50-text" id="top50Banner">TOP 50</div>
+        </div>
 
         <div class="search-box">
             <i class="fas fa-search search-icon"></i>
@@ -215,8 +233,13 @@
             const container = document.getElementById('mainContainer');
             const isDem = document.getElementById('tabDemons').classList.contains('active');
             const query = document.getElementById('searchInput').value.toLowerCase();
+            const topBanner = document.getElementById('top50Banner');
+            
             container.innerHTML = '';
             document.getElementById('txtHero').innerText = isDem ? (currentLang==='EN'?'DEMON LIST':'СПИСОК ДЕМОНОВ') : (currentLang==='EN'?'CREATOR TOP':'ТОП КРЕАТОРОВ');
+            
+            // Показываем надпись TOP 50 только если мы на вкладке демонов
+            topBanner.style.display = isDem ? 'block' : 'none';
 
             if(isDem) {
                 const filtered = demons.filter(d => d.name.toLowerCase().includes(query) || d.author.toLowerCase().includes(query));
