@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mystery GDPS | Official Global List</title>
+    <title>Mysteryx GDPS | Official Global List</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
@@ -18,75 +18,68 @@
             --accent-pink: #ff007f;
             --accent-blue: #00d2ff;
             --neon-glow: 0 0 15px rgba(0, 210, 255, 0.4), 0 0 30px rgba(255, 0, 127, 0.2);
+            --logo-glow: 0 0 15px rgba(0, 210, 255, 0.6), 0 0 30px rgba(255, 0, 127, 0.4);
         }
 
         * { box-sizing: border-box; scroll-behavior: smooth; }
         body { margin: 0; font-family: 'Poppins', sans-serif; background: var(--bg); color: white; overflow-x: hidden; min-height: 100vh; }
 
-        /* АНИМИРОВАННЫЙ ФОН */
         .bg-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; background: radial-gradient(circle at center, #0a0a1a 0%, #020205 100%); }
         .blob { position: absolute; width: 600px; height: 600px; background: var(--main-grad); filter: blur(100px); border-radius: 50%; opacity: 0.12; animation: move 20s infinite alternate; }
-        .blob:nth-child(2) { background: var(--accent-blue); width: 400px; height: 400px; animation-duration: 15s; animation-delay: -5s; }
         @keyframes move { from { transform: translate(-10%, -10%); } to { transform: translate(80%, 80%); } }
 
-        /* NAVBAR */
         .navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; background: rgba(0,0,0,0.7); backdrop-filter: blur(25px); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .logo { font-family: 'Montserrat'; font-size: 1.8rem; font-weight: 900; background: var(--main-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 8px rgba(0, 210, 255, 0.3)); }
-
-        .hero { text-align: center; padding: 80px 20px 40px; }
-        .hero h1 { 
-            font-family: 'Montserrat'; font-size: clamp(2.5rem, 7vw, 4.5rem); 
+        
+        .logo { 
+            font-family: 'Montserrat'; font-size: 2.2rem; font-weight: 900; 
             background: var(--main-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
-            margin: 0; text-transform: uppercase;
-            filter: drop-shadow(0 0 15px rgba(255, 0, 127, 0.3));
+            filter: drop-shadow(var(--logo-glow));
         }
 
-        /* КНОПКА ПЕРЕВОДА */
+        .hero { text-align: center; padding: 60px 20px 30px; }
+        .hero h1 { font-family: 'Montserrat'; font-size: clamp(2.5rem, 7vw, 4.5rem); background: var(--main-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 15px rgba(255, 0, 127, 0.3)); text-transform: uppercase; margin: 0; }
+
         #langBtn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 8px 20px; border-radius: 12px; cursor: pointer; font-weight: 900; transition: 0.3s; }
-        #langBtn:hover { background: var(--main-grad); border-color: transparent; box-shadow: var(--neon-glow); }
+        #langBtn:hover { background: var(--main-grad); box-shadow: var(--neon-glow); }
 
-        /* TABS */
-        .mode-tabs { display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; flex-wrap: wrap; }
-        .tab-btn { padding: 18px 35px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 15px; font-weight: 900; cursor: pointer; transition: 0.4s; text-transform: uppercase; backdrop-filter: blur(10px); }
-        .tab-btn.active { background: var(--main-grad); border: none; transform: scale(1.1); box-shadow: 0 10px 25px rgba(255, 0, 127, 0.3); }
+        .mode-tabs { display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; }
+        .tab-btn { padding: 18px 35px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 15px; font-weight: 900; cursor: pointer; transition: 0.4s; text-transform: uppercase; }
+        .tab-btn.active { background: var(--main-grad); transform: scale(1.1); box-shadow: 0 10px 25px rgba(255, 0, 127, 0.3); border: none; }
 
-        /* CARDS */
         .container { max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 30px; padding: 20px; }
-        .card { background: var(--card-bg); border-radius: 25px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; backdrop-filter: blur(15px); }
-        .card:hover { transform: translateY(-10px); border-color: var(--accent-pink); box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
+        .card { background: var(--card-bg); border-radius: 25px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); transition: 0.4s; position: relative; backdrop-filter: blur(15px); }
+        .card:hover { transform: translateY(-10px); border-color: var(--accent-pink); }
         
-        .tag { position: absolute; top: 15px; left: 15px; background: var(--main-grad); padding: 5px 15px; border-radius: 8px; font-size: 0.75rem; font-weight: 900; text-transform: uppercase; z-index: 2; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .tag { position: absolute; top: 15px; left: 15px; background: var(--main-grad); padding: 5px 15px; border-radius: 8px; font-size: 0.75rem; font-weight: 900; z-index: 2; }
 
-        .card-img { width: 100%; height: 180px; object-fit: cover; opacity: 0.8; transition: 0.5s; }
-        .card:hover .card-img { opacity: 1; transform: scale(1.05); }
+        .card-img { width: 100%; height: 180px; object-fit: cover; opacity: 0.8; }
         .card-body { padding: 25px; }
-        .card-body h3 { margin: 0; font-family: 'Montserrat'; font-size: 1.5rem; filter: drop-shadow(0 0 5px rgba(255,255,255,0.1)); }
 
-        .btn-more { width: 100%; padding: 14px; background: var(--main-grad); border: none; color: white; border-radius: 12px; cursor: pointer; font-weight: 900; text-transform: uppercase; transition: 0.3s; }
-        .btn-more:hover { filter: brightness(1.2); box-shadow: var(--neon-glow); }
+        .btn-more { width: 100%; padding: 14px; background: var(--main-grad); border: none; color: white; border-radius: 12px; cursor: pointer; font-weight: 900; text-transform: uppercase; }
 
-        /* ADMIN FORM */
-        .admin-form { display: none; background: #08080c; padding: 30px; border-radius: 25px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2000; width: 90%; max-width: 420px; border: 2px solid var(--accent-blue); box-shadow: 0 0 100px rgba(0,0,0,0.9); }
+        /* УПРАВЛЕНИЕ ПОЗИЦИЕЙ */
+        .reorder-controls { position: absolute; top: 10px; right: 10px; display: flex; flex-direction: column; gap: 5px; z-index: 10; }
+        .move-btn { background: rgba(0,0,0,0.8); color: white; border: 1px solid #555; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .move-btn:hover { background: var(--accent-blue); }
+
+        .admin-form { display: none; background: #08080c; padding: 30px; border-radius: 25px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2000; width: 90%; max-width: 420px; border: 2px solid var(--accent-blue); }
         .admin-form input, .admin-form select { width: 100%; padding: 12px; margin: 8px 0; background: #151525; border: 1px solid #333; color: white; border-radius: 10px; }
         
-        /* MODAL */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.94); z-index: 3000; backdrop-filter: blur(20px); }
-        .modal-content { background: #0a0a10; margin: 5% auto; padding: 30px; max-width: 750px; width: 90%; border-radius: 30px; border: 1px solid #333; position: relative; }
+        .modal-content { background: #0a0a10; margin: 5% auto; padding: 30px; max-width: 750px; width: 90%; border-radius: 30px; border: 1px solid #333; }
         
-        #admin-trigger { position: fixed; bottom: 20px; right: 20px; opacity: 0.15; color: white; background: none; border: none; cursor: pointer; font-size: 1.3rem; transition: 0.3s; z-index: 100; }
-        #admin-trigger:hover { opacity: 1; color: var(--accent-blue); transform: rotate(45deg); }
-        .btn-delete { position: absolute; top: 15px; right: 15px; background: #ff3333; color: white; border: none; padding: 8px 12px; border-radius: 10px; cursor: pointer; font-weight: bold; }
+        #admin-trigger { position: fixed; bottom: 20px; right: 20px; opacity: 0.15; color: white; background: none; border: none; cursor: pointer; font-size: 1.3rem; z-index: 100; }
         
         .social-icons a { color: white; font-size: 1.7rem; margin-left: 15px; transition: 0.4s; }
-        .social-icons a:hover { color: var(--accent-pink); transform: translateY(-3px); filter: drop-shadow(var(--neon-glow)); }
+        .social-icons a:hover { color: var(--accent-pink); filter: drop-shadow(var(--neon-glow)); }
     </style>
 </head>
 <body>
 
-    <div class="bg-animation"><div class="blob"></div><div class="blob"></div></div>
+    <div class="bg-animation"><div class="blob"></div></div>
 
     <nav class="navbar">
-        <div class="logo">Mystery GDPS</div>
+        <div class="logo">Mysteryx GDPS</div>
         <div style="display:flex; align-items:center; gap:15px;">
             <div class="social-icons">
                 <a href="https://t.me/mysteryxgdps" target="_blank"><i class="fab fa-telegram"></i></a>
@@ -108,18 +101,19 @@
     <button id="admin-trigger" onclick="openAdmin()"><i class="fas fa-shield-alt"></i></button>
 
     <div id="adminPanel" class="admin-form">
-        <h2 style="text-align:center; font-family: 'Montserrat'; font-size: 1.2rem;">ADMIN ACCESS</h2>
-        <input type="password" id="adminPass" placeholder="Код доступа">
+        <h2 style="text-align:center;">ADMIN ACCESS</h2>
+        <input type="password" id="adminPass" placeholder="Пароль">
         <select id="admAction" onchange="toggleAdmFields()">
             <option value="add_demon">Добавить Демона</option>
             <option value="add_creator">Добавить Креатора</option>
             <option value="add_victor">Добавить Виктора</option>
+            <option value="reorder">Изменить порядок (Демоны)</option>
             <option value="delete_mode">Режим удаления</option>
         </select>
         <div id="fields_common">
             <input type="text" id="itemName" placeholder="Название / Ник">
             <input type="text" id="itemVal" placeholder="Автор / CP">
-            <input type="text" id="itemTag" placeholder="Тег (например: Top 1, Epic)">
+            <input type="text" id="itemTag" placeholder="Тег">
             <input type="text" id="itemImg" placeholder="URL картинки">
             <input type="text" id="itemVid" placeholder="YouTube Video ID">
         </div>
@@ -136,7 +130,7 @@
     <div id="detailModal" class="modal"><div class="modal-content" id="modalData"></div></div>
 
     <script>
-        const SECRET_HASH = "40bd001563085fc35165329ea1ff5c5ecbdbbeef"; // Хеш пароля 123
+        const SECRET_HASH = "40bd001563085fc35165329ea1ff5c5ecbdbbeef"; 
         async function hashString(str) {
             const buffer = new TextEncoder().encode(str);
             const hashBuffer = await crypto.subtle.digest('SHA-1', buffer);
@@ -158,34 +152,32 @@
 
         let currentLang = 'EN';
         let isDeleteMode = false;
+        let isReorderMode = false;
         let demons = []; let creators = []; let dKeys = []; let cKeys = [];
 
         const dict = {
-            EN: { hero: "DEMON LIST", more: "DETAILS", vics: "Victors", del: "DELETE", tabD: "Demons", tabC: "Creators" },
-            RU: { hero: "СПИСОК ДЕМОНОВ", more: "ПОДРОБНЕЕ", vics: "Победители", del: "УДАЛИТЬ", tabD: "Демоны", tabC: "Креаторы" }
+            EN: { hero: "DEMON LIST", more: "DETAILS", vics: "Victors", del: "DELETE" },
+            RU: { hero: "СПИСОК ДЕМОНОВ", more: "ПОДРОБНЕЕ", vics: "Победители", del: "УДАЛИТЬ" }
         };
 
+        // Загрузка демонов с сортировкой по новому полю 'order'
         db.ref('demons').on('value', s => { 
             const val = s.val(); 
-            demons = val ? Object.values(val) : []; 
-            dKeys = val ? Object.keys(val) : []; 
+            if(val) {
+                const entries = Object.entries(val).map(([key, data]) => ({ key, ...data }));
+                entries.sort((a, b) => (a.order || 0) - (b.order || 0));
+                demons = entries;
+                dKeys = entries.map(e => e.key);
+            } else { demons = []; dKeys = []; }
             render(); 
         });
+
         db.ref('creators').on('value', s => { 
             const val = s.val(); 
             creators = val ? Object.values(val) : []; 
             cKeys = val ? Object.keys(val) : []; 
             render(); 
         });
-
-        function toggleLang() {
-            currentLang = currentLang === 'EN' ? 'RU' : 'EN';
-            document.getElementById('langBtn').innerText = currentLang === 'EN' ? 'РУС' : 'ENG';
-            document.getElementById('txtHero').innerText = dict[currentLang].hero;
-            document.getElementById('tabDemons').innerText = dict[currentLang].tabD;
-            document.getElementById('tabCreators').innerText = dict[currentLang].tabC;
-            render();
-        }
 
         function render() {
             const container = document.getElementById('mainContainer');
@@ -197,7 +189,13 @@
                     container.innerHTML += `
                         <div class="card">
                             ${d.tag ? `<div class="tag">${d.tag}</div>` : ''}
-                            ${isDeleteMode ? `<button class="btn-delete" onclick="deleteGlobal('${dKeys[i]}','demons')">${dict[currentLang].del}</button>` : ''}
+                            ${isDeleteMode ? `<button class="btn-delete" onclick="deleteGlobal('${d.key}','demons')">${dict[currentLang].del}</button>` : ''}
+                            ${isReorderMode ? `
+                                <div class="reorder-controls">
+                                    <button class="move-btn" onclick="moveItem(${i}, -1)">↑</button>
+                                    <button class="move-btn" onclick="moveItem(${i}, 1)">↓</button>
+                                </div>
+                            ` : ''}
                             <img src="${d.img || 'https://via.placeholder.com/400x200'}" class="card-img">
                             <div class="card-body">
                                 <h3 style="background:var(--main-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">#${i+1} ${d.name}</h3>
@@ -208,14 +206,7 @@
                 });
             } else {
                 creators.sort((a,b)=>b.points-a.points).forEach((c, i) => {
-                    container.innerHTML += `
-                        <div class="card">
-                            ${isDeleteMode ? `<button class="btn-delete" onclick="deleteGlobal('${cKeys[i]}','creators')">${dict[currentLang].del}</button>` : ''}
-                            <div class="card-body">
-                                <h3>#${i+1} ${c.name}</h3>
-                                <p style="color:var(--accent-blue); font-weight:900;">${c.points} CP</p>
-                            </div>
-                        </div>`;
+                    container.innerHTML += `<div class="card"><div class="card-body"><h3>#${i+1} ${c.name}</h3><p style="color:var(--accent-blue); font-weight:900;">${c.points} CP</p></div></div>`;
                 });
             }
         }
@@ -226,41 +217,58 @@
             if(typedHash !== SECRET_HASH) return alert("Wrong Code");
             
             const act = document.getElementById('admAction').value;
-            const idVal = (n) => document.getElementById(n).value;
+            isDeleteMode = (act === 'delete_mode');
+            isReorderMode = (act === 'reorder');
 
-            if(act === 'add_demon') db.ref('demons').push({ name: idVal('itemName'), author: idVal('itemVal'), tag: idVal('itemTag'), img: idVal('itemImg'), vid: idVal('itemVid'), victors: [] });
-            else if(act === 'add_creator') db.ref('creators').push({ name: idVal('itemName'), points: parseInt(idVal('itemVal')) });
-            else if(act === 'add_victor') {
+            if(act === 'add_demon') {
+                db.ref('demons').push({ 
+                    name: document.getElementById('itemName').value, 
+                    author: document.getElementById('itemVal').value, 
+                    tag: document.getElementById('itemTag').value, 
+                    img: document.getElementById('itemImg').value, 
+                    vid: document.getElementById('itemVid').value,
+                    order: demons.length 
+                });
+            } else if(act === 'add_creator') {
+                db.ref('creators').push({ name: document.getElementById('itemName').value, points: parseInt(document.getElementById('itemVal').value) });
+            } else if(act === 'add_victor') {
                 const idx = document.getElementById('selectDemon').value;
                 const vics = demons[idx].victors || [];
-                vics.push({ name: idVal('vicName'), att: idVal('vicAtt'), perc: idVal('vicPerc') });
-                db.ref('demons/'+dKeys[idx]).update({ victors: vics });
+                vics.push({ name: document.getElementById('vicName').value, att: document.getElementById('vicAtt').value, perc: document.getElementById('vicPerc').value });
+                db.ref('demons/'+demons[idx].key).update({ victors: vics });
             }
-            else if(act === 'delete_mode') isDeleteMode = !isDeleteMode;
             closeAdmin(); render();
         }
 
-        function deleteGlobal(key, type) { if(confirm("Удалить?")) db.ref(type+'/'+key).remove(); }
+        function moveItem(index, direction) {
+            let newIndex = index + direction;
+            if (newIndex < 0 || newIndex >= demons.length) return;
+            
+            const itemA = demons[index];
+            const itemB = demons[newIndex];
 
+            db.ref('demons/' + itemA.key).update({ order: newIndex });
+            db.ref('demons/' + itemB.key).update({ order: index });
+        }
+
+        function deleteGlobal(key, type) { if(confirm("Удалить?")) db.ref(type+'/'+key).remove(); }
         function showInfo(i) {
             const d = demons[i];
-            const vH = d.victors ? d.victors.map(v => `<div style="padding:12px; background:rgba(255,255,255,0.03); margin-bottom:8px; border-radius:12px; border-left:3px solid var(--accent-pink);"><b>${v.name}</b>: ${v.perc} (${v.att} att)</div>`).join('') : "No victors yet.";
-            document.getElementById('modalData').innerHTML = `
-                <h2 style="font-family:'Montserrat'; font-size:1.8rem; background:var(--main-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent; margin-bottom:20px;">${d.name}</h2>
-                <div style="position:relative; padding-bottom:56.25%; height:0; border-radius:15px; overflow:hidden; border:1px solid #333; margin-bottom:20px;">
-                    <iframe style="position:absolute; top:0; left:0; width:100%; height:100%;" src="https://www.youtube.com/embed/${d.vid}" frameborder="0" allowfullscreen></iframe>
-                </div>
-                <h3>${dict[currentLang].vics}:</h3>
-                <div style="max-height:200px; overflow-y:auto; padding-right:10px;">${vH}</div>
-                <button class="btn-more" style="margin-top:20px; background:#111; border:1px solid #333;" onclick="closeModal()">CLOSE</button>
-            `;
+            const vH = d.victors ? d.victors.map(v => `<div style="padding:10px; background:rgba(255,255,255,0.03); margin-bottom:5px; border-radius:10px;"><b>${v.name}</b>: ${v.perc} (${v.att} att)</div>`).join('') : "None";
+            document.getElementById('modalData').innerHTML = `<h2 style="background:var(--main-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">${d.name}</h2><iframe width="100%" height="315" src="https://www.youtube.com/embed/${d.vid}" frameborder="0" allowfullscreen style="border-radius:15px; margin:20px 0;"></iframe><h3>${dict[currentLang].vics}:</h3>${vH}<button class="btn-more" style="margin-top:20px; background:#111;" onclick="closeModal()">CLOSE</button>`;
             document.getElementById('detailModal').style.display='block';
         }
 
+        function toggleLang() {
+            currentLang = currentLang === 'EN' ? 'RU' : 'EN';
+            document.getElementById('langBtn').innerText = currentLang === 'EN' ? 'РУС' : 'ENG';
+            document.getElementById('txtHero').innerText = dict[currentLang].hero;
+            render();
+        }
         function toggleAdmFields() {
             const act = document.getElementById('admAction').value;
-            document.getElementById('fields_common').style.display = act.includes('add_demon') || act.includes('add_creator') ? 'block' : 'none';
-            document.getElementById('fields_victor').style.display = act === 'add_victor' ? 'block' : 'none';
+            document.getElementById('fields_common').style.display = (act.includes('add_demon') || act.includes('add_creator')) ? 'block' : 'none';
+            document.getElementById('fields_victor').style.display = (act === 'add_victor') ? 'block' : 'none';
             if(act === 'add_victor') document.getElementById('selectDemon').innerHTML = demons.map((d,i)=>`<option value="${i}">${d.name}</option>`).join('');
         }
         function switchTab(t) { 
