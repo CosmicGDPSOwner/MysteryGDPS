@@ -216,8 +216,7 @@
     <div id="detailModal" class="modal"><div class="modal-content" id="modalData"></div></div>
 
     <script>
-        // Глобальные настройки
-        const SECRET_HASH = "80f681a9425035255476d0042456345688753239"; // mysteryxgdpsold777
+        const SECRET_HASH = "80f681a9425035255476d0042456345688753239";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBugYw3fPo4r7Q0e4jDjBUd-JBbCspghE8",
@@ -231,12 +230,9 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        let currentLang = 'EN'; 
-        let isDeleteMode = false;
-        let demons = []; 
-        let creators = [];
+        let currentLang = 'EN'; let isDeleteMode = false;
+        let demons = []; let creators = [];
 
-        // Получение данных
         db.ref('demons').on('value', s => { 
             const val = s.val(); 
             demons = val ? Object.entries(val).map(([k, d]) => ({ key: k, ...d })).sort((a,b)=>(a.order||0)-(b.order||0)) : [];
@@ -250,7 +246,6 @@
             render(); 
         });
 
-        // Функция хеширования
         async function hashString(str) {
             const buffer = new TextEncoder().encode(str);
             const hashBuffer = await crypto.subtle.digest('SHA-1', buffer);
@@ -284,113 +279,66 @@
                 });
             } else {
                 creators.forEach((c, i) => {
-                    container.innerHTML += `
-                        <div class="card">
-                            ${isDeleteMode ? `<div class="admin-controls"><button class="btn-edit" style="background:red;" onclick="deleteItem('${c.key}','creators')"><i class="fas fa-trash"></i></button></div>` : ''}
-                            <div class="card-body" style="display:flex; justify-content:space-between; align-items:center; padding:40px;">
-                                <h3 style="font-size:1.8rem; margin:0;">#${i+1} ${c.name}</h3>
-                                <div style="text-align:right;"><span style="font-size:2.5rem; font-weight:900; color:var(--accent-blue);">${c.points}</span><div style="font-weight:900; color:#888;">CP</div></div>
-                            </div>
-                        </div>`;
+                    container.innerHTML += `<div class="card">
+                        ${isDeleteMode ? `<div class="admin-controls"><button class="btn-edit" style="background:red;" onclick="deleteItem('${c.key}','creators')"><i class="fas fa-trash"></i></button></div>` : ''}
+                        <div class="card-body" style="display:flex; justify-content:space-between; align-items:center; padding:40px;">
+                            <h3 style="font-size:1.8rem; margin:0;">#${i+1} ${c.name}</h3>
+                            <div style="text-align:right;"><span style="font-size:2.5rem; font-weight:900; color:var(--accent-blue);">${c.points}</span><div style="font-weight:900; color:#888;">CP</div></div>
+                        </div>
+                    </div>`;
                 });
             }
         }
 
         async function processAdmin() {
-            const rawPass = document.getElementById('adminPass').value.trim().toLowerCase();
+            const passField = document.getElementById('adminPass');
+            const rawPass = passField.value.trim().toLowerCase();
             const h = await hashString(rawPass);
-            
-            if(h !== SECRET_HASH) {
-                console.log("Input hash:", h);
-                return alert("Wrong Password!");
-            }
 
-            const act = document.getElementById('admAction').value;
-            if(act === 'add_demon') {
-                let r = document.getElementById('itemVid').value;
-                let v = r.includes('v=') ? r.split('v=')[1].split('&')[0] : r.includes('youtu.be/') ? r.split('youtu.be/')[1].split('?')[0] : r;
-                db.ref('demons').push({ 
-                    name: document.getElementById('itemName').value, 
-                    author: document.getElementById('itemVal').value, 
-                    levelID: document.getElementById('itemID').value, 
-                    tag: document.getElementById('itemTag').value, 
-                    img: document.getElementById('itemImgURL').value, 
-                    vid: v, 
-                    order: demons.length 
-                });
-            } else if(act === 'add_creator') {
-                db.ref('creators').push({ 
-                    name: document.getElementById('itemName').value, 
-                    points: parseInt(document.getElementById('itemVal').value) || 0 
-                });
-            } else if(act === 'add_victor') {
-                const dKey = document.getElementById('selectDemon').value;
-                db.ref(`demons/${dKey}/victors`).push({ 
-                    name: document.getElementById('vicName').value, 
-                    perc: document.getElementById('vicPerc').value, 
-                    att: document.getElementById('vicAtt').value 
-                });
-            } else if(act === 'delete_mode') {
-                isDeleteMode = !isDeleteMode;
-                render();
+            // ДВОЙНАЯ ПРОВЕРКА: Хеш ИЛИ Прямой текст
+            if(h === SECRET_HASH || rawPass === "mysteryxgdpsold777") {
+                const act = document.getElementById('admAction').value;
+                if(act === 'add_demon') {
+                    let r = document.getElementById('itemVid').value;
+                    let v = r.includes('v=') ? r.split('v=')[1].split('&')[0] : r.includes('youtu.be/') ? r.split('youtu.be/')[1].split('?')[0] : r;
+                    db.ref('demons').push({ name: document.getElementById('itemName').value, author: document.getElementById('itemVal').value, levelID: document.getElementById('itemID').value, tag: document.getElementById('itemTag').value, img: document.getElementById('itemImgURL').value, vid: v, order: demons.length });
+                } else if(act === 'add_creator') {
+                    db.ref('creators').push({ name: document.getElementById('itemName').value, points: parseInt(document.getElementById('itemVal').value) || 0 });
+                } else if(act === 'add_victor') {
+                    const dKey = document.getElementById('selectDemon').value;
+                    db.ref(`demons/${dKey}/victors`).push({ name: document.getElementById('vicName').value, perc: document.getElementById('vicPerc').value, att: document.getElementById('vicAtt').value });
+                } else if(act === 'delete_mode') {
+                    isDeleteMode = !isDeleteMode; render();
+                }
+                closeAdmin(); passField.value = '';
+            } else {
+                alert("Wrong Password!");
             }
-            closeAdmin();
-            document.getElementById('adminPass').value = '';
         }
 
         function showInfo(i) {
             const d = demons[i];
-            const vics = d.victors ? Object.entries(d.victors).map(([vk, v]) => `
-                <div class="victor-item">
-                    <span><b>${v.name}</b> — <span style="color:var(--accent-blue)">${v.perc || '100%'}</span> (${v.att} att)</span>
-                    ${isDeleteMode ? `<i class="fas fa-times del-victor" title="Удалить" onclick="deleteVictor('${d.key}', '${vk}')"></i>` : ''}
-                </div>`).join('') : "No records yet";
+            const vics = d.victors ? Object.entries(d.victors).map(([vk, v]) => `<div class="victor-item">
+                <span><b>${v.name}</b> — <span style="color:var(--accent-blue)">${v.perc || '100%'}</span> (${v.att} att)</span>
+                ${isDeleteMode ? `<i class="fas fa-times del-victor" title="Удалить" onclick="deleteVictor('${d.key}', '${vk}')"></i>` : ''}
+            </div>`).join('') : "No records yet";
 
-            document.getElementById('modalData').innerHTML = `
-                <h2 style="font-family:Montserrat; font-size:2rem; margin:0;">${d.name}</h2>
+            document.getElementById('modalData').innerHTML = `<h2 style="font-family:Montserrat; font-size:2rem; margin:0;">${d.name}</h2>
                 <iframe style="width:100%; aspect-ratio:16/9; border-radius:20px; margin:25px 0; border:1px solid #333;" src="https://www.youtube.com/embed/${d.vid}" frameborder="0" allowfullscreen></iframe>
-                <h3 style="margin-bottom:15px;">Records:</h3>
-                <div style="max-height:250px; overflow-y:auto; padding-right:10px;">${vics}</div>
+                <h3 style="margin-bottom:15px;">Records:</h3><div style="max-height:250px; overflow-y:auto;">${vics}</div>
                 <button class="btn-more" style="background:#222; margin-top:30px;" onclick="document.getElementById('detailModal').style.display='none'">CLOSE</button>`;
             document.getElementById('detailModal').style.display='block';
         }
 
-        function deleteVictor(demonKey, victorKey) {
-            if(confirm("Удалить этот рекорд?")) {
-                db.ref(`demons/${demonKey}/victors/${victorKey}`).remove().then(() => {
-                    document.getElementById('detailModal').style.display='none';
-                });
-            }
-        }
-
+        function deleteVictor(dk, vk) { if(confirm("Удалить?")) db.ref(`demons/${dk}/victors/${vk}`).remove().then(()=>document.getElementById('detailModal').style.display='none'); }
         function moveItem(index, dir) {
-            let target = index + dir;
-            if (target < 0 || target >= demons.length) return;
-            const updates = {};
-            updates[`/demons/${demons[index].key}/order`] = target;
-            updates[`/demons/${demons[target].key}/order`] = index;
+            let target = index + dir; if (target < 0 || target >= demons.length) return;
+            const updates = {}; updates[`/demons/${demons[index].key}/order`] = target; updates[`/demons/${demons[target].key}/order`] = index;
             db.ref().update(updates);
         }
-
-        function copyID(id) {
-            navigator.clipboard.writeText(id);
-            const t = document.getElementById("copyToast"); t.className = "show";
-            setTimeout(() => t.className = "", 3000);
-        }
-
-        function toggleAdmFields() {
-            const a = document.getElementById('admAction').value;
-            document.getElementById('fields_main').style.display = (a === 'add_demon' || a === 'add_creator') ? 'block' : 'none';
-            document.getElementById('fields_demon').style.display = a === 'add_demon' ? 'block' : 'none';
-            document.getElementById('fields_victor').style.display = a === 'add_victor' ? 'block' : 'none';
-        }
-
-        function toggleLang() {
-            currentLang = currentLang === 'EN' ? 'RU' : 'EN';
-            document.getElementById('langBtn').innerText = currentLang === 'EN' ? 'РУС' : 'ENG';
-            render();
-        }
-
+        function copyID(id) { navigator.clipboard.writeText(id); const t = document.getElementById("copyToast"); t.className = "show"; setTimeout(() => t.className = "", 3000); }
+        function toggleAdmFields() { const a = document.getElementById('admAction').value; document.getElementById('fields_main').style.display = (a === 'add_demon' || a === 'add_creator') ? 'block' : 'none'; document.getElementById('fields_demon').style.display = a === 'add_demon' ? 'block' : 'none'; document.getElementById('fields_victor').style.display = a === 'add_victor' ? 'block' : 'none'; }
+        function toggleLang() { currentLang = currentLang === 'EN' ? 'RU' : 'EN'; document.getElementById('langBtn').innerText = currentLang === 'EN' ? 'РУС' : 'ENG'; render(); }
         function deleteItem(k, p) { if(confirm("Удалить?")) db.ref(p+'/'+k).remove(); }
         function switchTab(t) { document.getElementById('tabDemons').classList.toggle('active', t==='demons'); document.getElementById('tabCreators').classList.toggle('active', t==='creators'); render(); }
         function openAdmin() { document.getElementById('adminPanel').style.display='block'; toggleAdmFields(); }
@@ -398,4 +346,3 @@
     </script>
 </body>
 </html>
-
