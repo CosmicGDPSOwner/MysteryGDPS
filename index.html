@@ -220,7 +220,7 @@
     <div id="detailModal" class="modal"><div class="modal-content" id="modalData"></div></div>
 
     <script>
-        const SECRET_HASH = "40bd001563085fc35165329ea1ff5c5ecbdbbeef"; 
+        const SECRET_HASH = "80f681a9425035255476d0042456345688753239";
         async function hashString(str) {
             const buffer = new TextEncoder().encode(str);
             const hashBuffer = await crypto.subtle.digest('SHA-1', buffer);
@@ -375,6 +375,7 @@
     </script>
 </body>
 </html>
+
 
 
 
