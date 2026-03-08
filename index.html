@@ -20,110 +20,47 @@
         }
 
         * { box-sizing: border-box; scroll-behavior: smooth; }
+        body { margin: 0; font-family: 'Poppins', sans-serif; background: var(--bg); color: white; overflow-x: hidden; min-height: 100vh; }
 
-        body { 
-            margin: 0; 
-            font-family: 'Poppins', sans-serif; 
-            background: var(--bg); 
-            color: white; 
-            overflow-x: hidden;
-            min-height: 100vh;
-        }
+        /* АНИМИРОВАННЫЙ ФОН */
+        .bg-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; background: radial-gradient(circle at center, #0a0a1a 0%, #020205 100%); }
+        .blob { position: absolute; width: 500px; height: 500px; background: var(--main-grad); filter: blur(90px); border-radius: 50%; opacity: 0.15; animation: move 25s infinite alternate; }
+        .blob:nth-child(2) { background: var(--accent-blue); width: 350px; height: 350px; animation-duration: 18s; animation-delay: -7s; }
+        @keyframes move { from { transform: translate(-20%, -20%) rotate(0deg); } to { transform: translate(100%, 100%) rotate(360deg); } }
 
-        /* --- АНИМИРОВАННЫЙ ФОН --- */
-        .bg-animation {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            overflow: hidden;
-            background: radial-gradient(circle at center, #0a0a1a 0%, #020205 100%);
-        }
-
-        .blob {
-            position: absolute;
-            width: 400px;
-            height: 400px;
-            background: var(--main-grad);
-            filter: blur(80px);
-            border-radius: 50%;
-            opacity: 0.15;
-            animation: move 20s infinite alternate;
-        }
-
-        .blob:nth-child(2) {
-            background: var(--accent-blue);
-            width: 300px; height: 300px;
-            animation-duration: 15s;
-            animation-delay: -5s;
-        }
-
-        @keyframes move {
-            from { transform: translate(-10%, -10%) rotate(0deg); }
-            to { transform: translate(110%, 110%) rotate(360deg); }
-        }
-
-        /* --- NAVBAR --- */
-        .navbar { 
-            display: flex; justify-content: space-between; align-items: center; 
-            padding: 20px 5%; background: rgba(0,0,0,0.6); backdrop-filter: blur(20px);
-            position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; background: rgba(0,0,0,0.6); backdrop-filter: blur(20px); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.1); }
         .logo { font-family: 'Montserrat'; font-size: 2rem; font-weight: 900; background: var(--main-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 10px rgba(0, 210, 255, 0.5)); }
 
-        /* --- HERO --- */
         .hero { text-align: center; padding: 100px 20px 40px; }
-        .hero h1 { 
-            font-family: 'Montserrat'; font-size: 5rem; 
-            background: var(--main-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
-            margin: 0; text-transform: uppercase;
-            animation: glow 3s infinite alternate;
-        }
-        @keyframes glow {
-            from { filter: drop-shadow(0 0 10px rgba(255,0,127,0.2)); }
-            to { filter: drop-shadow(0 0 30px rgba(255,0,127,0.6)); }
-        }
+        .hero h1 { font-family: 'Montserrat'; font-size: clamp(3rem, 8vw, 5rem); background: var(--main-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; text-transform: uppercase; animation: glow 3s infinite alternate; }
+        @keyframes glow { from { filter: drop-shadow(0 0 10px rgba(255,0,127,0.2)); } to { filter: drop-shadow(0 0 30px rgba(255,0,127,0.6)); } }
 
-        /* --- TABS --- */
-        .mode-tabs { display: flex; justify-content: center; gap: 20px; margin-bottom: 50px; }
-        .tab-btn { 
-            padding: 25px 60px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; 
-            border-radius: 20px; font-weight: 900; font-size: 1.3rem; cursor: pointer; transition: 0.4s;
-            text-transform: uppercase; backdrop-filter: blur(10px);
-        }
-        .tab-btn:hover { background: rgba(255,255,255,0.1); border-color: var(--accent-blue); }
-        .tab-btn.active { background: var(--main-grad); border: none; transform: scale(1.15); box-shadow: 0 15px 40px rgba(255, 0, 127, 0.4); }
+        .mode-tabs { display: flex; justify-content: center; gap: 20px; margin-bottom: 50px; flex-wrap: wrap; }
+        .tab-btn { padding: 20px 40px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 20px; font-weight: 900; font-size: 1.1rem; cursor: pointer; transition: 0.4s; text-transform: uppercase; backdrop-filter: blur(10px); }
+        .tab-btn.active { background: var(--main-grad); border: none; transform: scale(1.1); box-shadow: 0 10px 30px rgba(255, 0, 127, 0.4); }
 
-        /* --- CARDS --- */
-        .container { max-width: 1250px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 40px; padding: 40px; }
-        .card { 
-            background: var(--card-bg); border-radius: 30px; overflow: hidden; 
-            border: 1px solid rgba(255,255,255,0.08); transition: 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); 
-            position: relative; backdrop-filter: blur(15px);
-        }
-        .card:hover { transform: translateY(-15px) scale(1.02); border-color: var(--accent-pink); box-shadow: 0 25px 50px rgba(0,0,0,0.5); }
-        .card-img { width: 100%; height: 210px; object-fit: cover; opacity: 0.8; transition: 0.5s; }
+        .container { max-width: 1250px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; padding: 20px; }
+        .card { background: var(--card-bg); border-radius: 30px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); transition: 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); position: relative; backdrop-filter: blur(15px); }
+        .card:hover { transform: translateY(-10px); border-color: var(--accent-pink); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+        .card-img { width: 100%; height: 180px; object-fit: cover; opacity: 0.7; transition: 0.5s; }
         .card:hover .card-img { opacity: 1; transform: scale(1.05); }
-        .card-body { padding: 30px; }
-        .card-body h3 { font-size: 1.8rem; margin: 0; font-family: 'Montserrat'; }
+        .card-body { padding: 25px; }
 
-        .btn-more { width: 100%; padding: 16px; background: var(--main-grad); border: none; color: white; border-radius: 15px; cursor: pointer; font-weight: 900; text-transform: uppercase; transition: 0.3s; }
-        .btn-more:hover { letter-spacing: 2px; box-shadow: 0 0 20px var(--accent-pink); }
+        .btn-more { width: 100%; padding: 15px; background: var(--main-grad); border: none; color: white; border-radius: 15px; cursor: pointer; font-weight: 900; text-transform: uppercase; transition: 0.3s; }
+        .btn-more:hover { letter-spacing: 1px; filter: brightness(1.2); }
 
-        /* --- ADMIN & MODALS --- */
-        .admin-form { display: none; background: #08080c; padding: 40px; border-radius: 30px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2000; width: 450px; border: 2px solid var(--accent-blue); box-shadow: 0 0 100px rgba(0,0,0,0.8); }
+        .admin-form { display: none; background: #08080c; padding: 40px; border-radius: 30px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2000; width: 90%; max-width: 450px; border: 2px solid var(--accent-blue); box-shadow: 0 0 100px rgba(0,0,0,0.9); }
         .admin-form input, .admin-form select { width: 100%; padding: 14px; margin: 10px 0; background: #151525; border: 1px solid #333; color: white; border-radius: 12px; }
         
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); z-index: 3000; backdrop-filter: blur(20px); transition: 0.3s; }
-        .modal-content { background: #0a0a0f; margin: 3% auto; padding: 45px; max-width: 850px; border-radius: 40px; border: 1px solid #333; box-shadow: 0 0 50px rgba(0, 210, 255, 0.2); }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); z-index: 3000; backdrop-filter: blur(20px); }
+        .modal-content { background: #0a0a0f; margin: 5% auto; padding: 30px; max-width: 800px; width: 95%; border-radius: 30px; border: 1px solid #333; position: relative; }
         
-        #admin-trigger { position: fixed; bottom: 25px; left: 25px; opacity: 0.1; color: white; background: none; border: none; cursor: pointer; font-size: 1.5rem; transition: 0.3s; }
-        #admin-trigger:hover { opacity: 1; transform: rotate(90deg); }
-        .btn-delete { position: absolute; top: 20px; right: 20px; background: #ff4b2b; color: white; border: none; padding: 10px 15px; border-radius: 10px; cursor: pointer; font-weight: bold; }
-        #langBtn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 10px 25px; border-radius: 12px; cursor: pointer; font-weight: 900; transition: 0.3s; }
-        #langBtn:hover { background: var(--main-grad); border-color: transparent; }
-
-        .social-icons a { color: white; font-size: 2rem; margin-left: 20px; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .social-icons a:hover { color: var(--accent-pink); transform: scale(1.3) rotate(10deg); filter: drop-shadow(0 0 10px var(--accent-pink)); }
+        #admin-trigger { position: fixed; bottom: 20px; right: 20px; opacity: 0.1; color: white; background: none; border: none; cursor: pointer; font-size: 1.2rem; transition: 0.3s; z-index: 100; }
+        #admin-trigger:hover { opacity: 1; color: var(--accent-blue); }
+        .btn-delete { position: absolute; top: 15px; right: 15px; background: #ff4b2b; color: white; border: none; padding: 8px 12px; border-radius: 10px; cursor: pointer; }
+        
+        .social-icons a { color: white; font-size: 1.8rem; margin-left: 15px; transition: 0.4s; }
+        .social-icons a:hover { color: var(--accent-pink); transform: scale(1.2); }
     </style>
 </head>
 <body>
@@ -131,17 +68,15 @@
     <div class="bg-animation">
         <div class="blob"></div>
         <div class="blob"></div>
-        <div class="blob"></div>
     </div>
 
     <nav class="navbar">
         <div class="logo">Mystery GDPS</div>
-        <div style="display:flex; align-items:center; gap:25px;">
+        <div style="display:flex; align-items:center;">
             <div class="social-icons">
                 <a href="https://t.me/mysteryxgdps" target="_blank"><i class="fab fa-telegram"></i></a>
                 <a href="https://www.youtube.com/@lichigmdj98" target="_blank"><i class="fab fa-youtube"></i></a>
             </div>
-            <button onclick="toggleLang()" id="langBtn">РУС</button>
         </div>
     </nav>
 
@@ -154,11 +89,11 @@
 
     <div class="container" id="mainContainer"></div>
 
-    <button id="admin-trigger" onclick="openAdmin()"><i class="fas fa-cog"></i></button>
+    <button id="admin-trigger" onclick="openAdmin()"><i class="fas fa-fingerprint"></i></button>
 
     <div id="adminPanel" class="admin-form">
-        <h2 style="text-align:center; font-family: 'Montserrat';">ADMIN PANEL</h2>
-        <input type="password" id="adminPass" placeholder="Пароль">
+        <h2 style="text-align:center; font-family: 'Montserrat';">SECURE LOGIN</h2>
+        <input type="password" id="adminPass" placeholder="Enter Access Code">
         <select id="admAction" onchange="toggleAdmFields()">
             <option value="add_demon">Добавить Демона</option>
             <option value="add_creator">Добавить Креатора</option>
@@ -168,22 +103,31 @@
         <div id="fields_common">
             <input type="text" id="itemName" placeholder="Название / Ник">
             <input type="text" id="itemVal" placeholder="Автор / CP">
-            <input type="text" id="itemImg" placeholder="URL картинки (PNG/JPG)">
-            <input type="text" id="itemVid" placeholder="YouTube Video ID">
+            <input type="text" id="itemImg" placeholder="URL картинки">
+            <input type="text" id="itemVid" placeholder="YouTube ID">
         </div>
         <div id="fields_victor" style="display:none;">
-            <select id="selectDemon" style="width:100%; padding:12px; margin-bottom:10px;"></select>
+            <select id="selectDemon"></select>
             <input type="text" id="vicName" placeholder="Ник игрока">
             <input type="text" id="vicAtt" placeholder="Попытки">
             <input type="text" id="vicPerc" placeholder="Процент">
         </div>
-        <button class="btn-more" onclick="processAdmin()">СОХРАНИТЬ</button>
-        <button class="btn-more" style="background:#222; margin-top:10px;" onclick="closeAdmin()">ОТМЕНА</button>
+        <button class="btn-more" onclick="processAdmin()">ВЫПОЛНИТЬ</button>
+        <button class="btn-more" style="background:#222; margin-top:10px;" onclick="closeAdmin()">ЗАКРЫТЬ</button>
     </div>
 
     <div id="detailModal" class="modal"><div class="modal-content" id="modalData"></div></div>
 
     <script>
+        // Хеш пароля "123". Даже если его увидят, пароль не узнают.
+        const SECRET_HASH = "40bd001563085fc35165329ea1ff5c5ecbdbbeef"; 
+
+        async function hashString(str) {
+            const buffer = new TextEncoder().encode(str);
+            const hashBuffer = await crypto.subtle.digest('SHA-1', buffer);
+            return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
         const firebaseConfig = {
             apiKey: "AIzaSyBugYw3fPo4r7Q0e4jDjBUd-JBbCspghE8",
             authDomain: "mysterygdps-30547.firebaseapp.com",
@@ -191,21 +135,14 @@
             projectId: "mysterygdps-30547",
             storageBucket: "mysterygdps-30547.firebasestorage.app",
             messagingSenderId: "12553952733",
-            appId: "1:12553952733:web:fa603d37c8c08dddefaa34",
-            measurementId: "G-WVMTYWT40L"
+            appId: "1:12553952733:web:fa603d37c8c08dddefaa34"
         };
 
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        let currentLang = 'EN';
         let isDeleteMode = false;
         let demons = []; let creators = []; let dKeys = []; let cKeys = [];
-
-        const dict = {
-            EN: { hero: "DEMON LIST", more: "DETAILS", vics: "Victors List", empty: "No one yet.", del: "REMOVE" },
-            RU: { hero: "СПИСОК ДЕМОНОВ", more: "ПОДРОБНЕЕ", vics: "Победители", empty: "Пока пусто.", del: "УДАЛИТЬ" }
-        };
 
         db.ref('demons').on('value', s => { 
             const val = s.val(); 
@@ -220,13 +157,6 @@
             render(); 
         });
 
-        function toggleLang() {
-            currentLang = currentLang === 'EN' ? 'RU' : 'EN';
-            document.getElementById('langBtn').innerText = currentLang === 'EN' ? 'РУС' : 'ENG';
-            document.getElementById('txtHero').innerText = dict[currentLang].hero;
-            render();
-        }
-
         function render() {
             const container = document.getElementById('mainContainer');
             container.innerHTML = '';
@@ -236,12 +166,12 @@
                 demons.forEach((d, i) => {
                     container.innerHTML += `
                         <div class="card">
-                            ${isDeleteMode ? `<button class="btn-delete" onclick="deleteGlobal('${dKeys[i]}','demons')">${dict[currentLang].del}</button>` : ''}
+                            ${isDeleteMode ? `<button class="btn-delete" onclick="deleteGlobal('${dKeys[i]}','demons')">УДАЛИТЬ</button>` : ''}
                             <img src="${d.img || 'https://via.placeholder.com/400x200'}" class="card-img">
                             <div class="card-body">
                                 <h3 style="background:var(--main-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">#${i+1} ${d.name}</h3>
-                                <p style="color:rgba(255,255,255,0.6); margin:10px 0 20px;">by ${d.author}</p>
-                                <button class="btn-more" onclick="showInfo(${i})">${dict[currentLang].more}</button>
+                                <p style="color:rgba(255,255,255,0.5); margin:10px 0 20px;">by ${d.author}</p>
+                                <button class="btn-more" onclick="showInfo(${i})">DETAILS</button>
                             </div>
                         </div>`;
                 });
@@ -249,18 +179,22 @@
                 creators.sort((a,b)=>b.points-a.points).forEach((c, i) => {
                     container.innerHTML += `
                         <div class="card">
-                            ${isDeleteMode ? `<button class="btn-delete" onclick="deleteGlobal('${cKeys[i]}','creators')">${dict[currentLang].del}</button>` : ''}
+                            ${isDeleteMode ? `<button class="btn-delete" onclick="deleteGlobal('${cKeys[i]}','creators')">УДАЛИТЬ</button>` : ''}
                             <div class="card-body">
-                                <h3 style="margin-bottom:10px;">#${i+1} ${c.name}</h3>
-                                <p style="color:var(--accent-blue); font-weight:900; font-size:1.4rem;">${c.points} Creator Points</p>
+                                <h3>#${i+1} ${c.name}</h3>
+                                <p style="color:var(--accent-blue); font-weight:900;">${c.points} CP</p>
                             </div>
                         </div>`;
                 });
             }
         }
 
-        function processAdmin() {
-            if(document.getElementById('adminPass').value !== "123") return alert("Пароль: 123");
+        async function processAdmin() {
+            const typedPass = document.getElementById('adminPass').value;
+            const typedHash = await hashString(typedPass);
+            
+            if(typedHash !== SECRET_HASH) return alert("Доступ запрещен!");
+            
             const act = document.getElementById('admAction').value;
             const idVal = (n) => document.getElementById(n).value;
 
@@ -276,19 +210,19 @@
             closeAdmin(); render();
         }
 
-        function deleteGlobal(key, type) { if(confirm("Удалить из базы?")) db.ref(type+'/'+key).remove(); }
+        function deleteGlobal(key, type) { if(confirm("Удалить?")) db.ref(type+'/'+key).remove(); }
 
         function showInfo(i) {
             const d = demons[i];
-            const vH = d.victors ? d.victors.map(v => `<div style="padding:15px; background:rgba(255,255,255,0.05); margin-bottom:10px; border-radius:15px; border-left:4px solid var(--accent-pink);"><b>${v.name}</b> - ${v.perc} (${v.att} att)</div>`).join('') : dict[currentLang].empty;
+            const vH = d.victors ? d.victors.map(v => `<div style="padding:12px; background:rgba(255,255,255,0.03); margin-bottom:8px; border-radius:12px; border-left:3px solid var(--accent-pink);"><b>${v.name}</b>: ${v.perc} (${v.att} att)</div>`).join('') : "No victors yet.";
             document.getElementById('modalData').innerHTML = `
-                <h2 style="margin-top:0; font-family:'Montserrat'; font-size:2.5rem; background:var(--main-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">${d.name}</h2>
-                <div style="position:relative; padding-bottom:56.25%; height:0; border-radius:20px; overflow:hidden; border:1px solid #333; margin:25px 0;">
+                <h2 style="font-family:'Montserrat'; font-size:2rem; background:var(--main-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent; margin-bottom:20px;">${d.name}</h2>
+                <div style="position:relative; padding-bottom:56.25%; height:0; border-radius:20px; overflow:hidden; border:1px solid #333; margin-bottom:20px;">
                     <iframe style="position:absolute; top:0; left:0; width:100%; height:100%;" src="https://www.youtube.com/embed/${d.vid}" frameborder="0" allowfullscreen></iframe>
                 </div>
-                <h3>${dict[currentLang].vics}:</h3>
-                <div style="max-height:250px; overflow-y:auto; padding-right:10px;">${vH}</div>
-                <button class="btn-more" style="margin-top:30px; background:#222;" onclick="closeModal()">ЗАКРЫТЬ</button>
+                <h3>Victors:</h3>
+                <div style="max-height:200px; overflow-y:auto; padding-right:10px;">${vH}</div>
+                <button class="btn-more" style="margin-top:20px; background:#111; border:1px solid #333;" onclick="closeModal()">CLOSE</button>
             `;
             document.getElementById('detailModal').style.display='block';
         }
