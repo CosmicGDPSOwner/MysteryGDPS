@@ -22,7 +22,7 @@
         * { box-sizing: border-box; scroll-behavior: smooth; }
         body { margin: 0; font-family: 'Poppins', sans-serif; background: var(--bg); color: white; overflow-x: hidden; min-height: 100vh; }
 
-        /* ФОН (ВОЗВРАЩЕНО) */
+        /* ФОН */
         .bg-wrapper { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: var(--bg); overflow: hidden; }
         .grid-overlay {
             position: absolute; width: 200%; height: 200%; top: -50%; left: -50%;
@@ -48,11 +48,10 @@
         #langBtn { background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.2); color: white; padding: 12px 25px; border-radius: 12px; cursor: pointer; font-weight: 900; transition: 0.3s; }
         #langBtn:hover { background: white; color: black; }
 
-        /* ГЕЙМПЛЕЙ / ЗАГОЛОВОК */
+        /* СПИСОК */
         .hero { width: 100%; display: flex; justify-content: center; align-items: center; padding: 60px 20px; text-align: center; }
         .hero h1 { font-family: 'Montserrat'; font-size: clamp(2.5rem, 8vw, 5.5rem); margin: 0; text-transform: uppercase; letter-spacing: 5px; text-shadow: 0 10px 30px rgba(0,0,0,0.5); }
 
-        /* КАРТОЧКИ (ВОЗВРАЩЕНО) */
         .container { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 40px; padding: 20px; }
         .card { 
             background: var(--card-bg); 
@@ -134,7 +133,21 @@
         }
         #admin-trigger:hover { opacity: 1; transform: rotate(90deg); color: var(--accent-blue); }
 
-        /* ТОСТ И МОДАЛКА */
+        /* МОДАЛКА И ТОСТ */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 3000; backdrop-filter: blur(15px); }
+        .modal-content { 
+            background: #1a1a24; margin: 5vh auto; padding: 45px; 
+            max-width: 800px; width: 92%; border-radius: 35px; border: 1px solid #333; 
+            position: relative; box-shadow: 0 0 60px rgba(0,0,0,0.5);
+        }
+        .victor-item { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 15px; background: #12121a; margin-bottom: 10px; 
+            border-radius: 15px; border-left: 5px solid var(--accent-pink); 
+            transition: 0.3s;
+        }
+        .del-victor { color: #ff3333; cursor: pointer; margin-left: 15px; font-size: 1.3rem; }
+        
         #copyToast { 
             visibility: hidden; background: var(--accent-blue); color: white; 
             padding: 20px 40px; position: fixed; left: 50%; bottom: 40px; 
@@ -142,23 +155,6 @@
         }
         #copyToast.show { visibility: visible; animation: fadeInUp 0.4s; }
         @keyframes fadeInUp { from { opacity: 0; bottom: 0; } to { opacity: 1; bottom: 40px; } }
-
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 3000; backdrop-filter: blur(15px); }
-        .modal-content { 
-            background: #1a1a24; margin: 5vh auto; padding: 45px; 
-            max-width: 800px; width: 92%; border-radius: 35px; border: 1px solid #333; 
-            position: relative; box-shadow: 0 0 60px rgba(0,0,0,0.5);
-        }
-
-        .victor-item { 
-            display: flex; justify-content: space-between; align-items: center; 
-            padding: 15px; background: #12121a; margin-bottom: 10px; 
-            border-radius: 15px; border-left: 5px solid var(--accent-pink); 
-            transition: 0.3s;
-        }
-        .victor-item:hover { transform: translateX(10px); background: #1a1a2a; }
-        .del-victor { color: #ff3333; cursor: pointer; margin-left: 15px; font-size: 1.3rem; transition: 0.2s; }
-        .del-victor:hover { transform: scale(1.2); }
     </style>
 </head>
 <body>
@@ -220,12 +216,8 @@
     <div id="detailModal" class="modal"><div class="modal-content" id="modalData"></div></div>
 
     <script>
-        const SECRET_HASH = "80f681a9425035255476d0042456345688753239";
-        async function hashString(str) {
-            const buffer = new TextEncoder().encode(str);
-            const hashBuffer = await crypto.subtle.digest('SHA-1', buffer);
-            return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
-        }
+        // Глобальные настройки
+        const SECRET_HASH = "80f681a9425035255476d0042456345688753239"; // mysteryxgdpsold777
 
         const firebaseConfig = {
             apiKey: "AIzaSyBugYw3fPo4r7Q0e4jDjBUd-JBbCspghE8",
@@ -239,9 +231,12 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        let currentLang = 'EN'; let isDeleteMode = false;
-        let demons = []; let creators = [];
+        let currentLang = 'EN'; 
+        let isDeleteMode = false;
+        let demons = []; 
+        let creators = [];
 
+        // Получение данных
         db.ref('demons').on('value', s => { 
             const val = s.val(); 
             demons = val ? Object.entries(val).map(([k, d]) => ({ key: k, ...d })).sort((a,b)=>(a.order||0)-(b.order||0)) : [];
@@ -255,6 +250,13 @@
             render(); 
         });
 
+        // Функция хеширования
+        async function hashString(str) {
+            const buffer = new TextEncoder().encode(str);
+            const hashBuffer = await crypto.subtle.digest('SHA-1', buffer);
+            return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
         function render() {
             const container = document.getElementById('mainContainer');
             const isDem = document.getElementById('tabDemons').classList.contains('active');
@@ -265,12 +267,11 @@
                 demons.forEach((d, i) => {
                     container.innerHTML += `
                         <div class="card">
-                            ${isDeleteMode ? `
-                                <div class="admin-controls">
-                                    <button class="btn-edit" onclick="moveItem(${i}, -1)"><i class="fas fa-chevron-up"></i></button>
-                                    <button class="btn-edit" onclick="moveItem(${i}, 1)"><i class="fas fa-chevron-down"></i></button>
-                                    <button class="btn-edit" style="background:red;" onclick="deleteItem('${d.key}','demons')"><i class="fas fa-trash"></i></button>
-                                </div>` : ''}
+                            ${isDeleteMode ? `<div class="admin-controls">
+                                <button class="btn-edit" onclick="moveItem(${i}, -1)"><i class="fas fa-chevron-up"></i></button>
+                                <button class="btn-edit" onclick="moveItem(${i}, 1)"><i class="fas fa-chevron-down"></i></button>
+                                <button class="btn-edit" style="background:red;" onclick="deleteItem('${d.key}','demons')"><i class="fas fa-trash"></i></button>
+                            </div>` : ''}
                             ${d.tag ? `<div class="demon-tag">${d.tag}</div>` : ''}
                             <img src="${d.img}" class="card-img" onerror="this.src='https://via.placeholder.com/600x300/111/fff?text=Mysteryx'">
                             <div class="card-body">
@@ -296,24 +297,45 @@
         }
 
         async function processAdmin() {
-            const pass = document.getElementById('adminPass').value;
-            if(await hashString(pass) !== SECRET_HASH) return alert("Wrong!");
-            const act = document.getElementById('admAction').value;
+            const rawPass = document.getElementById('adminPass').value.trim().toLowerCase();
+            const h = await hashString(rawPass);
             
+            if(h !== SECRET_HASH) {
+                console.log("Input hash:", h);
+                return alert("Wrong Password!");
+            }
+
+            const act = document.getElementById('admAction').value;
             if(act === 'add_demon') {
                 let r = document.getElementById('itemVid').value;
                 let v = r.includes('v=') ? r.split('v=')[1].split('&')[0] : r.includes('youtu.be/') ? r.split('youtu.be/')[1].split('?')[0] : r;
-                db.ref('demons').push({ name: document.getElementById('itemName').value, author: document.getElementById('itemVal').value, levelID: document.getElementById('itemID').value, tag: document.getElementById('itemTag').value, img: document.getElementById('itemImgURL').value, vid: v, order: demons.length });
+                db.ref('demons').push({ 
+                    name: document.getElementById('itemName').value, 
+                    author: document.getElementById('itemVal').value, 
+                    levelID: document.getElementById('itemID').value, 
+                    tag: document.getElementById('itemTag').value, 
+                    img: document.getElementById('itemImgURL').value, 
+                    vid: v, 
+                    order: demons.length 
+                });
             } else if(act === 'add_creator') {
-                db.ref('creators').push({ name: document.getElementById('itemName').value, points: parseInt(document.getElementById('itemVal').value) || 0 });
+                db.ref('creators').push({ 
+                    name: document.getElementById('itemName').value, 
+                    points: parseInt(document.getElementById('itemVal').value) || 0 
+                });
             } else if(act === 'add_victor') {
                 const dKey = document.getElementById('selectDemon').value;
-                db.ref(`demons/${dKey}/victors`).push({ name: document.getElementById('vicName').value, perc: document.getElementById('vicPerc').value, att: document.getElementById('vicAtt').value });
+                db.ref(`demons/${dKey}/victors`).push({ 
+                    name: document.getElementById('vicName').value, 
+                    perc: document.getElementById('vicPerc').value, 
+                    att: document.getElementById('vicAtt').value 
+                });
             } else if(act === 'delete_mode') {
                 isDeleteMode = !isDeleteMode;
                 render();
             }
             closeAdmin();
+            document.getElementById('adminPass').value = '';
         }
 
         function showInfo(i) {
@@ -368,6 +390,7 @@
             document.getElementById('langBtn').innerText = currentLang === 'EN' ? 'РУС' : 'ENG';
             render();
         }
+
         function deleteItem(k, p) { if(confirm("Удалить?")) db.ref(p+'/'+k).remove(); }
         function switchTab(t) { document.getElementById('tabDemons').classList.toggle('active', t==='demons'); document.getElementById('tabCreators').classList.toggle('active', t==='creators'); render(); }
         function openAdmin() { document.getElementById('adminPanel').style.display='block'; toggleAdmFields(); }
@@ -375,7 +398,4 @@
     </script>
 </body>
 </html>
-
-
-
 
