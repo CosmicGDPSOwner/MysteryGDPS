@@ -22,7 +22,7 @@
         * { box-sizing: border-box; scroll-behavior: smooth; }
         body { margin: 0; font-family: 'Poppins', sans-serif; background: var(--bg); color: white; overflow-x: hidden; min-height: 100vh; }
 
-        /* ФОН */
+        /* ФОНОВАЯ АНИМАЦИЯ */
         .bg-wrapper { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: var(--bg); overflow: hidden; }
         .grid-overlay {
             position: absolute; width: 200%; height: 200%; top: -50%; left: -50%;
@@ -39,13 +39,13 @@
 
         /* НАВИГАЦИЯ */
         .navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; background: rgba(18,18,26,0.95); backdrop-filter: blur(20px); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .logo { font-family: 'Montserrat'; font-size: 2.3rem; font-weight: 900; background: var(--main-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; }
+        .logo { font-family: 'Montserrat'; font-size: 2.3rem; font-weight: 900; background: var(--main-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; transition: 0.3s; }
         .nav-right { display: flex; align-items: center; gap: 20px; }
         .social-link { color: white; font-size: 2rem; transition: 0.3s; opacity: 0.8; }
         .social-link:hover { opacity: 1; transform: scale(1.1); color: var(--accent-blue); }
         #langBtn { background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.2); color: white; padding: 12px 25px; border-radius: 12px; cursor: pointer; font-weight: 900; }
 
-        /* ГЛАВНЫЙ ЗАГОЛОВОК (ЦЕНТРОВКА) */
+        /* ГЛАВНЫЙ ЗАГОЛОВОК */
         .hero { width: 100%; display: flex; justify-content: center; align-items: center; padding: 60px 20px; text-align: center; }
         .hero h1 { font-family: 'Montserrat'; font-size: clamp(2.5rem, 8vw, 5.5rem); margin: 0; text-transform: uppercase; letter-spacing: 5px; }
 
@@ -63,7 +63,7 @@
         }
         .card:hover { transform: translateY(-10px); border-color: var(--accent-blue); box-shadow: 0 20px 40px rgba(0, 210, 255, 0.25); }
 
-        /* КНОПКИ АДМИНА НА КАРТОЧКЕ */
+        /* УПРАВЛЕНИЕ АДМИНА */
         .admin-controls { 
             position: absolute; 
             top: 15px; 
@@ -74,12 +74,12 @@
             z-index: 100; 
         }
         .btn-edit { 
-            background: rgba(0, 0, 0, 0.6); 
+            background: rgba(0, 0, 0, 0.7); 
             backdrop-filter: blur(10px);
             color: white; 
             border: 1px solid rgba(255,255,255,0.2); 
-            width: 40px;
-            height: 40px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%; 
             cursor: pointer; 
             display: flex;
@@ -94,26 +94,28 @@
         .card-img { width: 100%; height: 215px; object-fit: cover; }
         .card-body { padding: 30px; }
         
-        .demon-tag { position: absolute; top: 15px; left: 15px; background: var(--main-grad); color: white; padding: 8px 15px; border-radius: 10px; font-weight: 900; font-size: 0.8rem; z-index: 50; }
+        .demon-tag { position: absolute; top: 15px; left: 15px; background: var(--main-grad); color: white; padding: 8px 15px; border-radius: 10px; font-weight: 900; font-size: 0.8rem; z-index: 50; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
         .level-id-box { display: flex; align-items: center; gap: 10px; background: rgba(0, 210, 255, 0.08); padding: 12px 18px; border-radius: 15px; font-size: 1rem; color: var(--accent-blue); cursor: pointer; margin-bottom: 20px; border: 1px solid rgba(0,210,255,0.15); width: fit-content; font-weight: 700; }
 
         .btn-more { width: 100%; padding: 18px; background: var(--main-grad); border: none; color: white; border-radius: 15px; cursor: pointer; font-weight: 900; font-size: 1.1rem; text-transform: uppercase; }
 
-        /* ТАБЫ */
+        /* ВКЛАДКИ */
         .mode-tabs { display: flex; justify-content: center; gap: 20px; margin-bottom: 50px; }
         .tab-btn { padding: 18px 45px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #888; border-radius: 18px; font-weight: 900; font-size: 1.1rem; cursor: pointer; transition: 0.3s; }
-        .tab-btn.active { background: white; color: black; box-shadow: 0 10px 25px rgba(255,255,255,0.2); }
+        .tab-btn.active { background: white; color: black; box-shadow: 0 10px 25px rgba(255,255,255,0.2); transform: translateY(-2px); }
 
-        /* АДМИН ПАНЕЛЬ */
-        .admin-form { display: none; background: #121220; padding: 40px; border-radius: 30px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2000; width: 95%; max-width: 500px; border: 2px solid var(--accent-blue); }
+        /* ПАНЕЛЬ АДМИНА */
+        .admin-form { display: none; background: #121220; padding: 40px; border-radius: 30px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2000; width: 95%; max-width: 500px; border: 2px solid var(--accent-blue); box-shadow: 0 0 50px rgba(0,0,0,0.8); }
         .admin-form input, .admin-form select { width: 100%; padding: 15px; margin: 10px 0; background: #1a1a2a; border: 1px solid #333; color: white; border-radius: 12px; }
-        #admin-trigger { position: fixed; bottom: 30px; right: 30px; opacity: 0.1; cursor: pointer; font-size: 2.5rem; z-index: 1000; background: none; border: none; color: white; }
+        #admin-trigger { position: fixed; bottom: 30px; right: 30px; opacity: 0.1; cursor: pointer; font-size: 2.5rem; z-index: 1000; background: none; border: none; color: white; transition: 0.3s; }
+        #admin-trigger:hover { opacity: 1; transform: rotate(90deg); }
 
         #copyToast { visibility: hidden; background: var(--accent-blue); color: white; padding: 20px 40px; position: fixed; left: 50%; bottom: 40px; transform: translateX(-50%); border-radius: 15px; z-index: 5000; font-weight: 900; }
         #copyToast.show { visibility: visible; }
 
+        /* МОДАЛКА */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 3000; backdrop-filter: blur(10px); }
-        .modal-content { background: #1a1a24; margin: 5vh auto; padding: 40px; max-width: 800px; width: 92%; border-radius: 35px; border: 1px solid #333; }
+        .modal-content { background: #1a1a24; margin: 5vh auto; padding: 40px; max-width: 800px; width: 92%; border-radius: 35px; border: 1px solid #333; position: relative; }
     </style>
 </head>
 <body>
@@ -178,9 +180,9 @@
             <input type="text" id="itemVal" placeholder="Автор / CP">
             <div id="fields_demon">
                 <input type="text" id="itemID" placeholder="ID Уровня">
-                <input type="text" id="itemTag" placeholder="Тег">
+                <input type="text" id="itemTag" placeholder="Тег (например: Top 1)">
                 <input type="text" id="itemImgURL" placeholder="URL картинки">
-                <input type="text" id="itemVid" placeholder="YouTube Video ID">
+                <input type="text" id="itemVid" placeholder="YouTube ссылка или ID">
             </div>
         </div>
         <div id="fields_victor" style="display:none;">
@@ -218,6 +220,7 @@
         let currentLang = 'EN'; let isDeleteMode = false;
         let demons = []; let creators = [];
 
+        // ПОЛУЧЕНИЕ ДАННЫХ
         db.ref('demons').on('value', s => { 
             const val = s.val(); 
             demons = val ? Object.entries(val).map(([k, d]) => ({ key: k, ...d })).sort((a,b)=>(a.order||0)-(b.order||0)) : [];
@@ -279,16 +282,58 @@
             }
         }
 
+        // АТОМАРНОЕ ПЕРЕМЕЩЕНИЕ
+        function moveItem(index, dir) {
+            let target = index + dir;
+            if (target < 0 || target >= demons.length) return;
+
+            const currentItem = demons[index];
+            const targetItem = demons[target];
+
+            const updates = {};
+            // Обновляем порядковый номер в базе
+            updates[`/demons/${currentItem.key}/order`] = target;
+            updates[`/demons/${targetItem.key}/order`] = index;
+
+            db.ref().update(updates);
+        }
+
         async function processAdmin() {
             const pass = document.getElementById('adminPass').value;
             if(await hashString(pass) !== SECRET_HASH) return alert("Wrong!");
+            
             const act = document.getElementById('admAction').value;
-            if(act === 'add_demon') db.ref('demons').push({ name: document.getElementById('itemName').value, author: document.getElementById('itemVal').value, levelID: document.getElementById('itemID').value, tag: document.getElementById('itemTag').value, img: document.getElementById('itemImgURL').value, vid: document.getElementById('itemVid').value, order: demons.length });
-            else if(act === 'add_creator') db.ref('creators').push({ name: document.getElementById('itemName').value, points: parseInt(document.getElementById('itemVal').value) || 0 });
-            else if(act === 'add_victor') {
+            
+            if(act === 'add_demon') {
+                let rawVid = document.getElementById('itemVid').value;
+                // Авто-извлечение ID YouTube
+                let videoId = rawVid.includes('v=') ? rawVid.split('v=')[1].split('&')[0] : 
+                              rawVid.includes('youtu.be/') ? rawVid.split('youtu.be/')[1].split('?')[0] : rawVid;
+
+                db.ref('demons').push({ 
+                    name: document.getElementById('itemName').value, 
+                    author: document.getElementById('itemVal').value, 
+                    levelID: document.getElementById('itemID').value, 
+                    tag: document.getElementById('itemTag').value, 
+                    img: document.getElementById('itemImgURL').value, 
+                    vid: videoId, 
+                    order: demons.length 
+                });
+            } else if(act === 'add_creator') {
+                db.ref('creators').push({ 
+                    name: document.getElementById('itemName').value, 
+                    points: parseInt(document.getElementById('itemVal').value) || 0 
+                });
+            } else if(act === 'add_victor') {
                 const dKey = document.getElementById('selectDemon').value;
-                db.ref(`demons/${dKey}/victors`).push({ name: document.getElementById('vicName').value, att: document.getElementById('vicAtt').value });
-            } else if(act === 'delete_mode') isDeleteMode = !isDeleteMode;
+                db.ref(`demons/${dKey}/victors`).push({ 
+                    name: document.getElementById('vicName').value, 
+                    att: document.getElementById('vicAtt').value 
+                });
+            } else if(act === 'delete_mode') {
+                isDeleteMode = !isDeleteMode;
+                render();
+            }
             closeAdmin();
         }
 
@@ -299,18 +344,9 @@
                 <h2 style="font-family:Montserrat; font-size:2rem; margin:0;">${d.name}</h2>
                 <iframe style="width:100%; aspect-ratio:16/9; border-radius:20px; margin:25px 0; border:1px solid #333;" src="https://www.youtube.com/embed/${d.vid}" frameborder="0" allowfullscreen></iframe>
                 <h3 style="margin-bottom:15px;">Victors:</h3>
-                <div style="max-height:200px; overflow-y:auto;">${vics}</div>
+                <div style="max-height:200px; overflow-y:auto; padding-right:10px;">${vics}</div>
                 <button class="btn-more" style="background:#222; margin-top:30px;" onclick="document.getElementById('detailModal').style.display='none'">CLOSE</button>`;
             document.getElementById('detailModal').style.display='block';
-        }
-
-        function moveItem(index, dir) {
-            let target = index + dir;
-            if (target < 0 || target >= demons.length) return;
-            let currentOrder = demons[index].order || index;
-            let targetOrder = demons[target].order || target;
-            db.ref('demons/' + demons[index].key).update({ order: targetOrder });
-            db.ref('demons/' + demons[target].key).update({ order: currentOrder });
         }
 
         function toggleAdmFields() {
@@ -338,4 +374,5 @@
     </script>
 </body>
 </html>
+
 
