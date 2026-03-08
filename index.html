@@ -17,6 +17,7 @@
             --card-bg: rgba(255, 255, 255, 0.03);
             --accent-pink: #ff007f;
             --accent-blue: #00d2ff;
+            --neon-glow: 0 0 15px rgba(0, 210, 255, 0.4), 0 0 30px rgba(255, 0, 127, 0.2);
         }
 
         * { box-sizing: border-box; scroll-behavior: smooth; }
@@ -24,59 +25,74 @@
 
         /* АНИМИРОВАННЫЙ ФОН */
         .bg-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; background: radial-gradient(circle at center, #0a0a1a 0%, #020205 100%); }
-        .blob { position: absolute; width: 500px; height: 500px; background: var(--main-grad); filter: blur(90px); border-radius: 50%; opacity: 0.15; animation: move 25s infinite alternate; }
-        .blob:nth-child(2) { background: var(--accent-blue); width: 350px; height: 350px; animation-duration: 18s; animation-delay: -7s; }
-        @keyframes move { from { transform: translate(-20%, -20%) rotate(0deg); } to { transform: translate(100%, 100%) rotate(360deg); } }
+        .blob { position: absolute; width: 600px; height: 600px; background: var(--main-grad); filter: blur(100px); border-radius: 50%; opacity: 0.12; animation: move 20s infinite alternate; }
+        .blob:nth-child(2) { background: var(--accent-blue); width: 400px; height: 400px; animation-duration: 15s; animation-delay: -5s; }
+        @keyframes move { from { transform: translate(-10%, -10%); } to { transform: translate(80%, 80%); } }
 
-        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; background: rgba(0,0,0,0.6); backdrop-filter: blur(20px); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .logo { font-family: 'Montserrat'; font-size: 2rem; font-weight: 900; background: var(--main-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 10px rgba(0, 210, 255, 0.5)); }
+        /* NAVBAR */
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; background: rgba(0,0,0,0.7); backdrop-filter: blur(25px); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .logo { font-family: 'Montserrat'; font-size: 1.8rem; font-weight: 900; background: var(--main-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 8px rgba(0, 210, 255, 0.3)); }
 
-        .hero { text-align: center; padding: 100px 20px 40px; }
-        .hero h1 { font-family: 'Montserrat'; font-size: clamp(3rem, 8vw, 5rem); background: var(--main-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; text-transform: uppercase; animation: glow 3s infinite alternate; }
-        @keyframes glow { from { filter: drop-shadow(0 0 10px rgba(255,0,127,0.2)); } to { filter: drop-shadow(0 0 30px rgba(255,0,127,0.6)); } }
+        .hero { text-align: center; padding: 80px 20px 40px; }
+        .hero h1 { 
+            font-family: 'Montserrat'; font-size: clamp(2.5rem, 7vw, 4.5rem); 
+            background: var(--main-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
+            margin: 0; text-transform: uppercase;
+            filter: drop-shadow(0 0 15px rgba(255, 0, 127, 0.3));
+        }
 
-        .mode-tabs { display: flex; justify-content: center; gap: 20px; margin-bottom: 50px; flex-wrap: wrap; }
-        .tab-btn { padding: 20px 40px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 20px; font-weight: 900; font-size: 1.1rem; cursor: pointer; transition: 0.4s; text-transform: uppercase; backdrop-filter: blur(10px); }
-        .tab-btn.active { background: var(--main-grad); border: none; transform: scale(1.1); box-shadow: 0 10px 30px rgba(255, 0, 127, 0.4); }
+        /* КНОПКА ПЕРЕВОДА */
+        #langBtn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 8px 20px; border-radius: 12px; cursor: pointer; font-weight: 900; transition: 0.3s; }
+        #langBtn:hover { background: var(--main-grad); border-color: transparent; box-shadow: var(--neon-glow); }
 
-        .container { max-width: 1250px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; padding: 20px; }
-        .card { background: var(--card-bg); border-radius: 30px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); transition: 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); position: relative; backdrop-filter: blur(15px); }
-        .card:hover { transform: translateY(-10px); border-color: var(--accent-pink); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
-        .card-img { width: 100%; height: 180px; object-fit: cover; opacity: 0.7; transition: 0.5s; }
+        /* TABS */
+        .mode-tabs { display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; flex-wrap: wrap; }
+        .tab-btn { padding: 18px 35px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 15px; font-weight: 900; cursor: pointer; transition: 0.4s; text-transform: uppercase; backdrop-filter: blur(10px); }
+        .tab-btn.active { background: var(--main-grad); border: none; transform: scale(1.1); box-shadow: 0 10px 25px rgba(255, 0, 127, 0.3); }
+
+        /* CARDS */
+        .container { max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 30px; padding: 20px; }
+        .card { background: var(--card-bg); border-radius: 25px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; backdrop-filter: blur(15px); }
+        .card:hover { transform: translateY(-10px); border-color: var(--accent-pink); box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
+        
+        .tag { position: absolute; top: 15px; left: 15px; background: var(--main-grad); padding: 5px 15px; border-radius: 8px; font-size: 0.75rem; font-weight: 900; text-transform: uppercase; z-index: 2; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+
+        .card-img { width: 100%; height: 180px; object-fit: cover; opacity: 0.8; transition: 0.5s; }
         .card:hover .card-img { opacity: 1; transform: scale(1.05); }
         .card-body { padding: 25px; }
+        .card-body h3 { margin: 0; font-family: 'Montserrat'; font-size: 1.5rem; filter: drop-shadow(0 0 5px rgba(255,255,255,0.1)); }
 
-        .btn-more { width: 100%; padding: 15px; background: var(--main-grad); border: none; color: white; border-radius: 15px; cursor: pointer; font-weight: 900; text-transform: uppercase; transition: 0.3s; }
-        .btn-more:hover { letter-spacing: 1px; filter: brightness(1.2); }
+        .btn-more { width: 100%; padding: 14px; background: var(--main-grad); border: none; color: white; border-radius: 12px; cursor: pointer; font-weight: 900; text-transform: uppercase; transition: 0.3s; }
+        .btn-more:hover { filter: brightness(1.2); box-shadow: var(--neon-glow); }
 
-        .admin-form { display: none; background: #08080c; padding: 40px; border-radius: 30px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2000; width: 90%; max-width: 450px; border: 2px solid var(--accent-blue); box-shadow: 0 0 100px rgba(0,0,0,0.9); }
-        .admin-form input, .admin-form select { width: 100%; padding: 14px; margin: 10px 0; background: #151525; border: 1px solid #333; color: white; border-radius: 12px; }
+        /* ADMIN FORM */
+        .admin-form { display: none; background: #08080c; padding: 30px; border-radius: 25px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2000; width: 90%; max-width: 420px; border: 2px solid var(--accent-blue); box-shadow: 0 0 100px rgba(0,0,0,0.9); }
+        .admin-form input, .admin-form select { width: 100%; padding: 12px; margin: 8px 0; background: #151525; border: 1px solid #333; color: white; border-radius: 10px; }
         
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); z-index: 3000; backdrop-filter: blur(20px); }
-        .modal-content { background: #0a0a0f; margin: 5% auto; padding: 30px; max-width: 800px; width: 95%; border-radius: 30px; border: 1px solid #333; position: relative; }
+        /* MODAL */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.94); z-index: 3000; backdrop-filter: blur(20px); }
+        .modal-content { background: #0a0a10; margin: 5% auto; padding: 30px; max-width: 750px; width: 90%; border-radius: 30px; border: 1px solid #333; position: relative; }
         
-        #admin-trigger { position: fixed; bottom: 20px; right: 20px; opacity: 0.1; color: white; background: none; border: none; cursor: pointer; font-size: 1.2rem; transition: 0.3s; z-index: 100; }
-        #admin-trigger:hover { opacity: 1; color: var(--accent-blue); }
-        .btn-delete { position: absolute; top: 15px; right: 15px; background: #ff4b2b; color: white; border: none; padding: 8px 12px; border-radius: 10px; cursor: pointer; }
+        #admin-trigger { position: fixed; bottom: 20px; right: 20px; opacity: 0.15; color: white; background: none; border: none; cursor: pointer; font-size: 1.3rem; transition: 0.3s; z-index: 100; }
+        #admin-trigger:hover { opacity: 1; color: var(--accent-blue); transform: rotate(45deg); }
+        .btn-delete { position: absolute; top: 15px; right: 15px; background: #ff3333; color: white; border: none; padding: 8px 12px; border-radius: 10px; cursor: pointer; font-weight: bold; }
         
-        .social-icons a { color: white; font-size: 1.8rem; margin-left: 15px; transition: 0.4s; }
-        .social-icons a:hover { color: var(--accent-pink); transform: scale(1.2); }
+        .social-icons a { color: white; font-size: 1.7rem; margin-left: 15px; transition: 0.4s; }
+        .social-icons a:hover { color: var(--accent-pink); transform: translateY(-3px); filter: drop-shadow(var(--neon-glow)); }
     </style>
 </head>
 <body>
 
-    <div class="bg-animation">
-        <div class="blob"></div>
-        <div class="blob"></div>
-    </div>
+    <div class="bg-animation"><div class="blob"></div><div class="blob"></div></div>
 
     <nav class="navbar">
         <div class="logo">Mystery GDPS</div>
-        <div style="display:flex; align-items:center;">
+        <div style="display:flex; align-items:center; gap:15px;">
             <div class="social-icons">
                 <a href="https://t.me/mysteryxgdps" target="_blank"><i class="fab fa-telegram"></i></a>
                 <a href="https://www.youtube.com/@lichigmdj98" target="_blank"><i class="fab fa-youtube"></i></a>
             </div>
+            <button onclick="toggleLang()" id="langBtn">РУС</button>
         </div>
     </nav>
 
@@ -89,11 +105,11 @@
 
     <div class="container" id="mainContainer"></div>
 
-    <button id="admin-trigger" onclick="openAdmin()"><i class="fas fa-fingerprint"></i></button>
+    <button id="admin-trigger" onclick="openAdmin()"><i class="fas fa-shield-alt"></i></button>
 
     <div id="adminPanel" class="admin-form">
-        <h2 style="text-align:center; font-family: 'Montserrat';">SECURE LOGIN</h2>
-        <input type="password" id="adminPass" placeholder="Enter Access Code">
+        <h2 style="text-align:center; font-family: 'Montserrat'; font-size: 1.2rem;">ADMIN ACCESS</h2>
+        <input type="password" id="adminPass" placeholder="Код доступа">
         <select id="admAction" onchange="toggleAdmFields()">
             <option value="add_demon">Добавить Демона</option>
             <option value="add_creator">Добавить Креатора</option>
@@ -103,8 +119,9 @@
         <div id="fields_common">
             <input type="text" id="itemName" placeholder="Название / Ник">
             <input type="text" id="itemVal" placeholder="Автор / CP">
+            <input type="text" id="itemTag" placeholder="Тег (например: Top 1, Epic)">
             <input type="text" id="itemImg" placeholder="URL картинки">
-            <input type="text" id="itemVid" placeholder="YouTube ID">
+            <input type="text" id="itemVid" placeholder="YouTube Video ID">
         </div>
         <div id="fields_victor" style="display:none;">
             <select id="selectDemon"></select>
@@ -112,16 +129,14 @@
             <input type="text" id="vicAtt" placeholder="Попытки">
             <input type="text" id="vicPerc" placeholder="Процент">
         </div>
-        <button class="btn-more" onclick="processAdmin()">ВЫПОЛНИТЬ</button>
-        <button class="btn-more" style="background:#222; margin-top:10px;" onclick="closeAdmin()">ЗАКРЫТЬ</button>
+        <button class="btn-more" onclick="processAdmin()">ПРИМЕНИТЬ</button>
+        <button class="btn-more" style="background:#151525; margin-top:10px;" onclick="closeAdmin()">ЗАКРЫТЬ</button>
     </div>
 
     <div id="detailModal" class="modal"><div class="modal-content" id="modalData"></div></div>
 
     <script>
-        // Хеш пароля "123". Даже если его увидят, пароль не узнают.
-        const SECRET_HASH = "40bd001563085fc35165329ea1ff5c5ecbdbbeef"; 
-
+        const SECRET_HASH = "40bd001563085fc35165329ea1ff5c5ecbdbbeef"; // Хеш пароля 123
         async function hashString(str) {
             const buffer = new TextEncoder().encode(str);
             const hashBuffer = await crypto.subtle.digest('SHA-1', buffer);
@@ -141,8 +156,14 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
+        let currentLang = 'EN';
         let isDeleteMode = false;
         let demons = []; let creators = []; let dKeys = []; let cKeys = [];
+
+        const dict = {
+            EN: { hero: "DEMON LIST", more: "DETAILS", vics: "Victors", del: "DELETE", tabD: "Demons", tabC: "Creators" },
+            RU: { hero: "СПИСОК ДЕМОНОВ", more: "ПОДРОБНЕЕ", vics: "Победители", del: "УДАЛИТЬ", tabD: "Демоны", tabC: "Креаторы" }
+        };
 
         db.ref('demons').on('value', s => { 
             const val = s.val(); 
@@ -157,6 +178,15 @@
             render(); 
         });
 
+        function toggleLang() {
+            currentLang = currentLang === 'EN' ? 'RU' : 'EN';
+            document.getElementById('langBtn').innerText = currentLang === 'EN' ? 'РУС' : 'ENG';
+            document.getElementById('txtHero').innerText = dict[currentLang].hero;
+            document.getElementById('tabDemons').innerText = dict[currentLang].tabD;
+            document.getElementById('tabCreators').innerText = dict[currentLang].tabC;
+            render();
+        }
+
         function render() {
             const container = document.getElementById('mainContainer');
             container.innerHTML = '';
@@ -166,12 +196,13 @@
                 demons.forEach((d, i) => {
                     container.innerHTML += `
                         <div class="card">
-                            ${isDeleteMode ? `<button class="btn-delete" onclick="deleteGlobal('${dKeys[i]}','demons')">УДАЛИТЬ</button>` : ''}
+                            ${d.tag ? `<div class="tag">${d.tag}</div>` : ''}
+                            ${isDeleteMode ? `<button class="btn-delete" onclick="deleteGlobal('${dKeys[i]}','demons')">${dict[currentLang].del}</button>` : ''}
                             <img src="${d.img || 'https://via.placeholder.com/400x200'}" class="card-img">
                             <div class="card-body">
                                 <h3 style="background:var(--main-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">#${i+1} ${d.name}</h3>
-                                <p style="color:rgba(255,255,255,0.5); margin:10px 0 20px;">by ${d.author}</p>
-                                <button class="btn-more" onclick="showInfo(${i})">DETAILS</button>
+                                <p style="color:rgba(255,255,255,0.4); margin:10px 0 20px;">by ${d.author}</p>
+                                <button class="btn-more" onclick="showInfo(${i})">${dict[currentLang].more}</button>
                             </div>
                         </div>`;
                 });
@@ -179,7 +210,7 @@
                 creators.sort((a,b)=>b.points-a.points).forEach((c, i) => {
                     container.innerHTML += `
                         <div class="card">
-                            ${isDeleteMode ? `<button class="btn-delete" onclick="deleteGlobal('${cKeys[i]}','creators')">УДАЛИТЬ</button>` : ''}
+                            ${isDeleteMode ? `<button class="btn-delete" onclick="deleteGlobal('${cKeys[i]}','creators')">${dict[currentLang].del}</button>` : ''}
                             <div class="card-body">
                                 <h3>#${i+1} ${c.name}</h3>
                                 <p style="color:var(--accent-blue); font-weight:900;">${c.points} CP</p>
@@ -192,13 +223,12 @@
         async function processAdmin() {
             const typedPass = document.getElementById('adminPass').value;
             const typedHash = await hashString(typedPass);
-            
-            if(typedHash !== SECRET_HASH) return alert("Доступ запрещен!");
+            if(typedHash !== SECRET_HASH) return alert("Wrong Code");
             
             const act = document.getElementById('admAction').value;
             const idVal = (n) => document.getElementById(n).value;
 
-            if(act === 'add_demon') db.ref('demons').push({ name: idVal('itemName'), author: idVal('itemVal'), img: idVal('itemImg'), vid: idVal('itemVid'), victors: [] });
+            if(act === 'add_demon') db.ref('demons').push({ name: idVal('itemName'), author: idVal('itemVal'), tag: idVal('itemTag'), img: idVal('itemImg'), vid: idVal('itemVid'), victors: [] });
             else if(act === 'add_creator') db.ref('creators').push({ name: idVal('itemName'), points: parseInt(idVal('itemVal')) });
             else if(act === 'add_victor') {
                 const idx = document.getElementById('selectDemon').value;
@@ -216,11 +246,11 @@
             const d = demons[i];
             const vH = d.victors ? d.victors.map(v => `<div style="padding:12px; background:rgba(255,255,255,0.03); margin-bottom:8px; border-radius:12px; border-left:3px solid var(--accent-pink);"><b>${v.name}</b>: ${v.perc} (${v.att} att)</div>`).join('') : "No victors yet.";
             document.getElementById('modalData').innerHTML = `
-                <h2 style="font-family:'Montserrat'; font-size:2rem; background:var(--main-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent; margin-bottom:20px;">${d.name}</h2>
-                <div style="position:relative; padding-bottom:56.25%; height:0; border-radius:20px; overflow:hidden; border:1px solid #333; margin-bottom:20px;">
+                <h2 style="font-family:'Montserrat'; font-size:1.8rem; background:var(--main-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent; margin-bottom:20px;">${d.name}</h2>
+                <div style="position:relative; padding-bottom:56.25%; height:0; border-radius:15px; overflow:hidden; border:1px solid #333; margin-bottom:20px;">
                     <iframe style="position:absolute; top:0; left:0; width:100%; height:100%;" src="https://www.youtube.com/embed/${d.vid}" frameborder="0" allowfullscreen></iframe>
                 </div>
-                <h3>Victors:</h3>
+                <h3>${dict[currentLang].vics}:</h3>
                 <div style="max-height:200px; overflow-y:auto; padding-right:10px;">${vH}</div>
                 <button class="btn-more" style="margin-top:20px; background:#111; border:1px solid #333;" onclick="closeModal()">CLOSE</button>
             `;
