@@ -9,80 +9,115 @@
     
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
 
     <style>
         :root {
-            --bg: #020205;
+            --bg: #030308;
             --main-grad: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 25%, #ff007f 100%);
-            --card-bg: rgba(255, 255, 255, 0.03);
             --accent-pink: #ff007f;
             --accent-blue: #00d2ff;
-            --neon-glow: 0 0 15px rgba(0, 210, 255, 0.4), 0 0 30px rgba(255, 0, 127, 0.2);
-            --logo-glow: 0 0 15px rgba(0, 210, 255, 0.6), 0 0 30px rgba(255, 0, 127, 0.4);
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --neon-glow: 0 0 20px rgba(0, 210, 255, 0.4);
+            --logo-glow: 0 0 20px rgba(0, 210, 255, 0.6), 0 0 40px rgba(255, 0, 127, 0.4);
         }
 
         * { box-sizing: border-box; scroll-behavior: smooth; }
         body { margin: 0; font-family: 'Poppins', sans-serif; background: var(--bg); color: white; overflow-x: hidden; min-height: 100vh; }
 
-        .bg-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; background: radial-gradient(circle at center, #0a0a1a 0%, #020205 100%); }
-        .blob { position: absolute; width: 600px; height: 600px; background: var(--main-grad); filter: blur(100px); border-radius: 50%; opacity: 0.12; animation: move 20s infinite alternate; }
-        @keyframes move { from { transform: translate(-10%, -10%); } to { transform: translate(80%, 80%); } }
+        /* --- АНИМИРОВАННЫЙ ФОН --- */
+        .bg-wrapper { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: #030308; overflow: hidden; }
+        
+        .grid-overlay {
+            position: absolute; width: 200%; height: 200%; top: -50%; left: -50%;
+            background-image: linear-gradient(rgba(0, 210, 255, 0.07) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(0, 210, 255, 0.07) 1px, transparent 1px);
+            background-size: 60px 60px;
+            transform: perspective(500px) rotateX(60deg);
+            animation: gridMove 15s linear infinite;
+        }
+        @keyframes gridMove { from { transform: perspective(500px) rotateX(60deg) translateY(0); } to { transform: perspective(500px) rotateX(60deg) translateY(60px); } }
 
-        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; background: rgba(0,0,0,0.7); backdrop-filter: blur(25px); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .logo { font-family: 'Montserrat'; font-size: 2.2rem; font-weight: 900; background: var(--main-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(var(--logo-glow)); }
+        .orb { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.2; animation: orbit 25s infinite alternate; }
+        .orb-1 { width: 700px; height: 700px; background: var(--accent-pink); top: -10%; left: -10%; }
+        .orb-2 { width: 600px; height: 600px; background: var(--accent-blue); bottom: -10%; right: -10%; animation-delay: -5s; }
+        .orb-3 { width: 400px; height: 400px; background: #7000ff; top: 30%; left: 30%; animation-duration: 18s; }
+        @keyframes orbit { from { transform: translate(0, 0) scale(1); } to { transform: translate(150px, 80px) scale(1.3); } }
 
-        .hero { text-align: center; padding: 60px 20px 30px; }
-        .hero h1 { font-family: 'Montserrat'; font-size: clamp(2.5rem, 7vw, 4.5rem); background: var(--main-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 15px rgba(255, 0, 127, 0.3)); text-transform: uppercase; margin: 0; }
+        /* --- ИНТЕРФЕЙС --- */
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; background: rgba(0,0,0,0.7); backdrop-filter: blur(20px); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        
+        .logo { 
+            font-family: 'Montserrat'; font-size: 2.3rem; font-weight: 900; 
+            background: var(--main-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
+            filter: drop-shadow(var(--logo-glow)); letter-spacing: -1px;
+        }
 
-        #langBtn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 8px 20px; border-radius: 12px; cursor: pointer; font-weight: 900; transition: 0.3s; }
-        #langBtn:hover { background: var(--main-grad); box-shadow: var(--neon-glow); }
+        .hero { text-align: center; padding: 70px 20px 40px; }
+        .hero h1 { 
+            font-family: 'Montserrat'; font-size: clamp(2.8rem, 9vw, 5.5rem); 
+            background: linear-gradient(to bottom, #fff 40%, #555 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin: 0; text-transform: uppercase; letter-spacing: -3px;
+        }
+
+        #langBtn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 10px 25px; border-radius: 12px; cursor: pointer; font-weight: 900; transition: 0.3s; }
+        #langBtn:hover { background: var(--main-grad); box-shadow: var(--neon-glow); border-color: transparent; }
 
         .mode-tabs { display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; }
-        .tab-btn { padding: 18px 35px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 15px; font-weight: 900; cursor: pointer; transition: 0.4s; text-transform: uppercase; }
-        .tab-btn.active { background: var(--main-grad); transform: scale(1.1); box-shadow: 0 10px 25px rgba(255, 0, 127, 0.3); border: none; }
+        .tab-btn { padding: 16px 35px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #aaa; border-radius: 16px; font-weight: 900; cursor: pointer; transition: 0.4s; text-transform: uppercase; backdrop-filter: blur(10px); }
+        .tab-btn.active { background: white; color: black; transform: translateY(-5px); border: none; box-shadow: 0 10px 30px rgba(255,255,255,0.2); }
 
-        .container { max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 30px; padding: 20px; }
-        .card { background: var(--card-bg); border-radius: 25px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); transition: 0.4s; position: relative; backdrop-filter: blur(15px); }
-        .card:hover { transform: translateY(-10px); border-color: var(--accent-pink); }
+        /* --- КАРТОЧКИ --- */
+        .container { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 35px; padding: 20px; }
+        .card { 
+            background: rgba(255, 255, 255, 0.03); border-radius: 30px; overflow: hidden; 
+            border: 1px solid rgba(255,255,255,0.06); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            position: relative; backdrop-filter: blur(15px);
+        }
+        .card:hover { transform: translateY(-15px); border-color: var(--accent-blue); box-shadow: 0 25px 50px rgba(0,0,0,0.5); }
         
-        .tag { position: absolute; top: 15px; left: 15px; background: var(--main-grad); padding: 5px 15px; border-radius: 8px; font-size: 0.75rem; font-weight: 900; z-index: 2; }
+        .tag { position: absolute; top: 15px; left: 15px; background: var(--main-grad); padding: 6px 18px; border-radius: 10px; font-size: 0.8rem; font-weight: 900; z-index: 2; box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
 
-        .card-img { width: 100%; height: 180px; object-fit: cover; opacity: 0.8; }
+        .card-img { width: 100%; height: 200px; object-fit: cover; opacity: 0.85; transition: 0.6s; }
+        .card:hover .card-img { transform: scale(1.1); opacity: 1; }
+
         .card-body { padding: 25px; }
+        .card-body h3 { margin: 0; font-family: 'Montserrat'; font-size: 1.6rem; margin-bottom: 10px; }
 
-        .btn-more { width: 100%; padding: 14px; background: var(--main-grad); border: none; color: white; border-radius: 12px; cursor: pointer; font-weight: 900; text-transform: uppercase; }
+        .btn-more { width: 100%; padding: 15px; background: var(--main-grad); border: none; color: white; border-radius: 14px; cursor: pointer; font-weight: 900; text-transform: uppercase; transition: 0.3s; }
+        .btn-more:hover { filter: brightness(1.2); box-shadow: 0 0 25px rgba(255, 0, 127, 0.4); }
 
-        /* ИСПРАВЛЕННЫЕ КНОПКИ УДАЛЕНИЯ И ПЕРЕМЕЩЕНИЯ */
-        .btn-delete { position: absolute; top: 15px; right: 15px; background: #ff3333; color: white; border: none; padding: 8px 12px; border-radius: 10px; cursor: pointer; font-weight: bold; z-index: 20; box-shadow: 0 0 10px rgba(255,51,51,0.5); }
-        .btn-delete:hover { background: #ff0000; transform: scale(1.1); }
-
-        .reorder-controls { position: absolute; top: 50px; right: 10px; display: flex; flex-direction: column; gap: 5px; z-index: 10; }
-        .move-btn { background: rgba(0,0,0,0.8); color: white; border: 1px solid var(--accent-blue); padding: 5px 12px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        /* --- АДМИН ПАНЕЛЬ (КРАСИВАЯ) --- */
+        .btn-delete { position: absolute; top: 15px; right: 15px; background: #ff3333; color: white; border: none; padding: 8px 15px; border-radius: 10px; cursor: pointer; font-weight: bold; z-index: 20; box-shadow: 0 0 15px rgba(255, 51, 51, 0.4); }
+        .reorder-controls { position: absolute; top: 60px; right: 15px; display: flex; flex-direction: column; gap: 8px; z-index: 15; }
+        .move-btn { background: rgba(0,0,0,0.85); color: white; border: 1px solid var(--accent-blue); padding: 6px 14px; border-radius: 10px; cursor: pointer; font-weight: 900; transition: 0.3s; }
         .move-btn:hover { background: var(--main-grad); box-shadow: var(--neon-glow); }
 
-        .admin-form { display: none; background: #08080c; padding: 30px; border-radius: 25px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2000; width: 90%; max-width: 420px; border: 2px solid var(--accent-blue); box-shadow: 0 0 50px rgba(0,0,0,0.9); }
-        .admin-form input, .admin-form select { width: 100%; padding: 12px; margin: 8px 0; background: #151525; border: 1px solid #333; color: white; border-radius: 10px; }
+        .admin-form { display: none; background: #0a0a12; padding: 35px; border-radius: 30px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2000; width: 95%; max-width: 450px; border: 1px solid var(--accent-blue); box-shadow: 0 0 100px rgba(0,0,0,0.9); }
+        .admin-form input, .admin-form select { width: 100%; padding: 14px; margin: 10px 0; background: #151525; border: 1px solid #333; color: white; border-radius: 12px; }
         
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.94); z-index: 3000; backdrop-filter: blur(20px); }
-        .modal-content { background: #0a0a10; margin: 5% auto; padding: 30px; max-width: 750px; width: 90%; border-radius: 30px; border: 1px solid #333; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 3000; backdrop-filter: blur(25px); }
+        .modal-content { background: #0d0d15; margin: 5vh auto; padding: 40px; max-width: 800px; width: 90%; border-radius: 35px; border: 1px solid #333; position: relative; }
         
-        #admin-trigger { position: fixed; bottom: 20px; right: 20px; opacity: 0.15; color: white; background: none; border: none; cursor: pointer; font-size: 1.3rem; z-index: 100; transition: 0.3s; }
-        #admin-trigger:hover { opacity: 1; color: var(--accent-blue); }
+        #admin-trigger { position: fixed; bottom: 25px; right: 25px; opacity: 0.2; color: white; background: none; border: none; cursor: pointer; font-size: 1.5rem; z-index: 100; transition: 0.4s; }
+        #admin-trigger:hover { opacity: 1; color: var(--accent-blue); transform: rotate(45deg); }
 
-        .social-icons a { color: white; font-size: 1.7rem; margin-left: 15px; transition: 0.4s; }
+        .social-icons a { color: white; font-size: 1.8rem; margin-left: 18px; transition: 0.4s; }
         .social-icons a:hover { color: var(--accent-pink); filter: drop-shadow(var(--neon-glow)); }
-
-        #uploadStatus { font-size: 0.8rem; color: var(--accent-blue); text-align: center; margin-top: 5px; }
     </style>
 </head>
 <body>
 
-    <div class="bg-animation"><div class="blob"></div></div>
+    <div class="bg-wrapper">
+        <div class="grid-overlay"></div>
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
 
     <nav class="navbar">
         <div class="logo">Mysteryx GDPS</div>
-        <div style="display:flex; align-items:center; gap:15px;">
+        <div style="display:flex; align-items:center; gap:20px;">
             <div class="social-icons">
                 <a href="https://t.me/mysteryxgdps" target="_blank"><i class="fab fa-telegram"></i></a>
                 <a href="https://www.youtube.com/@lichigmdj98" target="_blank"><i class="fab fa-youtube"></i></a>
@@ -103,12 +138,12 @@
     <button id="admin-trigger" onclick="openAdmin()"><i class="fas fa-shield-alt"></i></button>
 
     <div id="adminPanel" class="admin-form">
-        <h2 style="text-align:center; font-family:'Montserrat';">ADMIN ACCESS</h2>
-        <input type="password" id="adminPass" placeholder="Пароль">
+        <h2 style="text-align:center; font-family:'Montserrat'; letter-spacing:1px;">ADMIN PANEL</h2>
+        <input type="password" id="adminPass" placeholder="Код доступа">
         <select id="admAction" onchange="toggleAdmFields()">
             <option value="add_demon">Добавить Демона</option>
             <option value="add_creator">Добавить Креатора</option>
-            <option value="add_victor">Добавить Виктора</option>
+            <option value="add_victor">Добавить Победителя</option>
             <option value="reorder">Изменить порядок</option>
             <option value="delete_mode">Режим удаления</option>
         </select>
@@ -116,10 +151,8 @@
             <input type="text" id="itemName" placeholder="Название / Ник">
             <input type="text" id="itemVal" placeholder="Автор / CP">
             <input type="text" id="itemTag" placeholder="Тег (например: Top 1)">
-            <label style="font-size: 0.8rem; color: #aaa; margin-left: 5px;">Обложка (1280x720):</label>
-            <input type="file" id="itemFile" accept="image/*">
-            <div id="uploadStatus"></div>
-            <input type="text" id="itemVid" placeholder="YouTube Video ID">
+            <input type="text" id="itemImgURL" placeholder="Прямая ссылка на фото (1280x720)">
+            <input type="text" id="itemVid" placeholder="YouTube Video ID (например: dQw4w9WgXcQ)">
         </div>
         <div id="fields_victor" style="display:none;">
             <select id="selectDemon"></select>
@@ -127,14 +160,14 @@
             <input type="text" id="vicAtt" placeholder="Попытки">
             <input type="text" id="vicPerc" placeholder="Процент">
         </div>
-        <button class="btn-more" id="saveBtn" onclick="processAdmin()">ПРИМЕНИТЬ</button>
+        <button class="btn-more" onclick="processAdmin()">ПРИМЕНИТЬ</button>
         <button class="btn-more" style="background:#151525; margin-top:10px;" onclick="closeAdmin()">ЗАКРЫТЬ</button>
     </div>
 
     <div id="detailModal" class="modal"><div class="modal-content" id="modalData"></div></div>
 
     <script>
-        const SECRET_HASH = "40bd001563085fc35165329ea1ff5c5ecbdbbeef"; 
+        const SECRET_HASH = "40bd001563085fc35165329ea1ff5c5ecbdbbeef"; // Код 123
         async function hashString(str) {
             const buffer = new TextEncoder().encode(str);
             const hashBuffer = await crypto.subtle.digest('SHA-1', buffer);
@@ -153,12 +186,11 @@
 
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
-        const storage = firebase.storage();
 
         let currentLang = 'EN';
         let isDeleteMode = false;
         let isReorderMode = false;
-        let demons = []; let creators = []; let dKeys = [];
+        let demons = []; let creators = [];
 
         const dict = {
             EN: { hero: "DEMON LIST", more: "DETAILS", vics: "Victors", del: "DELETE" },
@@ -201,7 +233,7 @@
                             <img src="${d.img || 'https://via.placeholder.com/1280x720'}" class="card-img">
                             <div class="card-body">
                                 <h3 style="background:var(--main-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">#${i+1} ${d.name}</h3>
-                                <p style="color:rgba(255,255,255,0.4); margin:10px 0 20px;">by ${d.author}</p>
+                                <p style="color:rgba(255,255,255,0.4); margin:10px 0 10px;">by ${d.author}</p>
                                 <button class="btn-more" onclick="showInfo(${i})">${dict[currentLang].more}</button>
                             </div>
                         </div>`;
@@ -213,55 +245,21 @@
             }
         }
 
-        // РЕСАЙЗ КАРТИНКИ В 1280x720 ПЕРЕД ЗАГРУЗКОЙ
-        async function resizeImage(file) {
-            return new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = (e) => {
-                    const img = new Image();
-                    img.src = e.target.result;
-                    img.onload = () => {
-                        const canvas = document.createElement('canvas');
-                        canvas.width = 1280;
-                        canvas.height = 720;
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(img, 0, 0, 1280, 720);
-                        canvas.toBlob((blob) => resolve(blob), 'image/jpeg', 0.9);
-                    };
-                };
-            });
-        }
-
         async function processAdmin() {
             const typedPass = document.getElementById('adminPass').value;
             const typedHash = await hashString(typedPass);
             if(typedHash !== SECRET_HASH) return alert("Wrong Code");
-            
             const act = document.getElementById('admAction').value;
-            const status = document.getElementById('uploadStatus');
             
             if(act === 'add_demon') {
-                const file = document.getElementById('itemFile').files[0];
-                if(!file) return alert("Выберите картинку!");
-                
-                status.innerText = "Подготовка фото...";
-                const resizedBlob = await resizeImage(file);
-                
-                status.innerText = "Загрузка в облако...";
-                const storageRef = storage.ref(`demons/${Date.now()}.jpg`);
-                await storageRef.put(resizedBlob);
-                const downloadURL = await storageRef.getDownloadURL();
-
                 db.ref('demons').push({ 
                     name: document.getElementById('itemName').value, 
                     author: document.getElementById('itemVal').value, 
                     tag: document.getElementById('itemTag').value, 
-                    img: downloadURL, 
+                    img: document.getElementById('itemImgURL').value, 
                     vid: document.getElementById('itemVid').value,
                     order: demons.length 
                 });
-                status.innerText = "Успешно!";
             } else if(act === 'add_creator') {
                 db.ref('creators').push({ name: document.getElementById('itemName').value, points: parseInt(document.getElementById('itemVal').value) });
             } else if(act === 'add_victor') {
@@ -285,10 +283,19 @@
         }
 
         function deleteGlobal(key, type) { if(confirm("Удалить?")) db.ref(type+'/'+key).remove(); }
+        
         function showInfo(i) {
             const d = demons[i];
-            const vH = d.victors ? d.victors.map(v => `<div style="padding:10px; background:rgba(255,255,255,0.03); margin-bottom:5px; border-radius:10px;"><b>${v.name}</b>: ${v.perc} (${v.att} att)</div>`).join('') : "None";
-            document.getElementById('modalData').innerHTML = `<h2 style="background:var(--main-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">${d.name}</h2><iframe width="100%" height="315" src="https://www.youtube.com/embed/${d.vid}" frameborder="0" allowfullscreen style="border-radius:15px; margin:20px 0;"></iframe><h3>${dict[currentLang].vics}:</h3>${vH}<button class="btn-more" style="margin-top:20px; background:#111;" onclick="closeModal()">CLOSE</button>`;
+            const vH = d.victors ? d.victors.map(v => `<div style="padding:15px; background:rgba(255,255,255,0.03); margin-bottom:8px; border-radius:15px; border-left:4px solid var(--accent-pink);"><b>${v.name}</b>: ${v.perc} (${v.att} att)</div>`).join('') : "No victors yet.";
+            document.getElementById('modalData').innerHTML = `
+                <h2 style="font-family:'Montserrat'; font-size:2rem; background:var(--main-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent; margin-bottom:25px;">${d.name}</h2>
+                <div style="position:relative; padding-bottom:56.25%; height:0; border-radius:20px; overflow:hidden; border:1px solid #333; margin-bottom:25px;">
+                    <iframe style="position:absolute; top:0; left:0; width:100%; height:100%;" src="https://www.youtube.com/embed/${d.vid}" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <h3>${dict[currentLang].vics}:</h3>
+                <div style="max-height:250px; overflow-y:auto; padding-right:10px;">${vH}</div>
+                <button class="btn-more" style="margin-top:25px; background:#111; border:1px solid #333;" onclick="closeModal()">CLOSE</button>
+            `;
             document.getElementById('detailModal').style.display='block';
         }
 
