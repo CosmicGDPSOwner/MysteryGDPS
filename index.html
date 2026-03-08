@@ -26,7 +26,6 @@
 
         /* --- АНИМИРОВАННЫЙ ФОН --- */
         .bg-wrapper { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: #030308; overflow: hidden; }
-        
         .grid-overlay {
             position: absolute; width: 200%; height: 200%; top: -50%; left: -50%;
             background-image: linear-gradient(rgba(0, 210, 255, 0.07) 1px, transparent 1px),
@@ -45,20 +44,10 @@
 
         /* --- ИНТЕРФЕЙС --- */
         .navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; background: rgba(0,0,0,0.7); backdrop-filter: blur(20px); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.08); }
-        
-        .logo { 
-            font-family: 'Montserrat'; font-size: 2.3rem; font-weight: 900; 
-            background: var(--main-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
-            filter: drop-shadow(var(--logo-glow)); letter-spacing: -1px;
-        }
+        .logo { font-family: 'Montserrat'; font-size: 2.3rem; font-weight: 900; background: var(--main-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(var(--logo-glow)); letter-spacing: -1px; }
 
         .hero { text-align: center; padding: 70px 20px 40px; }
-        .hero h1 { 
-            font-family: 'Montserrat'; font-size: clamp(2.8rem, 9vw, 5.5rem); 
-            background: linear-gradient(to bottom, #fff 40%, #555 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            margin: 0; text-transform: uppercase; letter-spacing: -3px;
-        }
+        .hero h1 { font-family: 'Montserrat'; font-size: clamp(2.8rem, 9vw, 5.5rem); background: linear-gradient(to bottom, #fff 40%, #555 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; text-transform: uppercase; letter-spacing: -3px; }
 
         #langBtn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 10px 25px; border-radius: 12px; cursor: pointer; font-weight: 900; transition: 0.3s; }
         #langBtn:hover { background: var(--main-grad); box-shadow: var(--neon-glow); border-color: transparent; }
@@ -69,39 +58,26 @@
 
         /* --- КАРТОЧКИ --- */
         .container { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 35px; padding: 20px; }
-        .card { 
-            background: rgba(255, 255, 255, 0.03); border-radius: 30px; overflow: hidden; 
-            border: 1px solid rgba(255,255,255,0.06); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-            position: relative; backdrop-filter: blur(15px);
-        }
+        .card { background: rgba(255, 255, 255, 0.03); border-radius: 30px; overflow: hidden; border: 1px solid rgba(255,255,255,0.06); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; backdrop-filter: blur(15px); }
         .card:hover { transform: translateY(-15px); border-color: var(--accent-blue); box-shadow: 0 25px 50px rgba(0,0,0,0.5); }
-        
         .tag { position: absolute; top: 15px; left: 15px; background: var(--main-grad); padding: 6px 18px; border-radius: 10px; font-size: 0.8rem; font-weight: 900; z-index: 2; box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
-
         .card-img { width: 100%; height: 200px; object-fit: cover; opacity: 0.85; transition: 0.6s; }
         .card:hover .card-img { transform: scale(1.1); opacity: 1; }
-
         .card-body { padding: 25px; }
-        .card-body h3 { margin: 0; font-family: 'Montserrat'; font-size: 1.6rem; margin-bottom: 10px; }
-
         .btn-more { width: 100%; padding: 15px; background: var(--main-grad); border: none; color: white; border-radius: 14px; cursor: pointer; font-weight: 900; text-transform: uppercase; transition: 0.3s; }
         .btn-more:hover { filter: brightness(1.2); box-shadow: 0 0 25px rgba(255, 0, 127, 0.4); }
 
-        /* --- АДМИН ПАНЕЛЬ (КРАСИВАЯ) --- */
+        /* --- АДМИНКА --- */
         .btn-delete { position: absolute; top: 15px; right: 15px; background: #ff3333; color: white; border: none; padding: 8px 15px; border-radius: 10px; cursor: pointer; font-weight: bold; z-index: 20; box-shadow: 0 0 15px rgba(255, 51, 51, 0.4); }
         .reorder-controls { position: absolute; top: 60px; right: 15px; display: flex; flex-direction: column; gap: 8px; z-index: 15; }
         .move-btn { background: rgba(0,0,0,0.85); color: white; border: 1px solid var(--accent-blue); padding: 6px 14px; border-radius: 10px; cursor: pointer; font-weight: 900; transition: 0.3s; }
         .move-btn:hover { background: var(--main-grad); box-shadow: var(--neon-glow); }
-
         .admin-form { display: none; background: #0a0a12; padding: 35px; border-radius: 30px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2000; width: 95%; max-width: 450px; border: 1px solid var(--accent-blue); box-shadow: 0 0 100px rgba(0,0,0,0.9); }
         .admin-form input, .admin-form select { width: 100%; padding: 14px; margin: 10px 0; background: #151525; border: 1px solid #333; color: white; border-radius: 12px; }
-        
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 3000; backdrop-filter: blur(25px); }
         .modal-content { background: #0d0d15; margin: 5vh auto; padding: 40px; max-width: 800px; width: 90%; border-radius: 35px; border: 1px solid #333; position: relative; }
-        
         #admin-trigger { position: fixed; bottom: 25px; right: 25px; opacity: 0.2; color: white; background: none; border: none; cursor: pointer; font-size: 1.5rem; z-index: 100; transition: 0.4s; }
-        #admin-trigger:hover { opacity: 1; color: var(--accent-blue); transform: rotate(45deg); }
-
+        #admin-trigger:hover { opacity: 1; color: var(--accent-blue); }
         .social-icons a { color: white; font-size: 1.8rem; margin-left: 18px; transition: 0.4s; }
         .social-icons a:hover { color: var(--accent-pink); filter: drop-shadow(var(--neon-glow)); }
     </style>
@@ -138,21 +114,21 @@
     <button id="admin-trigger" onclick="openAdmin()"><i class="fas fa-shield-alt"></i></button>
 
     <div id="adminPanel" class="admin-form">
-        <h2 style="text-align:center; font-family:'Montserrat'; letter-spacing:1px;">ADMIN PANEL</h2>
-        <input type="password" id="adminPass" placeholder="Код доступа">
+        <h2 style="text-align:center;">ADMIN ACCESS</h2>
+        <input type="password" id="adminPass" placeholder="Пароль">
         <select id="admAction" onchange="toggleAdmFields()">
             <option value="add_demon">Добавить Демона</option>
             <option value="add_creator">Добавить Креатора</option>
-            <option value="add_victor">Добавить Победителя</option>
+            <option value="add_victor">Добавить Виктора</option>
             <option value="reorder">Изменить порядок</option>
             <option value="delete_mode">Режим удаления</option>
         </select>
         <div id="fields_common">
             <input type="text" id="itemName" placeholder="Название / Ник">
             <input type="text" id="itemVal" placeholder="Автор / CP">
-            <input type="text" id="itemTag" placeholder="Тег (например: Top 1)">
-            <input type="text" id="itemImgURL" placeholder="Прямая ссылка на фото (1280x720)">
-            <input type="text" id="itemVid" placeholder="YouTube Video ID (например: dQw4w9WgXcQ)">
+            <input type="text" id="itemTag" placeholder="Тег">
+            <input type="text" id="itemImgURL" placeholder="URL картинки (i.imgur.com/...)">
+            <input type="text" id="itemVid" placeholder="YouTube Video ID">
         </div>
         <div id="fields_victor" style="display:none;">
             <select id="selectDemon"></select>
@@ -167,7 +143,7 @@
     <div id="detailModal" class="modal"><div class="modal-content" id="modalData"></div></div>
 
     <script>
-        const SECRET_HASH = "40bd001563085fc35165329ea1ff5c5ecbdbbeef"; // Код 123
+        const SECRET_HASH = "40bd001563085fc35165329ea1ff5c5ecbdbbeef"; 
         async function hashString(str) {
             const buffer = new TextEncoder().encode(str);
             const hashBuffer = await crypto.subtle.digest('SHA-1', buffer);
@@ -193,8 +169,8 @@
         let demons = []; let creators = [];
 
         const dict = {
-            EN: { hero: "DEMON LIST", more: "DETAILS", vics: "Victors", del: "DELETE" },
-            RU: { hero: "СПИСОК ДЕМОНОВ", more: "ПОДРОБНЕЕ", vics: "Победители", del: "УДАЛИТЬ" }
+            EN: { hero: "DEMON LIST", hero_c: "CREATOR TOP", more: "DETAILS", vics: "Victors", del: "DELETE" },
+            RU: { hero: "СПИСОК ДЕМОНОВ", hero_c: "ТОП КРЕАТОРОВ", more: "ПОДРОБНЕЕ", vics: "Победители", del: "УДАЛИТЬ" }
         };
 
         db.ref('demons').on('value', s => { 
@@ -209,16 +185,22 @@
 
         db.ref('creators').on('value', s => { 
             const val = s.val(); 
-            creators = val ? Object.values(val) : []; 
+            if(val) {
+                const entries = Object.entries(val).map(([key, data]) => ({ key, ...data }));
+                entries.sort((a, b) => (parseInt(b.points) || 0) - (parseInt(a.points) || 0));
+                creators = entries;
+            } else { creators = []; }
             render(); 
         });
 
         function render() {
             const container = document.getElementById('mainContainer');
+            const heroTitle = document.getElementById('txtHero');
             container.innerHTML = '';
             const isDem = document.getElementById('tabDemons').classList.contains('active');
             
             if(isDem) {
+                heroTitle.innerText = dict[currentLang].hero;
                 demons.forEach((d, i) => {
                     container.innerHTML += `
                         <div class="card">
@@ -230,38 +212,41 @@
                                     <button class="move-btn" onclick="moveItem(${i}, 1)">↓</button>
                                 </div>
                             ` : ''}
-                            <img src="${d.img || 'https://via.placeholder.com/1280x720'}" class="card-img">
+                            <img src="${d.img}" onerror="this.src='https://via.placeholder.com/1280x720/111/fff?text=Broken+Link'" class="card-img">
                             <div class="card-body">
                                 <h3 style="background:var(--main-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">#${i+1} ${d.name}</h3>
-                                <p style="color:rgba(255,255,255,0.4); margin:10px 0 10px;">by ${d.author}</p>
+                                <p style="color:rgba(255,255,255,0.4); margin:10px 0 15px;">by ${d.author}</p>
                                 <button class="btn-more" onclick="showInfo(${i})">${dict[currentLang].more}</button>
                             </div>
                         </div>`;
                 });
             } else {
-                creators.sort((a,b)=>b.points-a.points).forEach((c, i) => {
-                    container.innerHTML += `<div class="card"><div class="card-body"><h3>#${i+1} ${c.name}</h3><p style="color:var(--accent-blue); font-weight:900;">${c.points} CP</p></div></div>`;
+                heroTitle.innerText = dict[currentLang].hero_c;
+                creators.forEach((c, i) => {
+                    container.innerHTML += `
+                        <div class="card">
+                            ${isDeleteMode ? `<button class="btn-delete" onclick="deleteGlobal('${c.key}','creators')">${dict[currentLang].del}</button>` : ''}
+                            <div class="card-body" style="display:flex; justify-content:space-between; align-items:center;">
+                                <h3 style="margin:0;">#${i+1} ${c.name}</h3>
+                                <div style="text-align:right;">
+                                    <span style="font-size:1.5rem; font-weight:900; color:var(--accent-blue);">${c.points}</span>
+                                    <div style="font-size:0.7rem; color:rgba(255,255,255,0.3);">CP</div>
+                                </div>
+                            </div>
+                        </div>`;
                 });
             }
         }
 
         async function processAdmin() {
             const typedPass = document.getElementById('adminPass').value;
-            const typedHash = await hashString(typedPass);
-            if(typedHash !== SECRET_HASH) return alert("Wrong Code");
+            if(await hashString(typedPass) !== SECRET_HASH) return alert("Wrong Code");
             const act = document.getElementById('admAction').value;
             
             if(act === 'add_demon') {
-                db.ref('demons').push({ 
-                    name: document.getElementById('itemName').value, 
-                    author: document.getElementById('itemVal').value, 
-                    tag: document.getElementById('itemTag').value, 
-                    img: document.getElementById('itemImgURL').value, 
-                    vid: document.getElementById('itemVid').value,
-                    order: demons.length 
-                });
+                db.ref('demons').push({ name: document.getElementById('itemName').value, author: document.getElementById('itemVal').value, tag: document.getElementById('itemTag').value, img: document.getElementById('itemImgURL').value, vid: document.getElementById('itemVid').value, order: demons.length });
             } else if(act === 'add_creator') {
-                db.ref('creators').push({ name: document.getElementById('itemName').value, points: parseInt(document.getElementById('itemVal').value) });
+                db.ref('creators').push({ name: document.getElementById('itemName').value, points: parseInt(document.getElementById('itemVal').value) || 0 });
             } else if(act === 'add_victor') {
                 const idx = document.getElementById('selectDemon').value;
                 const vics = demons[idx].victors || [];
@@ -269,42 +254,25 @@
                 db.ref('demons/'+demons[idx].key).update({ victors: vics });
             } else if(act === 'delete_mode') { isDeleteMode = !isDeleteMode; isReorderMode = false; }
             else if(act === 'reorder') { isReorderMode = !isReorderMode; isDeleteMode = false; }
-            
             closeAdmin(); render();
         }
 
         function moveItem(index, direction) {
             let newIndex = index + direction;
             if (newIndex < 0 || newIndex >= demons.length) return;
-            const itemA = demons[index];
-            const itemB = demons[newIndex];
-            db.ref('demons/' + itemA.key).update({ order: newIndex });
-            db.ref('demons/' + itemB.key).update({ order: index });
+            db.ref('demons/' + demons[index].key).update({ order: newIndex });
+            db.ref('demons/' + demons[newIndex].key).update({ order: index });
         }
 
         function deleteGlobal(key, type) { if(confirm("Удалить?")) db.ref(type+'/'+key).remove(); }
-        
         function showInfo(i) {
             const d = demons[i];
             const vH = d.victors ? d.victors.map(v => `<div style="padding:15px; background:rgba(255,255,255,0.03); margin-bottom:8px; border-radius:15px; border-left:4px solid var(--accent-pink);"><b>${v.name}</b>: ${v.perc} (${v.att} att)</div>`).join('') : "No victors yet.";
-            document.getElementById('modalData').innerHTML = `
-                <h2 style="font-family:'Montserrat'; font-size:2rem; background:var(--main-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent; margin-bottom:25px;">${d.name}</h2>
-                <div style="position:relative; padding-bottom:56.25%; height:0; border-radius:20px; overflow:hidden; border:1px solid #333; margin-bottom:25px;">
-                    <iframe style="position:absolute; top:0; left:0; width:100%; height:100%;" src="https://www.youtube.com/embed/${d.vid}" frameborder="0" allowfullscreen></iframe>
-                </div>
-                <h3>${dict[currentLang].vics}:</h3>
-                <div style="max-height:250px; overflow-y:auto; padding-right:10px;">${vH}</div>
-                <button class="btn-more" style="margin-top:25px; background:#111; border:1px solid #333;" onclick="closeModal()">CLOSE</button>
-            `;
+            document.getElementById('modalData').innerHTML = `<h2 style="font-family:'Montserrat'; background:var(--main-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent; margin-bottom:25px;">${d.name}</h2><div style="position:relative; padding-bottom:56.25%; height:0; border-radius:20px; overflow:hidden; border:1px solid #333; margin-bottom:25px;"><iframe style="position:absolute; top:0; left:0; width:100%; height:100%;" src="https://www.youtube.com/embed/${d.vid}" frameborder="0" allowfullscreen></iframe></div><h3>${dict[currentLang].vics}:</h3><div style="max-height:250px; overflow-y:auto;">${vH}</div><button class="btn-more" style="margin-top:25px; background:#111;" onclick="closeModal()">CLOSE</button>`;
             document.getElementById('detailModal').style.display='block';
         }
 
-        function toggleLang() {
-            currentLang = currentLang === 'EN' ? 'RU' : 'EN';
-            document.getElementById('langBtn').innerText = currentLang === 'EN' ? 'РУС' : 'ENG';
-            document.getElementById('txtHero').innerText = dict[currentLang].hero;
-            render();
-        }
+        function toggleLang() { currentLang = currentLang === 'EN' ? 'RU' : 'EN'; render(); }
         function toggleAdmFields() {
             const act = document.getElementById('admAction').value;
             document.getElementById('fields_common').style.display = (act.includes('add_demon') || act.includes('add_creator')) ? 'block' : 'none';
@@ -322,4 +290,3 @@
     </script>
 </body>
 </html>
-
