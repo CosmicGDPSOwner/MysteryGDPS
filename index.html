@@ -48,37 +48,28 @@
         #langBtn { background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.2); color: white; padding: 12px 25px; border-radius: 12px; cursor: pointer; font-weight: 900; transition: 0.3s; }
         #langBtn:hover { background: white; color: black; }
 
+        /* ПОИСК */
+        .search-box { max-width: 600px; margin: 0 auto 30px; position: relative; padding: 0 20px; }
+        .search-input { 
+            width: 100%; padding: 15px 20px 15px 50px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); 
+            border-radius: 15px; color: white; font-size: 1rem; outline: none; transition: 0.3s;
+        }
+        .search-input:focus { border-color: var(--accent-blue); background: rgba(255,255,255,0.1); }
+        .search-icon { position: absolute; left: 35px; top: 50%; transform: translateY(-50%); color: #888; }
+
         /* СПИСОК */
         .hero { width: 100%; display: flex; justify-content: center; align-items: center; padding: 60px 20px; text-align: center; }
         .hero h1 { font-family: 'Montserrat'; font-size: clamp(2.5rem, 8vw, 5.5rem); margin: 0; text-transform: uppercase; letter-spacing: 5px; text-shadow: 0 10px 30px rgba(0,0,0,0.5); }
 
         .container { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 40px; padding: 20px; }
         .card { 
-            background: var(--card-bg); 
-            border-radius: 30px; 
-            overflow: hidden; 
-            border: 1px solid rgba(255,255,255,0.08); 
-            position: relative; 
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-            z-index: 10;
+            background: var(--card-bg); border-radius: 30px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); 
+            position: relative; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 15px 35px rgba(0,0,0,0.5); z-index: 10;
         }
-        .card:hover { 
-            transform: translateY(-15px); 
-            border-color: var(--accent-blue); 
-            box-shadow: 0 25px 50px rgba(0, 210, 255, 0.3);
-        }
+        .card:hover { transform: translateY(-15px); border-color: var(--accent-blue); box-shadow: 0 25px 50px rgba(0, 210, 255, 0.3); }
 
-        .admin-controls { 
-            position: absolute; top: 15px; right: 15px; 
-            display: flex; flex-direction: column; gap: 8px; z-index: 100; 
-        }
-        .btn-edit { 
-            background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(10px); 
-            color: white; border: 1px solid rgba(255,255,255,0.2); 
-            width: 42px; height: 42px; border-radius: 50%; cursor: pointer; 
-            display: flex; align-items: center; justify-content: center; transition: 0.2s; 
-        }
+        .admin-controls { position: absolute; top: 15px; right: 15px; display: flex; flex-direction: column; gap: 8px; z-index: 100; }
+        .btn-edit { background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(10px); color: white; border: 1px solid rgba(255,255,255,0.2); width: 42px; height: 42px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
         .btn-edit:hover { background: var(--accent-blue); transform: scale(1.1); }
 
         .card-img { width: 100%; height: 215px; object-fit: cover; transition: 0.5s; }
@@ -86,73 +77,35 @@
         .card-body { padding: 30px; }
         
         .demon-tag { position: absolute; top: 15px; left: 15px; background: var(--main-grad); color: white; padding: 8px 15px; border-radius: 10px; font-weight: 900; font-size: 0.8rem; z-index: 50; box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
-        
+        .verifier-tag { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.8); color: var(--accent-blue); padding: 5px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; border: 1px solid var(--accent-blue); z-index: 40; }
+
         .level-id-box { 
-            display: flex; align-items: center; gap: 10px; 
-            background: rgba(0, 210, 255, 0.08); padding: 12px 18px; 
-            border-radius: 15px; font-size: 1rem; color: var(--accent-blue); 
-            cursor: pointer; margin-bottom: 20px; border: 1px solid rgba(0,210,255,0.15); 
-            width: fit-content; font-weight: 700; transition: 0.3s;
+            display: flex; align-items: center; gap: 10px; background: rgba(0, 210, 255, 0.08); padding: 12px 18px; 
+            border-radius: 15px; font-size: 1rem; color: var(--accent-blue); cursor: pointer; margin-bottom: 20px; border: 1px solid rgba(0,210,255,0.15); width: fit-content; font-weight: 700; transition: 0.3s;
         }
         .level-id-box:hover { background: rgba(0, 210, 255, 0.2); transform: translateX(5px); }
 
-        .btn-more { 
-            width: 100%; padding: 18px; background: var(--main-grad); 
-            border: none; color: white; border-radius: 15px; 
-            cursor: pointer; font-weight: 900; font-size: 1.1rem; 
-            text-transform: uppercase; transition: 0.3s;
-        }
+        .btn-more { width: 100%; padding: 18px; background: var(--main-grad); border: none; color: white; border-radius: 15px; cursor: pointer; font-weight: 900; font-size: 1.1rem; text-transform: uppercase; transition: 0.3s; }
         .btn-more:hover { filter: brightness(1.2); box-shadow: 0 5px 20px rgba(255, 0, 127, 0.4); }
 
         /* ТАБЫ */
         .mode-tabs { display: flex; justify-content: center; gap: 20px; margin-bottom: 50px; }
-        .tab-btn { 
-            padding: 18px 45px; background: rgba(255,255,255,0.05); 
-            border: 1px solid rgba(255,255,255,0.1); color: #888; 
-            border-radius: 18px; font-weight: 900; font-size: 1.1rem; 
-            cursor: pointer; transition: 0.3s; 
-        }
+        .tab-btn { padding: 18px 45px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #888; border-radius: 18px; font-weight: 900; font-size: 1.1rem; cursor: pointer; transition: 0.3s; }
         .tab-btn.active { background: white; color: black; box-shadow: 0 10px 25px rgba(255,255,255,0.2); transform: translateY(-3px); }
 
         /* АДМИНКА */
-        .admin-form { 
-            display: none; background: #121220; padding: 40px; border-radius: 30px; 
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-            z-index: 2000; width: 95%; max-width: 500px; border: 2px solid var(--accent-blue); 
-            box-shadow: 0 0 100px rgba(0,0,0,0.9);
-        }
-        .admin-form input, .admin-form select { 
-            width: 100%; padding: 15px; margin: 10px 0; 
-            background: #1a1a2a; border: 1px solid #333; color: white; border-radius: 12px; 
-        }
-        
-        #admin-trigger { 
-            position: fixed; bottom: 30px; right: 30px; opacity: 0.1; 
-            cursor: pointer; font-size: 2.5rem; z-index: 1000; background: none; 
-            border: none; color: white; transition: 0.3s; 
-        }
+        .admin-form { display: none; background: #121220; padding: 40px; border-radius: 30px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2000; width: 95%; max-width: 500px; border: 2px solid var(--accent-blue); box-shadow: 0 0 100px rgba(0,0,0,0.9); }
+        .admin-form input, .admin-form select { width: 100%; padding: 15px; margin: 10px 0; background: #1a1a2a; border: 1px solid #333; color: white; border-radius: 12px; }
+        #admin-trigger { position: fixed; bottom: 30px; right: 30px; opacity: 0.1; cursor: pointer; font-size: 2.5rem; z-index: 1000; background: none; border: none; color: white; transition: 0.3s; }
         #admin-trigger:hover { opacity: 1; transform: rotate(90deg); color: var(--accent-blue); }
 
         /* МОДАЛКА И ТОСТ */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 3000; backdrop-filter: blur(15px); }
-        .modal-content { 
-            background: #1a1a24; margin: 5vh auto; padding: 45px; 
-            max-width: 800px; width: 92%; border-radius: 35px; border: 1px solid #333; 
-            position: relative; box-shadow: 0 0 60px rgba(0,0,0,0.5);
-        }
-        .victor-item { 
-            display: flex; justify-content: space-between; align-items: center; 
-            padding: 15px; background: #12121a; margin-bottom: 10px; 
-            border-radius: 15px; border-left: 5px solid var(--accent-pink); 
-            transition: 0.3s;
-        }
+        .modal-content { background: #1a1a24; margin: 5vh auto; padding: 45px; max-width: 800px; width: 92%; border-radius: 35px; border: 1px solid #333; position: relative; box-shadow: 0 0 60px rgba(0,0,0,0.5); }
+        .victor-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #12121a; margin-bottom: 10px; border-radius: 15px; border-left: 5px solid var(--accent-pink); transition: 0.3s; }
         .del-victor { color: #ff3333; cursor: pointer; margin-left: 15px; font-size: 1.3rem; }
         
-        #copyToast { 
-            visibility: hidden; background: var(--accent-blue); color: white; 
-            padding: 20px 40px; position: fixed; left: 50%; bottom: 40px; 
-            transform: translateX(-50%); border-radius: 15px; z-index: 5000; font-weight: 900; 
-        }
+        #copyToast { visibility: hidden; background: var(--accent-blue); color: white; padding: 20px 40px; position: fixed; left: 50%; bottom: 40px; transform: translateX(-50%); border-radius: 15px; z-index: 5000; font-weight: 900; }
         #copyToast.show { visibility: visible; animation: fadeInUp 0.4s; }
         @keyframes fadeInUp { from { opacity: 0; bottom: 0; } to { opacity: 1; bottom: 40px; } }
     </style>
@@ -173,6 +126,12 @@
 
     <section id="listSection">
         <div class="hero"><h1 id="txtHero">DEMON LIST</h1></div>
+
+        <div class="search-box">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" id="searchInput" class="search-input" placeholder="Поиск уровня или автора..." oninput="render()">
+        </div>
+
         <div class="mode-tabs">
             <button id="tabDemons" class="tab-btn active" onclick="switchTab('demons')">Demons</button>
             <button id="tabCreators" class="tab-btn" onclick="switchTab('creators')">Creators</button>
@@ -198,6 +157,7 @@
             <div id="fields_demon">
                 <input type="text" id="itemID" placeholder="ID Уровня">
                 <input type="text" id="itemTag" placeholder="Тег (напр. Top 1)">
+                <input type="text" id="itemVerifier" placeholder="Верифер">
                 <input type="text" id="itemImgURL" placeholder="Ссылка на картинку">
                 <input type="text" id="itemVid" placeholder="Ссылка на YouTube">
             </div>
@@ -217,7 +177,6 @@
 
     <script>
         const SECRET_HASH = "80f681a9425035255476d0042456345688753239";
-
         const firebaseConfig = {
             apiKey: "AIzaSyBugYw3fPo4r7Q0e4jDjBUd-JBbCspghE8",
             authDomain: "mysterygdps-30547.firebaseapp.com",
@@ -255,11 +214,13 @@
         function render() {
             const container = document.getElementById('mainContainer');
             const isDem = document.getElementById('tabDemons').classList.contains('active');
+            const query = document.getElementById('searchInput').value.toLowerCase();
             container.innerHTML = '';
             document.getElementById('txtHero').innerText = isDem ? (currentLang==='EN'?'DEMON LIST':'СПИСОК ДЕМОНОВ') : (currentLang==='EN'?'CREATOR TOP':'ТОП КРЕАТОРОВ');
 
             if(isDem) {
-                demons.forEach((d, i) => {
+                const filtered = demons.filter(d => d.name.toLowerCase().includes(query) || d.author.toLowerCase().includes(query));
+                filtered.forEach((d, i) => {
                     container.innerHTML += `
                         <div class="card">
                             ${isDeleteMode ? `<div class="admin-controls">
@@ -268,17 +229,19 @@
                                 <button class="btn-edit" style="background:red;" onclick="deleteItem('${d.key}','demons')"><i class="fas fa-trash"></i></button>
                             </div>` : ''}
                             ${d.tag ? `<div class="demon-tag">${d.tag}</div>` : ''}
+                            ${d.verifier ? `<div class="verifier-tag">Verified by ${d.verifier}</div>` : ''}
                             <img src="${d.img}" class="card-img" onerror="this.src='https://via.placeholder.com/600x300/111/fff?text=Mysteryx'">
                             <div class="card-body">
                                 <h3 style="background:var(--main-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent; font-size:1.7rem; margin:0;">#${i+1} ${d.name}</h3>
                                 <p style="color:#888; margin: 5px 0 15px;">by ${d.author}</p>
                                 ${d.levelID ? `<div class="level-id-box" onclick="copyID('${d.levelID}')"><i class="far fa-copy"></i> ID: ${d.levelID}</div>` : ''}
-                                <button class="btn-more" onclick="showInfo(${i})">${currentLang==='EN'?'DETAILS':'ПОДРОБНЕЕ'}</button>
+                                <button class="btn-more" onclick="showInfoByKey('${d.key}')">${currentLang==='EN'?'DETAILS':'ПОДРОБНЕЕ'}</button>
                             </div>
                         </div>`;
                 });
             } else {
-                creators.forEach((c, i) => {
+                const filtered = creators.filter(c => c.name.toLowerCase().includes(query));
+                filtered.forEach((c, i) => {
                     container.innerHTML += `<div class="card">
                         ${isDeleteMode ? `<div class="admin-controls"><button class="btn-edit" style="background:red;" onclick="deleteItem('${c.key}','creators')"><i class="fas fa-trash"></i></button></div>` : ''}
                         <div class="card-body" style="display:flex; justify-content:space-between; align-items:center; padding:40px;">
@@ -295,29 +258,33 @@
             const rawPass = passField.value.trim().toLowerCase();
             const h = await hashString(rawPass);
 
-            // ДВОЙНАЯ ПРОВЕРКА: Хеш ИЛИ Прямой текст
             if(h === SECRET_HASH || rawPass === "mysteryxgdpsold777") {
                 const act = document.getElementById('admAction').value;
                 if(act === 'add_demon') {
                     let r = document.getElementById('itemVid').value;
                     let v = r.includes('v=') ? r.split('v=')[1].split('&')[0] : r.includes('youtu.be/') ? r.split('youtu.be/')[1].split('?')[0] : r;
-                    db.ref('demons').push({ name: document.getElementById('itemName').value, author: document.getElementById('itemVal').value, levelID: document.getElementById('itemID').value, tag: document.getElementById('itemTag').value, img: document.getElementById('itemImgURL').value, vid: v, order: demons.length });
+                    db.ref('demons').push({ 
+                        name: document.getElementById('itemName').value, 
+                        author: document.getElementById('itemVal').value, 
+                        levelID: document.getElementById('itemID').value, 
+                        tag: document.getElementById('itemTag').value, 
+                        verifier: document.getElementById('itemVerifier').value,
+                        img: document.getElementById('itemImgURL').value, 
+                        vid: v, 
+                        order: demons.length 
+                    });
                 } else if(act === 'add_creator') {
                     db.ref('creators').push({ name: document.getElementById('itemName').value, points: parseInt(document.getElementById('itemVal').value) || 0 });
                 } else if(act === 'add_victor') {
                     const dKey = document.getElementById('selectDemon').value;
                     db.ref(`demons/${dKey}/victors`).push({ name: document.getElementById('vicName').value, perc: document.getElementById('vicPerc').value, att: document.getElementById('vicAtt').value });
-                } else if(act === 'delete_mode') {
-                    isDeleteMode = !isDeleteMode; render();
-                }
+                } else if(act === 'delete_mode') { isDeleteMode = !isDeleteMode; render(); }
                 closeAdmin(); passField.value = '';
-            } else {
-                alert("Wrong Password!");
-            }
+            } else { alert("Wrong Password!"); }
         }
 
-        function showInfo(i) {
-            const d = demons[i];
+        function showInfoByKey(key) {
+            const d = demons.find(x => x.key === key);
             const vics = d.victors ? Object.entries(d.victors).map(([vk, v]) => `<div class="victor-item">
                 <span><b>${v.name}</b> — <span style="color:var(--accent-blue)">${v.perc || '100%'}</span> (${v.att} att)</span>
                 ${isDeleteMode ? `<i class="fas fa-times del-victor" title="Удалить" onclick="deleteVictor('${d.key}', '${vk}')"></i>` : ''}
