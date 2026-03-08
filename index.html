@@ -9,6 +9,7 @@
     
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
 
     <style>
         :root {
@@ -29,12 +30,7 @@
         @keyframes move { from { transform: translate(-10%, -10%); } to { transform: translate(80%, 80%); } }
 
         .navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; background: rgba(0,0,0,0.7); backdrop-filter: blur(25px); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        
-        .logo { 
-            font-family: 'Montserrat'; font-size: 2.2rem; font-weight: 900; 
-            background: var(--main-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
-            filter: drop-shadow(var(--logo-glow));
-        }
+        .logo { font-family: 'Montserrat'; font-size: 2.2rem; font-weight: 900; background: var(--main-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(var(--logo-glow)); }
 
         .hero { text-align: center; padding: 60px 20px 30px; }
         .hero h1 { font-family: 'Montserrat'; font-size: clamp(2.5rem, 7vw, 4.5rem); background: var(--main-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 15px rgba(255, 0, 127, 0.3)); text-transform: uppercase; margin: 0; }
@@ -57,21 +53,27 @@
 
         .btn-more { width: 100%; padding: 14px; background: var(--main-grad); border: none; color: white; border-radius: 12px; cursor: pointer; font-weight: 900; text-transform: uppercase; }
 
-        /* УПРАВЛЕНИЕ ПОЗИЦИЕЙ */
-        .reorder-controls { position: absolute; top: 10px; right: 10px; display: flex; flex-direction: column; gap: 5px; z-index: 10; }
-        .move-btn { background: rgba(0,0,0,0.8); color: white; border: 1px solid #555; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-weight: bold; }
-        .move-btn:hover { background: var(--accent-blue); }
+        /* ИСПРАВЛЕННЫЕ КНОПКИ УДАЛЕНИЯ И ПЕРЕМЕЩЕНИЯ */
+        .btn-delete { position: absolute; top: 15px; right: 15px; background: #ff3333; color: white; border: none; padding: 8px 12px; border-radius: 10px; cursor: pointer; font-weight: bold; z-index: 20; box-shadow: 0 0 10px rgba(255,51,51,0.5); }
+        .btn-delete:hover { background: #ff0000; transform: scale(1.1); }
 
-        .admin-form { display: none; background: #08080c; padding: 30px; border-radius: 25px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2000; width: 90%; max-width: 420px; border: 2px solid var(--accent-blue); }
+        .reorder-controls { position: absolute; top: 50px; right: 10px; display: flex; flex-direction: column; gap: 5px; z-index: 10; }
+        .move-btn { background: rgba(0,0,0,0.8); color: white; border: 1px solid var(--accent-blue); padding: 5px 12px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .move-btn:hover { background: var(--main-grad); box-shadow: var(--neon-glow); }
+
+        .admin-form { display: none; background: #08080c; padding: 30px; border-radius: 25px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2000; width: 90%; max-width: 420px; border: 2px solid var(--accent-blue); box-shadow: 0 0 50px rgba(0,0,0,0.9); }
         .admin-form input, .admin-form select { width: 100%; padding: 12px; margin: 8px 0; background: #151525; border: 1px solid #333; color: white; border-radius: 10px; }
         
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.94); z-index: 3000; backdrop-filter: blur(20px); }
         .modal-content { background: #0a0a10; margin: 5% auto; padding: 30px; max-width: 750px; width: 90%; border-radius: 30px; border: 1px solid #333; }
         
-        #admin-trigger { position: fixed; bottom: 20px; right: 20px; opacity: 0.15; color: white; background: none; border: none; cursor: pointer; font-size: 1.3rem; z-index: 100; }
-        
+        #admin-trigger { position: fixed; bottom: 20px; right: 20px; opacity: 0.15; color: white; background: none; border: none; cursor: pointer; font-size: 1.3rem; z-index: 100; transition: 0.3s; }
+        #admin-trigger:hover { opacity: 1; color: var(--accent-blue); }
+
         .social-icons a { color: white; font-size: 1.7rem; margin-left: 15px; transition: 0.4s; }
         .social-icons a:hover { color: var(--accent-pink); filter: drop-shadow(var(--neon-glow)); }
+
+        #uploadStatus { font-size: 0.8rem; color: var(--accent-blue); text-align: center; margin-top: 5px; }
     </style>
 </head>
 <body>
@@ -101,20 +103,22 @@
     <button id="admin-trigger" onclick="openAdmin()"><i class="fas fa-shield-alt"></i></button>
 
     <div id="adminPanel" class="admin-form">
-        <h2 style="text-align:center;">ADMIN ACCESS</h2>
+        <h2 style="text-align:center; font-family:'Montserrat';">ADMIN ACCESS</h2>
         <input type="password" id="adminPass" placeholder="Пароль">
         <select id="admAction" onchange="toggleAdmFields()">
             <option value="add_demon">Добавить Демона</option>
             <option value="add_creator">Добавить Креатора</option>
             <option value="add_victor">Добавить Виктора</option>
-            <option value="reorder">Изменить порядок (Демоны)</option>
+            <option value="reorder">Изменить порядок</option>
             <option value="delete_mode">Режим удаления</option>
         </select>
         <div id="fields_common">
             <input type="text" id="itemName" placeholder="Название / Ник">
             <input type="text" id="itemVal" placeholder="Автор / CP">
-            <input type="text" id="itemTag" placeholder="Тег">
-            <input type="text" id="itemImg" placeholder="URL картинки">
+            <input type="text" id="itemTag" placeholder="Тег (например: Top 1)">
+            <label style="font-size: 0.8rem; color: #aaa; margin-left: 5px;">Обложка (1280x720):</label>
+            <input type="file" id="itemFile" accept="image/*">
+            <div id="uploadStatus"></div>
             <input type="text" id="itemVid" placeholder="YouTube Video ID">
         </div>
         <div id="fields_victor" style="display:none;">
@@ -123,7 +127,7 @@
             <input type="text" id="vicAtt" placeholder="Попытки">
             <input type="text" id="vicPerc" placeholder="Процент">
         </div>
-        <button class="btn-more" onclick="processAdmin()">ПРИМЕНИТЬ</button>
+        <button class="btn-more" id="saveBtn" onclick="processAdmin()">ПРИМЕНИТЬ</button>
         <button class="btn-more" style="background:#151525; margin-top:10px;" onclick="closeAdmin()">ЗАКРЫТЬ</button>
     </div>
 
@@ -149,33 +153,31 @@
 
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
+        const storage = firebase.storage();
 
         let currentLang = 'EN';
         let isDeleteMode = false;
         let isReorderMode = false;
-        let demons = []; let creators = []; let dKeys = []; let cKeys = [];
+        let demons = []; let creators = []; let dKeys = [];
 
         const dict = {
             EN: { hero: "DEMON LIST", more: "DETAILS", vics: "Victors", del: "DELETE" },
             RU: { hero: "СПИСОК ДЕМОНОВ", more: "ПОДРОБНЕЕ", vics: "Победители", del: "УДАЛИТЬ" }
         };
 
-        // Загрузка демонов с сортировкой по новому полю 'order'
         db.ref('demons').on('value', s => { 
             const val = s.val(); 
             if(val) {
                 const entries = Object.entries(val).map(([key, data]) => ({ key, ...data }));
                 entries.sort((a, b) => (a.order || 0) - (b.order || 0));
                 demons = entries;
-                dKeys = entries.map(e => e.key);
-            } else { demons = []; dKeys = []; }
+            } else { demons = []; }
             render(); 
         });
 
         db.ref('creators').on('value', s => { 
             const val = s.val(); 
             creators = val ? Object.values(val) : []; 
-            cKeys = val ? Object.keys(val) : []; 
             render(); 
         });
 
@@ -196,7 +198,7 @@
                                     <button class="move-btn" onclick="moveItem(${i}, 1)">↓</button>
                                 </div>
                             ` : ''}
-                            <img src="${d.img || 'https://via.placeholder.com/400x200'}" class="card-img">
+                            <img src="${d.img || 'https://via.placeholder.com/1280x720'}" class="card-img">
                             <div class="card-body">
                                 <h3 style="background:var(--main-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">#${i+1} ${d.name}</h3>
                                 <p style="color:rgba(255,255,255,0.4); margin:10px 0 20px;">by ${d.author}</p>
@@ -211,24 +213,55 @@
             }
         }
 
+        // РЕСАЙЗ КАРТИНКИ В 1280x720 ПЕРЕД ЗАГРУЗКОЙ
+        async function resizeImage(file) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.src = e.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        canvas.width = 1280;
+                        canvas.height = 720;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, 1280, 720);
+                        canvas.toBlob((blob) => resolve(blob), 'image/jpeg', 0.9);
+                    };
+                };
+            });
+        }
+
         async function processAdmin() {
             const typedPass = document.getElementById('adminPass').value;
             const typedHash = await hashString(typedPass);
             if(typedHash !== SECRET_HASH) return alert("Wrong Code");
             
             const act = document.getElementById('admAction').value;
-            isDeleteMode = (act === 'delete_mode');
-            isReorderMode = (act === 'reorder');
-
+            const status = document.getElementById('uploadStatus');
+            
             if(act === 'add_demon') {
+                const file = document.getElementById('itemFile').files[0];
+                if(!file) return alert("Выберите картинку!");
+                
+                status.innerText = "Подготовка фото...";
+                const resizedBlob = await resizeImage(file);
+                
+                status.innerText = "Загрузка в облако...";
+                const storageRef = storage.ref(`demons/${Date.now()}.jpg`);
+                await storageRef.put(resizedBlob);
+                const downloadURL = await storageRef.getDownloadURL();
+
                 db.ref('demons').push({ 
                     name: document.getElementById('itemName').value, 
                     author: document.getElementById('itemVal').value, 
                     tag: document.getElementById('itemTag').value, 
-                    img: document.getElementById('itemImg').value, 
+                    img: downloadURL, 
                     vid: document.getElementById('itemVid').value,
                     order: demons.length 
                 });
+                status.innerText = "Успешно!";
             } else if(act === 'add_creator') {
                 db.ref('creators').push({ name: document.getElementById('itemName').value, points: parseInt(document.getElementById('itemVal').value) });
             } else if(act === 'add_victor') {
@@ -236,17 +269,17 @@
                 const vics = demons[idx].victors || [];
                 vics.push({ name: document.getElementById('vicName').value, att: document.getElementById('vicAtt').value, perc: document.getElementById('vicPerc').value });
                 db.ref('demons/'+demons[idx].key).update({ victors: vics });
-            }
+            } else if(act === 'delete_mode') { isDeleteMode = !isDeleteMode; isReorderMode = false; }
+            else if(act === 'reorder') { isReorderMode = !isReorderMode; isDeleteMode = false; }
+            
             closeAdmin(); render();
         }
 
         function moveItem(index, direction) {
             let newIndex = index + direction;
             if (newIndex < 0 || newIndex >= demons.length) return;
-            
             const itemA = demons[index];
             const itemB = demons[newIndex];
-
             db.ref('demons/' + itemA.key).update({ order: newIndex });
             db.ref('demons/' + itemB.key).update({ order: index });
         }
