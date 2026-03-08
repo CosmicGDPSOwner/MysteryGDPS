@@ -43,14 +43,14 @@
         .social-link { color: white; font-size: 2rem; transition: 0.3s; }
         #langBtn { background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.3); color: white; padding: 15px 30px; border-radius: 12px; cursor: pointer; font-weight: 900; font-size: 1.1rem; }
 
-        /* СЕКЦИЯ ПОЧЕМУ МЫ */
+        /* О НАС */
         #aboutSection { display: none; padding: 80px 5%; text-align: center; }
         .about-title { font-family: 'Montserrat'; font-size: 3.5rem; margin-bottom: 40px; text-decoration: underline; }
         .about-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; max-width: 1200px; margin: 0 auto; }
         .about-card { background: rgba(255,255,255,0.05); border-radius: 30px; padding: 35px; border: 1px solid rgba(255,255,255,0.1); }
         .about-card img { width: 100%; border-radius: 20px; margin-bottom: 25px; }
 
-        /* ГЛАВНАЯ */
+        /* СПИСОК */
         .hero { text-align: center; padding: 80px 20px; }
         .hero h1 { font-family: 'Montserrat'; font-size: clamp(3.5rem, 10vw, 6rem); margin: 0; text-transform: uppercase; }
         .mode-tabs { display: flex; justify-content: center; gap: 25px; margin-bottom: 60px; }
@@ -62,15 +62,16 @@
         .card { background: rgba(255, 255, 255, 0.05); border-radius: 35px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); position: relative; transition: 0.4s; }
         .card-img { width: 100%; height: 215px; object-fit: cover; }
         .card-body { padding: 30px; }
+        
+        .demon-tag { position: absolute; top: 15px; left: 15px; background: var(--main-grad); color: white; padding: 8px 15px; border-radius: 10px; font-weight: 900; font-size: 0.8rem; z-index: 10; max-width: 80%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .level-id-box { display: flex; align-items: center; gap: 10px; background: rgba(0, 210, 255, 0.1); padding: 10px 15px; border-radius: 12px; font-size: 1rem; color: var(--accent-blue); cursor: pointer; margin-bottom: 20px; border: 1px solid rgba(0,210,255,0.2); width: fit-content; }
         .btn-more { width: 100%; padding: 20px; background: var(--main-grad); border: none; color: white; border-radius: 18px; cursor: pointer; font-weight: 900; font-size: 1.1rem; text-transform: uppercase; }
 
-        /* РЕЖИМ РЕДАКТИРОВАНИЯ */
+        /* РЕДАКТИРОВАНИЕ */
         .admin-controls { position: absolute; top: 10px; right: 10px; display: flex; gap: 5px; z-index: 100; }
-        .btn-edit { background: #444; color: white; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-weight: bold; }
-        .btn-del-task { background: #ff3333; }
+        .btn-edit { background: #222; color: white; border: 1px solid #444; padding: 10px; border-radius: 10px; cursor: pointer; }
 
-        /* АДМИНКА */
+        /* АДМИН ПАНЕЛЬ */
         .admin-form { display: none; background: #121220; padding: 40px; border-radius: 35px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2000; width: 95%; max-width: 500px; border: 2px solid var(--accent-blue); }
         .admin-form input, .admin-form select { width: 100%; padding: 15px; margin: 10px 0; background: #1a1a2a; border: 1px solid #333; color: white; border-radius: 15px; }
 
@@ -97,25 +98,25 @@
     </nav>
 
     <section id="aboutSection">
-        <h2 class="about-title" id="aboutTitle">Почему именно мы?</h2>
+        <h2 class="about-title">Почему именно мы?</h2>
         <div class="about-grid">
             <div class="about-card">
                 <img src="https://i.imgur.com/Y3U4mIu.png">
-                <h3 id="abH1">Критерии Рейта</h3>
-                <p id="abP1">На нашем сервере рейтаются только хорошие уровни с хорошим геймплеем, а это значит уровней по типу поноса из блоков вы не увидите.</p>
+                <h3>Критерии Рейта</h3>
+                <p>На нашем сервере рейтаются только хорошие уровни с хорошим геймплеем, а это значит уровней по типу поноса из блоков вы не увидите.</p>
             </div>
             <div class="about-card">
                 <img src="https://i.imgur.com/8Qp7mKk.png">
-                <h3 id="abH2">Хорошая Модерация</h3>
-                <p id="abP2">Мы всегда баним игроков, которые нарушают правила, а также у нас есть автоматизированная система от спама в чате, что дает большой плюс.</p>
+                <h3>Хорошая Модерация</h3>
+                <p>Мы всегда баним игроков, которые нарушают правила, а также у нас есть автоматизированная система от спама в чате, что дает большой плюс.</p>
             </div>
             <div class="about-card">
                 <img src="https://i.imgur.com/V7J9C1Z.png">
-                <h3 id="abH3">Контесты</h3>
-                <p id="abP3">Мы часто будем проводить контесты на мап-паки или гаунтлеты, чтобы нашим игрокам никогда не было скучно :)</p>
+                <h3>Контесты</h3>
+                <p>Мы часто будем проводить контесты на мап-паки или гаунтлеты, чтобы нашим игрокам никогда не было скучно :)</p>
             </div>
         </div>
-        <button class="btn-more" style="max-width: 300px; margin: 50px auto; display:block;" id="btnBack" onclick="toggleView('list')">ВЕРНУТЬСЯ</button>
+        <button class="btn-more" style="max-width: 300px; margin: 50px auto; display:block;" onclick="toggleView('list')">ВЕРНУТЬСЯ</button>
     </section>
 
     <section id="listSection">
@@ -135,8 +136,10 @@
         <select id="admAction" onchange="toggleAdmFields()">
             <option value="add_demon">Добавить Демона</option>
             <option value="add_creator">Добавить Креатора</option>
-            <option value="delete_mode">Режим удаления/перемещения</option>
+            <option value="add_victor">Добавить Победителя</option>
+            <option value="delete_mode">Удаление/Перемещение</option>
         </select>
+        
         <div id="fields_main">
             <input type="text" id="itemName" placeholder="Название / Ник">
             <input type="text" id="itemVal" placeholder="Автор / CP">
@@ -147,6 +150,13 @@
                 <input type="text" id="itemVid" placeholder="YouTube Video ID">
             </div>
         </div>
+
+        <div id="fields_victor" style="display:none;">
+            <select id="selectDemon"></select>
+            <input type="text" id="vicName" placeholder="Игрок">
+            <input type="text" id="vicAtt" placeholder="Попытки">
+        </div>
+
         <button class="btn-more" onclick="processAdmin()">ПРИМЕНИТЬ</button>
         <button class="btn-more" style="background:#222; margin-top:10px;" onclick="closeAdmin()">ЗАКРЫТЬ</button>
     </div>
@@ -179,6 +189,7 @@
         db.ref('demons').on('value', s => { 
             const val = s.val(); 
             demons = val ? Object.entries(val).map(([k, d]) => ({ key: k, ...d })).sort((a,b)=>(a.order||0)-(b.order||0)) : [];
+            updateDemonSelect();
             render(); 
         });
         db.ref('creators').on('value', s => { 
@@ -192,10 +203,16 @@
             document.getElementById('aboutSection').style.display = v === 'about' ? 'block' : 'none';
         }
 
+        function updateDemonSelect() {
+            const sel = document.getElementById('selectDemon');
+            sel.innerHTML = demons.map(d => `<option value="${d.key}">${d.name}</option>`).join('');
+        }
+
         function render() {
             const container = document.getElementById('mainContainer');
             const isDem = document.getElementById('tabDemons').classList.contains('active');
             container.innerHTML = '';
+            document.getElementById('txtHero').innerText = isDem ? (currentLang==='EN'?'DEMON LIST':'СПИСОК ДЕМОНОВ') : (currentLang==='EN'?'CREATOR TOP':'ТОП КРЕАТОРОВ');
 
             if(isDem) {
                 demons.forEach((d, i) => {
@@ -205,7 +222,7 @@
                                 <div class="admin-controls">
                                     <button class="btn-edit" onclick="moveItem(${i}, -1)">↑</button>
                                     <button class="btn-edit" onclick="moveItem(${i}, 1)">↓</button>
-                                    <button class="btn-edit btn-del-task" onclick="deleteItem('${d.key}','demons')">✖</button>
+                                    <button class="btn-edit" style="background:red;" onclick="deleteItem('${d.key}','demons')">✖</button>
                                 </div>` : ''}
                             ${d.tag ? `<div class="demon-tag">${d.tag}</div>` : ''}
                             <img src="${d.img}" class="card-img" onerror="this.src='https://via.placeholder.com/600x300/111/fff?text=Mysteryx'">
@@ -221,7 +238,7 @@
                 creators.forEach((c, i) => {
                     container.innerHTML += `
                         <div class="card">
-                            ${isDeleteMode ? `<div class="admin-controls"><button class="btn-edit btn-del-task" onclick="deleteItem('${c.key}','creators')">✖</button></div>` : ''}
+                            ${isDeleteMode ? `<div class="admin-controls"><button class="btn-edit" style="background:red;" onclick="deleteItem('${c.key}','creators')">✖</button></div>` : ''}
                             <div class="card-body" style="display:flex; justify-content:space-between; align-items:center; padding:40px;">
                                 <h3>#${i+1} ${c.name}</h3>
                                 <div style="text-align:right;"><span style="font-size:2.5rem; font-weight:900; color:var(--accent-blue);">${c.points}</span><div>CP</div></div>
@@ -231,31 +248,63 @@
             }
         }
 
-        function moveItem(index, direction) {
-            let target = index + direction;
+        async function processAdmin() {
+            const pass = document.getElementById('adminPass').value;
+            if(await hashString(pass) !== SECRET_HASH) return alert("Wrong!");
+            const act = document.getElementById('admAction').value;
+            
+            if(act === 'add_demon') {
+                db.ref('demons').push({ 
+                    name: document.getElementById('itemName').value, 
+                    author: document.getElementById('itemVal').value, 
+                    levelID: document.getElementById('itemID').value, 
+                    tag: document.getElementById('itemTag').value, 
+                    img: document.getElementById('itemImgURL').value, 
+                    vid: document.getElementById('itemVid').value, 
+                    order: demons.length 
+                });
+            } else if(act === 'add_creator') {
+                db.ref('creators').push({ 
+                    name: document.getElementById('itemName').value, 
+                    points: parseInt(document.getElementById('itemVal').value) || 0 
+                });
+            } else if(act === 'add_victor') {
+                const dKey = document.getElementById('selectDemon').value;
+                const vName = document.getElementById('vicName').value;
+                const vAtt = document.getElementById('vicAtt').value;
+                db.ref(`demons/${dKey}/victors`).push({ name: vName, att: vAtt });
+            } else if(act === 'delete_mode') {
+                isDeleteMode = !isDeleteMode;
+            }
+            closeAdmin();
+        }
+
+        function showInfo(i) {
+            const d = demons[i];
+            const vics = d.victors ? Object.values(d.victors).map(v => `<div style="padding:10px; background:#1a1a2e; margin-bottom:5px; border-radius:10px; border-left:4px solid var(--accent-pink);"><b>${v.name}</b>: ${v.att} att</div>`).join('') : "None yet";
+            
+            document.getElementById('modalData').innerHTML = `
+                <h2 style="font-family:Montserrat;">${d.name}</h2>
+                <iframe style="width:100%; aspect-ratio:16/9; border-radius:20px; margin:20px 0;" src="https://www.youtube.com/embed/${d.vid}" frameborder="0" allowfullscreen></iframe>
+                <h3 style="margin-top:20px;">Победители:</h3>
+                <div style="max-height:150px; overflow-y:auto;">${vics}</div>
+                <button class="btn-more" style="background:#222; margin-top:20px;" onclick="document.getElementById('detailModal').style.display='none'">CLOSE</button>`;
+            document.getElementById('detailModal').style.display='block';
+        }
+
+        function moveItem(index, dir) {
+            let target = index + dir;
             if (target < 0 || target >= demons.length) return;
             let temp = demons[index].order || index;
             db.ref('demons/' + demons[index].key).update({ order: demons[target].order || target });
             db.ref('demons/' + demons[target].key).update({ order: temp });
         }
 
-        async function processAdmin() {
-            const pass = document.getElementById('adminPass').value;
-            if(await hashString(pass) !== SECRET_HASH) return alert("Wrong!");
-            const act = document.getElementById('admAction').value;
-            if(act === 'add_demon') db.ref('demons').push({ name: document.getElementById('itemName').value, author: document.getElementById('itemVal').value, levelID: document.getElementById('itemID').value, tag: document.getElementById('itemTag').value, img: document.getElementById('itemImgURL').value, vid: document.getElementById('itemVid').value, order: demons.length });
-            else if(act === 'add_creator') db.ref('creators').push({ name: document.getElementById('itemName').value, points: parseInt(document.getElementById('itemVal').value) || 0 });
-            else if(act === 'delete_mode') isDeleteMode = !isDeleteMode;
-            closeAdmin();
-        }
-
-        function showInfo(i) {
-            const d = demons[i];
-            document.getElementById('modalData').innerHTML = `
-                <h2>${d.name}</h2>
-                <iframe style="width:100%; aspect-ratio:16/9; border-radius:20px; margin-top:20px;" src="https://www.youtube.com/embed/${d.vid}" frameborder="0" allowfullscreen></iframe>
-                <button class="btn-more" style="background:#222; margin-top:20px;" onclick="document.getElementById('detailModal').style.display='none'">CLOSE</button>`;
-            document.getElementById('detailModal').style.display='block';
+        function toggleAdmFields() {
+            const a = document.getElementById('admAction').value;
+            document.getElementById('fields_main').style.display = (a === 'add_demon' || a === 'add_creator') ? 'block' : 'none';
+            document.getElementById('fields_demon').style.display = a === 'add_demon' ? 'block' : 'none';
+            document.getElementById('fields_victor').style.display = a === 'add_victor' ? 'block' : 'none';
         }
 
         function copyID(id) {
@@ -270,12 +319,6 @@
             render();
         }
 
-        function toggleAdmFields() {
-            const a = document.getElementById('admAction').value;
-            document.getElementById('fields_main').style.display = a.includes('add') ? 'block' : 'none';
-            document.getElementById('fields_demon').style.display = a === 'add_demon' ? 'block' : 'none';
-        }
-
         function deleteItem(k, p) { if(confirm("Удалить?")) db.ref(p+'/'+k).remove(); }
         function switchTab(t) { document.getElementById('tabDemons').classList.toggle('active', t==='demons'); document.getElementById('tabCreators').classList.toggle('active', t==='creators'); render(); }
         function openAdmin() { document.getElementById('adminPanel').style.display='block'; toggleAdmFields(); }
@@ -283,4 +326,3 @@
     </script>
 </body>
 </html>
-
