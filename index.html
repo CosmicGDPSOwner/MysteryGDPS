@@ -46,7 +46,7 @@
         .nav-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-weight: 700; transition: 0.3s; font-size: 0.85rem; text-transform: uppercase; }
         .nav-links a:hover { color: white; }
 
-        /* WELCOME SECTION (HERO) */
+        /* WELCOME SECTION */
         .welcome-hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 20px; }
         .welcome-hero h1 { font-family: 'Montserrat'; font-size: clamp(3rem, 10vw, 6.5rem); margin: 0; line-height: 1; text-transform: uppercase; letter-spacing: 5px; }
         .welcome-hero p { font-size: 1.25rem; color: #aaa; max-width: 800px; margin: 30px 0 50px; line-height: 1.7; }
@@ -56,18 +56,20 @@
         .btn-main:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(255, 0, 127, 0.4); }
         .btn-outline:hover { background: white; color: black; transform: translateY(-5px); }
 
-        /* ПОИСК И СПИСОК */
+        /* ПОИСК */
         .search-box { max-width: 600px; margin: 0 auto 30px; position: relative; padding: 0 20px; }
+        .search-modes { display: flex; justify-content: center; gap: 10px; margin-bottom: 12px; }
+        .search-mode-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #666; padding: 8px 18px; border-radius: 10px; cursor: pointer; font-size: 0.85rem; font-weight: 700; transition: 0.3s; }
+        .search-mode-btn.active { background: var(--accent-blue); color: white; border-color: var(--accent-blue); box-shadow: 0 0 15px rgba(0, 210, 255, 0.3); }
         .search-input { width: 100%; padding: 15px 20px 15px 50px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; color: white; font-size: 1rem; outline: none; transition: 0.3s; }
-        .search-icon { position: absolute; left: 35px; top: 50%; transform: translateY(-50%); color: #888; }
+        .search-icon { position: absolute; left: 35px; top: 73%; transform: translateY(-50%); color: #888; }
 
         .hero-title { width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 100px 20px 40px; text-align: center; }
         .hero-title h2 { font-family: 'Montserrat'; font-size: 4rem; margin: 0; text-transform: uppercase; letter-spacing: 5px; }
-        
         .top-50-text { color: #ff3333; font-family: 'Montserrat'; font-weight: 900; font-size: 2.2rem; margin-top: 10px; letter-spacing: 12px; animation: pulse 2s infinite; }
         @keyframes pulse { 0%, 100% { opacity: 0.6; transform: scale(0.98); } 50% { opacity: 1; transform: scale(1); } }
 
-        /* ИЗМЕНЕННЫЙ РАЗМЕР КОНТЕЙНЕРА И КАРТОЧЕК */
+        /* КОНТЕЙНЕР */
         .container { max-width: 1500px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 30px; padding: 20px; }
         .card { background: var(--card-bg); border-radius: 25px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); position: relative; transition: 0.4s; box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
         .card:hover { transform: translateY(-10px); border-color: var(--accent-blue); }
@@ -82,9 +84,17 @@
         .tab-btn { padding: 12px 35px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #888; border-radius: 12px; font-weight: 900; cursor: pointer; transition: 0.3s; }
         .tab-btn.active { background: white; color: black; }
 
+        /* КНОПКИ УПРАВЛЕНИЯ В КАРТОЧКАХ */
+        .admin-controls { position: absolute; top: 10px; right: 10px; z-index: 100; display: flex; gap: 8px; background: rgba(0,0,0,0.6); padding: 5px; border-radius: 12px; backdrop-filter: blur(5px); }
+        .ctrl-btn { width: 35px; height: 35px; border-radius: 8px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: white; font-size: 1rem; transition: 0.2s; }
+        .btn-up { background: #27ae60; }
+        .btn-down { background: #2980b9; }
+        .btn-del { background: #e74c3c; }
+        .ctrl-btn:hover { transform: scale(1.15); filter: brightness(1.2); }
+
         /* АДМИНКА */
         #admin-trigger { position: fixed; bottom: 30px; left: 30px; opacity: 0.1; cursor: pointer; font-size: 1.5rem; background: none; border: none; color: white; z-index: 1000; }
-        .admin-form { display: none; background: #121220; padding: 40px; border-radius: 30px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2000; width: 95%; max-width: 500px; border: 2px solid var(--accent-blue); }
+        .admin-form { display: none; background: #121220; padding: 40px; border-radius: 30px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2000; width: 95%; max-width: 500px; border: 2px solid var(--accent-blue); box-shadow: 0 0 50px rgba(0,0,0,1); }
         .admin-form input, .admin-form select { width: 100%; padding: 15px; margin: 10px 0; background: #1a1a2a; border: 1px solid #333; color: white; border-radius: 12px; }
 
         /* ФУТЕР */
@@ -101,7 +111,6 @@
         #copyToast.show { visibility: visible; animation: fadeInUp 0.4s; }
         @keyframes fadeInUp { from { opacity: 0; bottom: 0; } to { opacity: 1; bottom: 40px; } }
 
-        /* RECORDS STYLING */
         .record-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: rgba(255,255,255,0.05); margin-bottom: 8px; border-radius: 12px; border-left: 4px solid var(--accent-pink); }
     </style>
 </head>
@@ -113,7 +122,7 @@
     <nav class="navbar">
         <div class="logo" onclick="window.scrollTo(0,0)">Mysteryx GDPS</div>
         <div class="nav-links">
-            <a href="#listSection">Demon List</a>
+            <a href="#listSection" id="navDemonList">Demon List</a>
             <a href="https://t.me/mysteryxgdps" target="_blank">Telegram</a>
             <a href="https://www.youtube.com/@lichigmdj98" target="_blank">YouTube</a>
             <button onclick="toggleLang()" id="langBtn" style="background:none; border:1px solid #444; color:white; padding:5px 10px; cursor:pointer; border-radius:5px;">RU</button>
@@ -124,8 +133,8 @@
         <h1 id="welcomeTitle">MYSTERYX GDPS</h1>
         <p id="welcomeDesc">Окунись в мир самого амбициозного приватного сервера Geometry Dash. Стабильность, уникальные уровни и сильнейшее комьюнити игроков.</p>
         <div class="hero-btns">
-            <a href="https://t.me/mysteryxgdps" target="_blank" class="btn-main">ИГРАТЬ СЕЙЧАС</a>
-            <a href="#listSection" class="btn-outline">DEMON LIST</a>
+            <a href="https://t.me/mysteryxgdps" target="_blank" class="btn-main" id="btnPlay">ИГРАТЬ СЕЙЧАС</a>
+            <a href="#listSection" class="btn-outline" id="btnList">DEMON LIST</a>
         </div>
     </header>
 
@@ -136,6 +145,10 @@
         </div>
 
         <div class="search-box">
+            <div class="search-modes">
+                <button id="searchModeMain" class="search-mode-btn active" onclick="setSearchMode('main')">Название / Автор</button>
+                <button id="searchModeTag" class="search-mode-btn" onclick="setSearchMode('tag')">По тегу</button>
+            </div>
             <i class="fas fa-search search-icon"></i>
             <input type="text" id="searchInput" class="search-input" placeholder="Поиск уровня или автора..." oninput="render()">
         </div>
@@ -154,7 +167,7 @@
             <a href="https://www.youtube.com/@lichigmdj98" target="_blank"><i class="fab fa-youtube"></i></a>
         </div>
         <p>© 2026 Mysteryx GDPS. Developed with passion.</p>
-        <a href="https://t.me/mysteryxgdps/11198/11199" style="color:#555; text-decoration:none; font-size:0.8rem;" target="_blank">Критерии верификации</a>
+        <a href="https://t.me/mysteryxgdps/11198/11199" id="verifyLink" style="color:#555; text-decoration:none; font-size:0.8rem;" target="_blank">Критерии верификации</a>
     </footer>
 
     <button id="admin-trigger" onclick="openAdmin()"><i class="fas fa-cog"></i></button>
@@ -207,8 +220,11 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        let currentLang = 'RU'; let isDeleteMode = false;
-        let demons = []; let creators = [];
+        let currentLang = 'RU'; 
+        let isDeleteMode = false;
+        let searchMode = 'main'; // 'main' (Name/Author) or 'tag'
+        let demons = []; 
+        let creators = [];
 
         db.ref('demons').on('value', s => { 
             const val = s.val(); 
@@ -229,6 +245,13 @@
             return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
         }
 
+        function setSearchMode(m) {
+            searchMode = m;
+            document.getElementById('searchModeMain').classList.toggle('active', m === 'main');
+            document.getElementById('searchModeTag').classList.toggle('active', m === 'tag');
+            render();
+        }
+
         function render() {
             const container = document.getElementById('mainContainer');
             const isDem = document.getElementById('tabDemons').classList.contains('active');
@@ -240,14 +263,21 @@
             topBanner.style.display = isDem ? 'block' : 'none';
 
             if(isDem) {
-                const filtered = demons.filter(d => d.name.toLowerCase().includes(query) || d.author.toLowerCase().includes(query));
+                const filtered = demons.filter(d => {
+                    if (searchMode === 'tag') {
+                        return d.tag && d.tag.toLowerCase().includes(query);
+                    }
+                    return d.name.toLowerCase().includes(query) || d.author.toLowerCase().includes(query);
+                });
+
                 filtered.forEach((d, i) => {
                     container.innerHTML += `
                         <div class="card">
-                            ${isDeleteMode ? `<div style="position:absolute; top:10px; right:10px; z-index:100; display:flex; gap:5px;">
-                                <button onclick="moveItem(${i}, -1)">↑</button>
-                                <button onclick="moveItem(${i}, 1)">↓</button>
-                                <button style="background:red;" onclick="deleteItem('${d.key}','demons')">X</button>
+                            ${isDeleteMode ? `
+                            <div class="admin-controls">
+                                <button class="ctrl-btn btn-up" onclick="moveItem(${i}, -1)"><i class="fas fa-arrow-up"></i></button>
+                                <button class="ctrl-btn btn-down" onclick="moveItem(${i}, 1)"><i class="fas fa-arrow-down"></i></button>
+                                <button class="ctrl-btn btn-del" onclick="deleteItem('${d.key}','demons')"><i class="fas fa-trash"></i></button>
                             </div>` : ''}
                             ${d.tag ? `<div class="demon-tag">${d.tag}</div>` : ''}
                             <img src="${d.img}" class="card-img" onerror="this.src='https://via.placeholder.com/600x300/111/fff?text=Mysteryx'">
@@ -263,8 +293,8 @@
                 const filtered = creators.filter(c => c.name.toLowerCase().includes(query));
                 filtered.forEach((c, i) => {
                     container.innerHTML += `<div class="card">
-                        ${isDeleteMode ? `<div style="position:absolute; top:10px; right:10px; z-index:100;">
-                            <button style="background:red;" onclick="deleteItem('${c.key}','creators')">X</button>
+                        ${isDeleteMode ? `<div class="admin-controls">
+                            <button class="ctrl-btn btn-del" onclick="deleteItem('${c.key}','creators')"><i class="fas fa-trash"></i></button>
                         </div>` : ''}
                         <div class="card-body" style="display:flex; justify-content:space-between; align-items:center; padding:40px;">
                             <h3 style="margin:0;">#${i+1} ${c.name}</h3>
@@ -299,14 +329,58 @@
             } else { alert("Error!"); }
         }
 
+        function toggleLang() {
+            currentLang = currentLang === 'RU' ? 'EN' : 'RU';
+            document.getElementById('langBtn').innerText = currentLang;
+            
+            // Перевод элементов интерфейса
+            const translations = {
+                RU: {
+                    welcomeT: "MYSTERYX GDPS",
+                    welcomeD: "Окунись в мир самого амбициозного приватного сервера Geometry Dash. Стабильность, уникальные уровни и сильнейшее комьюнити игроков.",
+                    play: "ИГРАТЬ СЕЙЧАС",
+                    list: "DEMON LIST",
+                    searchM: "Название / Автор",
+                    searchT: "По тегу",
+                    searchP: "Поиск уровня или автора...",
+                    verify: "Критерии верификации",
+                    toast: "ID Скопировано!"
+                },
+                EN: {
+                    welcomeT: "MYSTERYX GDPS",
+                    welcomeD: "Dive into the world of the most ambitious Geometry Dash private server. Stability, unique levels, and the strongest community.",
+                    play: "PLAY NOW",
+                    list: "DEMON LIST",
+                    searchM: "Name / Author",
+                    searchT: "By Tag",
+                    searchP: "Search level or creator...",
+                    verify: "Verification Criteria",
+                    toast: "ID Copied!"
+                }
+            };
+
+            const t = translations[currentLang];
+            document.getElementById('welcomeTitle').innerText = t.welcomeT;
+            document.getElementById('welcomeDesc').innerText = t.welcomeD;
+            document.getElementById('btnPlay').innerText = t.play;
+            document.getElementById('btnList').innerText = t.list;
+            document.getElementById('searchModeMain').innerText = t.searchM;
+            document.getElementById('searchModeTag').innerText = t.searchT;
+            document.getElementById('searchInput').placeholder = t.searchP;
+            document.getElementById('verifyLink').innerText = t.verify;
+            document.getElementById('copyToast').innerText = t.toast;
+            document.getElementById('navDemonList').innerText = t.list;
+
+            render();
+        }
+
         function showInfoByKey(key) {
             const d = demons.find(x => x.key === key);
-            
             const vics = d.victors ? Object.entries(d.victors).map(([vk, v]) => `
                 <div class="record-item">
                     <span><b>${v.name}</b> — <span style="color:var(--accent-blue)">${v.perc || '100%'}</span> (${v.att || '0'} att)</span>
                     ${isDeleteMode ? `<i class="fas fa-times" style="color:red; cursor:pointer;" onclick="deleteVictor('${d.key}', '${vk}')"></i>` : ''}
-                </div>`).join('') : "<p style='color:#666;'>No records yet</p>";
+                </div>`).join('') : `<p style='color:#666;'>${currentLang==='EN'?'No records yet':'Рекордов пока нет'}</p>`;
 
             document.getElementById('modalData').innerHTML = `
                 <h2 style="font-family:Montserrat; font-size:2rem; margin:0;">${d.name}</h2>
@@ -314,13 +388,13 @@
                 <iframe style="width:100%; aspect-ratio:16/9; border-radius:20px; margin:20px 0; border:1px solid #333;" src="https://www.youtube.com/embed/${d.vid}" frameborder="0" allowfullscreen></iframe>
                 <h3 style="margin-bottom:15px;">Victors & Records:</h3>
                 <div style="max-height:250px; overflow-y:auto; padding-right:10px;">${vics}</div>
-                <button class="btn-more" style="background:#222; margin-top:30px;" onclick="document.getElementById('detailModal').style.display='none'">CLOSE</button>`;
+                <button class="btn-more" style="background:#222; margin-top:30px;" onclick="document.getElementById('detailModal').style.display='none'">${currentLang==='EN'?'CLOSE':'ЗАКРЫТЬ'}</button>`;
             
             document.getElementById('detailModal').style.display='block';
         }
 
         function deleteVictor(dk, vk) { 
-            if(confirm("Удалить рекорд?")) {
+            if(confirm(currentLang==='EN'?"Delete record?":"Удалить рекорд?")) {
                 db.ref(`demons/${dk}/victors/${vk}`).remove().then(() => {
                     document.getElementById('detailModal').style.display='none';
                 });
@@ -328,22 +402,27 @@
         }
 
         function copyID(id) { navigator.clipboard.writeText(id); const t = document.getElementById("copyToast"); t.className = "show"; setTimeout(() => t.className = "", 3000); }
+        
         function moveItem(index, dir) {
-            let target = index + dir; if (target < 0 || target >= demons.length) return;
-            const updates = {}; updates[`/demons/${demons[index].key}/order`] = target; updates[`/demons/${demons[target].key}/order`] = index;
+            let target = index + dir; 
+            if (target < 0 || target >= demons.length) return;
+            const updates = {}; 
+            updates[`/demons/${demons[index].key}/order`] = target; 
+            updates[`/demons/${demons[target].key}/order`] = index;
             db.ref().update(updates);
         }
+
         function toggleAdmFields() { 
             const a = document.getElementById('admAction').value; 
             document.getElementById('fields_main').style.display = (a === 'add_demon' || a === 'add_creator') ? 'block' : 'none'; 
             document.getElementById('fields_demon').style.display = a === 'add_demon' ? 'block' : 'none'; 
             document.getElementById('fields_victor').style.display = a === 'add_victor' ? 'block' : 'none'; 
         }
+
         function openAdmin() { document.getElementById('adminPanel').style.display='block'; toggleAdmFields(); }
         function closeAdmin() { document.getElementById('adminPanel').style.display='none'; }
         function switchTab(t) { document.getElementById('tabDemons').classList.toggle('active', t==='demons'); document.getElementById('tabCreators').classList.toggle('active', t==='creators'); render(); }
-        function toggleLang() { currentLang = currentLang === 'RU' ? 'EN' : 'RU'; render(); }
-        function deleteItem(k, p) { if(confirm("Del?")) db.ref(p+'/'+k).remove(); }
+        function deleteItem(k, p) { if(confirm("Delete item?")) db.ref(p+'/'+k).remove(); }
     </script>
 </body>
 </html>
