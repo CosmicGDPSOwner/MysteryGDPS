@@ -85,13 +85,33 @@
         .tab-btn { padding: 10px 25px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #777; border-radius: 10px; font-weight: 800; cursor: pointer; transition: 0.3s; font-size: 0.9rem; }
         .tab-btn.active { background: white; color: black; border-color: white; }
 
-        /* КНОПКИ УПРАВЛЕНИЯ */
-        .admin-controls { position: absolute; top: 8px; right: 8px; z-index: 100; display: flex; gap: 6px; background: rgba(0,0,0,0.7); padding: 4px; border-radius: 10px; backdrop-filter: blur(5px); }
-        .ctrl-btn { width: 30px; height: 30px; border-radius: 6px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.85rem; }
+        /* КНОПКИ УПРАВЛЕНИЯ (ИСПРАВЛЕНО: ЯРКИЕ ЦВЕТА) */
+        .admin-controls { position: absolute; top: 8px; right: 8px; z-index: 100; display: flex; gap: 6px; background: rgba(0,0,0,0.8); padding: 5px; border-radius: 10px; backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.1); }
+        .ctrl-btn { width: 32px; height: 32px; border-radius: 6px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: white !important; font-size: 0.9rem; transition: 0.2s; }
+        .btn-up { background-color: #2ecc71 !important; } /* Зеленый */
+        .btn-down { background-color: #3498db !important; } /* Синий */
+        .btn-del { background-color: #e74c3c !important; } /* Красный */
+        .ctrl-btn:hover { transform: scale(1.1); filter: brightness(1.2); }
 
-        /* АДМИНКА */
+        /* АДМИНКА (ИСПРАВЛЕНО: СКРОЛЛ НА ТЕЛЕФОНЕ) */
         #admin-trigger { position: fixed; bottom: 20px; left: 20px; opacity: 0.2; cursor: pointer; font-size: 1.2rem; background: none; border: none; color: white; z-index: 1000; }
-        .admin-form { display: none; background: #161625; padding: 30px; border-radius: 20px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2000; width: 90%; max-width: 450px; border: 1px solid var(--accent-blue); box-shadow: 0 0 40px rgba(0,0,0,0.8); }
+        .admin-form { 
+            display: none; 
+            background: #161625; 
+            padding: 30px; 
+            border-radius: 20px; 
+            position: fixed; 
+            top: 50%; 
+            left: 50%; 
+            transform: translate(-50%, -50%); 
+            z-index: 2000; 
+            width: 90%; 
+            max-width: 450px; 
+            max-height: 90vh; /* Ограничение высоты */
+            overflow-y: auto; /* Включение прокрутки */
+            border: 1px solid var(--accent-blue); 
+            box-shadow: 0 0 40px rgba(0,0,0,0.8); 
+        }
         .admin-form h2 { margin-top: 0; font-size: 1.5rem; }
         .admin-form input, .admin-form select { width: 100%; padding: 12px; margin: 8px 0; background: #1f1f2f; border: 1px solid #333; color: white; border-radius: 10px; font-size: 0.9rem; }
 
@@ -227,7 +247,7 @@
 
         let currentLang = 'RU'; 
         let isDeleteMode = false;
-        let searchMode = 'main'; // 'main' (Name/Author) or 'tag'
+        let searchMode = 'main'; 
         let demons = []; 
         let creators = [];
 
@@ -338,7 +358,6 @@
             currentLang = currentLang === 'RU' ? 'EN' : 'RU';
             document.getElementById('langBtn').innerText = currentLang;
             
-            // Перевод элементов интерфейса
             const translations = {
                 RU: {
                     welcomeT: "MYSTERYX GDPS",
