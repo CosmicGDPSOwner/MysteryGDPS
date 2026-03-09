@@ -22,7 +22,7 @@
         * { box-sizing: border-box; scroll-behavior: smooth; }
         body { margin: 0; font-family: 'Poppins', sans-serif; background: var(--bg); color: white; overflow-x: hidden; min-height: 100vh; width: 100%; }
 
-        /* ФОН */
+        /* ФОН - ВОЗВРАЩАЕМ ВИЗУАЛ */
         .bg-wrapper { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: var(--bg); overflow: hidden; }
         .grid-overlay {
             position: absolute; width: 200%; height: 200%; top: -50%; left: -50%;
@@ -61,6 +61,7 @@
         .hero-title { width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 60px 20px 30px; text-align: center; }
         .hero-title h2 { font-family: 'Montserrat'; font-size: 2.2rem; margin: 0; text-transform: uppercase; letter-spacing: 3px; }
         .top-50-text { color: #ff3333; font-family: 'Montserrat'; font-weight: 900; font-size: 1.5rem; margin-top: 5px; letter-spacing: 5px; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 0.6; transform: scale(0.98); } 50% { opacity: 1; transform: scale(1); } }
 
         .container { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; padding: 15px; }
         .card { background: var(--card-bg); border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); position: relative; transition: 0.4s; }
@@ -73,48 +74,38 @@
         .tab-btn { padding: 12px 25px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #888; border-radius: 12px; font-weight: 900; cursor: pointer; font-size: 0.8rem; flex: 1; max-width: 180px; }
         .tab-btn.active { background: white; color: black; }
 
-        /* АДМИНКА (АДАПТИВНАЯ) */
+        /* АДМИНКА */
         #admin-trigger { position: fixed; bottom: 20px; left: 20px; opacity: 0.2; cursor: pointer; font-size: 1.2rem; background: none; border: none; color: white; z-index: 1000; }
         .admin-form { 
             display: none; background: #121220; padding: 25px; border-radius: 20px; 
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
             z-index: 2000; width: 90%; max-width: 450px; 
-            max-height: 90vh; overflow-y: auto; /* Добавлено для мобилок */
+            max-height: 90vh; overflow-y: auto;
             border: 2px solid var(--accent-blue); 
             box-shadow: 0 0 50px rgba(0,0,0,0.8);
         }
         .admin-form input, .admin-form select { width: 100%; padding: 12px; margin: 8px 0; background: #1a1a2a; border: 1px solid #333; color: white; border-radius: 10px; font-size: 0.9rem; }
 
-        /* МОДАЛКА (АДАПТИВНАЯ) */
+        /* МОДАЛКА */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 3000; backdrop-filter: blur(15px); overflow-y: auto; }
         .modal-content { background: #1a1a24; margin: 5vh auto; padding: 25px; max-width: 800px; width: 92%; border-radius: 25px; border: 1px solid #333; position: relative; }
 
-        /* АДАПТИВНОСТЬ ПОД МОБИЛКИ */
+        /* АДАПТИВНОСТЬ */
         @media (max-width: 600px) {
             .navbar { padding: 10px 15px; }
             .logo { font-size: 1.2rem; }
             .nav-links { gap: 10px; }
             .nav-links a { font-size: 0.65rem; }
-            #langBtn { padding: 3px 6px !important; font-size: 10px; }
-            
             .hero-title h2 { font-size: 1.8rem; }
-            .top-50-text { font-size: 1.2rem; letter-spacing: 3px; }
-            
-            .container { grid-template-columns: 1fr; gap: 20px; }
-            
+            .container { grid-template-columns: 1fr; }
             .welcome-hero h1 { letter-spacing: 1px; }
-            .welcome-hero p { font-size: 0.9rem; }
-            
-            .admin-form { padding: 20px; }
-            .modal-content { padding: 20px; margin: 2vh auto; }
-            .modal-content h2 { font-size: 1.5rem !important; }
         }
 
         footer { padding: 40px 20px; text-align: center; background: rgba(10, 10, 15, 0.9); margin-top: 60px; border-top: 1px solid #222; }
-        .footer-socials { display: flex; justify-content: center; gap: 20px; margin-bottom: 15px; }
         .btn-more { width: 100%; padding: 15px; background: var(--main-grad); border: none; color: white; border-radius: 12px; cursor: pointer; font-weight: 900; font-size: 0.9rem; }
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 3000; backdrop-filter: blur(15px); overflow-y: auto; }
         #copyToast { visibility: hidden; background: var(--accent-blue); color: white; padding: 15px 30px; position: fixed; left: 50%; bottom: 40px; transform: translateX(-50%); border-radius: 12px; z-index: 5000; font-weight: 900; font-size: 0.8rem; }
         #copyToast.show { visibility: visible; animation: fadeInUp 0.4s; }
+        @keyframes fadeInUp { from { opacity: 0; bottom: 0; } to { opacity: 1; bottom: 40px; } }
         .record-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: rgba(255,255,255,0.05); margin-bottom: 8px; border-radius: 10px; border-left: 3px solid var(--accent-pink); font-size: 0.85rem; }
     </style>
 </head>
@@ -126,7 +117,7 @@
     <nav class="navbar">
         <div class="logo" onclick="window.scrollTo(0,0)">Mysteryx GDPS</div>
         <div class="nav-links">
-            <a href="#listSection">List</a>
+            <a href="#listSection" id="nav_list">List</a>
             <a href="https://t.me/mysteryxgdps" target="_blank">TG</a>
             <a href="https://www.youtube.com/@lichigmdj98" target="_blank">YT</a>
             <button onclick="toggleLang()" id="langBtn" style="background:none; border:1px solid #444; color:white; padding:5px 10px; cursor:pointer; border-radius:5px;">RU</button>
@@ -137,8 +128,8 @@
         <h1 id="welcomeTitle">MYSTERYX GDPS</h1>
         <p id="welcomeDesc">Окунись в мир самого амбициозного приватного сервера Geometry Dash.</p>
         <div class="hero-btns">
-            <a href="https://t.me/mysteryxgdps" target="_blank" class="btn-main">ИГРАТЬ СЕЙЧАС</a>
-            <a href="#listSection" class="btn-outline">DEMON LIST</a>
+            <a href="https://t.me/mysteryxgdps" target="_blank" class="btn-main" id="btn_play">ИГРАТЬ СЕЙЧАС</a>
+            <a href="#listSection" class="btn-outline" id="btn_list">DEMON LIST</a>
         </div>
     </header>
 
@@ -161,13 +152,7 @@
         <div class="container" id="mainContainer"></div>
     </section>
 
-    <footer>
-        <div class="footer-socials">
-            <a href="https://t.me/mysteryxgdps" target="_blank"><i class="fab fa-telegram"></i></a>
-            <a href="https://www.youtube.com/@lichigmdj98" target="_blank"><i class="fab fa-youtube"></i></a>
-        </div>
-        <p>© 2026 Mysteryx GDPS.</p>
-    </footer>
+    <footer><p>© 2026 Mysteryx GDPS.</p></footer>
 
     <button id="admin-trigger" onclick="openAdmin()"><i class="fas fa-cog"></i></button>
 
@@ -180,13 +165,12 @@
             <option value="add_victor">Добавить Рекорд</option>
             <option value="delete_mode">Удаление / Движение</option>
         </select>
-        
         <div id="fields_main">
             <input type="text" id="itemName" placeholder="Название / Ник">
             <input type="text" id="itemVal" placeholder="Автор / CP">
             <div id="fields_demon">
                 <input type="text" id="itemID" placeholder="ID Уровня">
-                <input type="text" id="itemTag" placeholder="Тег (напр. Top 1)">
+                <input type="text" id="itemTag" placeholder="Тег">
                 <input type="text" id="itemVerifier" placeholder="Верифер">
                 <input type="text" id="itemImgURL" placeholder="Ссылка на картинку">
                 <input type="text" id="itemVid" placeholder="Ссылка на YouTube">
@@ -198,7 +182,6 @@
             <input type="text" id="vicPerc" placeholder="Проценты">
             <input type="text" id="vicAtt" placeholder="Попытки">
         </div>
-
         <button class="btn-more" onclick="processAdmin()">ВЫПОЛНИТЬ</button>
         <button class="btn-more" style="background:#222; margin-top:10px;" onclick="closeAdmin()">ЗАКРЫТЬ</button>
     </div>
@@ -219,8 +202,40 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        let currentLang = 'RU'; let isDeleteMode = false;
-        let demons = []; let creators = [];
+        let currentLang = 'RU'; 
+        let isDeleteMode = false;
+        let demons = []; 
+        let creators = [];
+
+        // Переводы
+        const langData = {
+            RU: {
+                welcomeDesc: "Окунись в мир самого амбициозного приватного сервера Geometry Dash.",
+                btnPlay: "ИГРАТЬ СЕЙЧАС",
+                btnList: "DEMON LIST",
+                nav_list: "Список",
+                search: "Поиск уровня или автора...",
+                details: "ПОДРОБНЕЕ",
+                demon_title: "СПИСОК ДЕМОНОВ",
+                creator_title: "ТОП КРЕАТОРОВ",
+                copied: "ID Скопировано!",
+                no_records: "Рекордов пока нет",
+                close: "ЗАКРЫТЬ"
+            },
+            EN: {
+                welcomeDesc: "Dive into the world of the most ambitious Geometry Dash private server.",
+                btnPlay: "PLAY NOW",
+                btnList: "DEMON LIST",
+                nav_list: "List",
+                search: "Search level or author...",
+                details: "DETAILS",
+                demon_title: "DEMON LIST",
+                creator_title: "CREATOR TOP",
+                copied: "ID Copied!",
+                no_records: "No records yet",
+                close: "CLOSE"
+            }
+        };
 
         db.ref('demons').on('value', s => { 
             const val = s.val(); 
@@ -235,21 +250,29 @@
             render(); 
         });
 
-        async function hashString(str) {
-            const buffer = new TextEncoder().encode(str);
-            const hashBuffer = await crypto.subtle.digest('SHA-1', buffer);
-            return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+        function toggleLang() {
+            currentLang = currentLang === 'RU' ? 'EN' : 'RU';
+            document.getElementById('langBtn').innerText = currentLang === 'RU' ? 'EN' : 'RU';
+            render();
         }
 
         function render() {
             const container = document.getElementById('mainContainer');
             const isDem = document.getElementById('tabDemons').classList.contains('active');
             const query = document.getElementById('searchInput').value.toLowerCase();
-            const topBanner = document.getElementById('top50Banner');
-            
+            const dict = langData[currentLang];
+
+            // Обновление статических текстов
+            document.getElementById('welcomeDesc').innerText = dict.welcomeDesc;
+            document.getElementById('btn_play').innerText = dict.btnPlay;
+            document.getElementById('btn_list').innerText = dict.btnList;
+            document.getElementById('nav_list').innerText = dict.nav_list;
+            document.getElementById('searchInput').placeholder = dict.search;
+            document.getElementById('copyToast').innerText = dict.copied;
+            document.getElementById('txtHero').innerText = isDem ? dict.demon_title : dict.creator_title;
+            document.getElementById('top50Banner').style.display = isDem ? 'block' : 'none';
+
             container.innerHTML = '';
-            document.getElementById('txtHero').innerText = isDem ? (currentLang==='EN'?'DEMON LIST':'СПИСОК ДЕМОНОВ') : (currentLang==='EN'?'CREATOR TOP':'ТОП КРЕАТОРОВ');
-            topBanner.style.display = isDem ? 'block' : 'none';
 
             if(isDem) {
                 const filtered = demons.filter(d => d.name.toLowerCase().includes(query) || d.author.toLowerCase().includes(query));
@@ -259,7 +282,7 @@
                             ${isDeleteMode ? `<div style="position:absolute; top:10px; right:10px; z-index:100; display:flex; gap:5px;">
                                 <button onclick="moveItem(${i}, -1)">↑</button>
                                 <button onclick="moveItem(${i}, 1)">↓</button>
-                                <button style="background:red;" onclick="deleteItem('${d.key}','demons')">X</button>
+                                <button style="background:red; color:white; border:none; border-radius:5px;" onclick="deleteItem('${d.key}','demons')">X</button>
                             </div>` : ''}
                             ${d.tag ? `<div class="demon-tag">${d.tag}</div>` : ''}
                             <img src="${d.img}" class="card-img" onerror="this.src='https://via.placeholder.com/600x300/111/fff?text=Mysteryx'">
@@ -267,7 +290,7 @@
                                 <h3 style="margin:0; color:var(--accent-blue); font-size:1.1rem;">#${i+1} ${d.name}</h3>
                                 <p style="color:#888; margin: 5px 0 15px; font-size:0.85rem;">by ${d.author}</p>
                                 <div class="level-id-box" onclick="copyID('${d.levelID}')">ID: ${d.levelID}</div>
-                                <button class="btn-more" onclick="showInfoByKey('${d.key}')">${currentLang==='EN'?'DETAILS':'ПОДРОБНЕЕ'}</button>
+                                <button class="btn-more" onclick="showInfoByKey('${d.key}')">${dict.details}</button>
                             </div>
                         </div>`;
                 });
@@ -276,7 +299,7 @@
                 filtered.forEach((c, i) => {
                     container.innerHTML += `<div class="card">
                         ${isDeleteMode ? `<div style="position:absolute; top:10px; right:10px; z-index:100;">
-                            <button style="background:red;" onclick="deleteItem('${c.key}','creators')">X</button>
+                            <button style="background:red; color:white; border:none; border-radius:5px;" onclick="deleteItem('${c.key}','creators')">X</button>
                         </div>` : ''}
                         <div class="card-body" style="display:flex; justify-content:space-between; align-items:center; padding:25px;">
                             <h3 style="margin:0; font-size:1.1rem;">#${i+1} ${c.name}</h3>
@@ -285,6 +308,13 @@
                     </div>`;
                 });
             }
+        }
+
+        // Остальные функции (копирование, админка и т.д.)
+        async function hashString(str) {
+            const buffer = new TextEncoder().encode(str);
+            const hashBuffer = await crypto.subtle.digest('SHA-1', buffer);
+            return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
         }
 
         async function processAdmin() {
@@ -301,11 +331,7 @@
                     db.ref('creators').push({ name: document.getElementById('itemName').value, points: parseInt(document.getElementById('itemVal').value) || 0 });
                 } else if(act === 'add_victor') {
                     const dKey = document.getElementById('selectDemon').value;
-                    db.ref(`demons/${dKey}/victors`).push({ 
-                        name: document.getElementById('vicName').value, 
-                        perc: document.getElementById('vicPerc').value, 
-                        att: document.getElementById('vicAtt').value 
-                    });
+                    db.ref(`demons/${dKey}/victors`).push({ name: document.getElementById('vicName').value, perc: document.getElementById('vicPerc').value, att: document.getElementById('vicAtt').value });
                 } else if(act === 'delete_mode') { isDeleteMode = !isDeleteMode; render(); }
                 closeAdmin();
             } else { alert("Error!"); }
@@ -313,11 +339,12 @@
 
         function showInfoByKey(key) {
             const d = demons.find(x => x.key === key);
+            const dict = langData[currentLang];
             const vics = d.victors ? Object.entries(d.victors).map(([vk, v]) => `
                 <div class="record-item">
                     <span><b>${v.name}</b> — <span style="color:var(--accent-blue)">${v.perc || '100%'}</span> (${v.att || '0'} att)</span>
                     ${isDeleteMode ? `<i class="fas fa-times" style="color:red; cursor:pointer;" onclick="deleteVictor('${d.key}', '${vk}')"></i>` : ''}
-                </div>`).join('') : "<p style='color:#666;'>No records yet</p>";
+                </div>`).join('') : `<p style='color:#666;'>${dict.no_records}</p>`;
 
             document.getElementById('modalData').innerHTML = `
                 <h2 style="font-family:Montserrat; font-size:1.5rem; margin:0;">${d.name}</h2>
@@ -325,19 +352,10 @@
                 <div style="width:100%; aspect-ratio:16/9; margin:15px 0;">
                     <iframe style="width:100%; height:100%; border-radius:15px; border:1px solid #333;" src="https://www.youtube.com/embed/${d.vid}" frameborder="0" allowfullscreen></iframe>
                 </div>
-                <h3 style="margin-bottom:10px; font-size:1.1rem;">Victors & Records:</h3>
-                <div style="max-height:200px; overflow-y:auto; padding-right:5px;">${vics}</div>
-                <button class="btn-more" style="background:#222; margin-top:20px;" onclick="document.getElementById('detailModal').style.display='none'">CLOSE</button>`;
-            
+                <h3 style="margin-bottom:10px; font-size:1.1rem;">Victors:</h3>
+                <div style="max-height:200px; overflow-y:auto;">${vics}</div>
+                <button class="btn-more" style="background:#222; margin-top:20px;" onclick="document.getElementById('detailModal').style.display='none'">${dict.close}</button>`;
             document.getElementById('detailModal').style.display='block';
-        }
-
-        function deleteVictor(dk, vk) { 
-            if(confirm("Удалить рекорд?")) {
-                db.ref(`demons/${dk}/victors/${vk}`).remove().then(() => {
-                    document.getElementById('detailModal').style.display='none';
-                });
-            } 
         }
 
         function copyID(id) { navigator.clipboard.writeText(id); const t = document.getElementById("copyToast"); t.className = "show"; setTimeout(() => t.className = "", 3000); }
@@ -346,17 +364,20 @@
             const updates = {}; updates[`/demons/${demons[index].key}/order`] = target; updates[`/demons/${demons[target].key}/order`] = index;
             db.ref().update(updates);
         }
-        function toggleAdmFields() { 
-            const a = document.getElementById('admAction').value; 
-            document.getElementById('fields_main').style.display = (a === 'add_demon' || a === 'add_creator') ? 'block' : 'none'; 
-            document.getElementById('fields_demon').style.display = a === 'add_demon' ? 'block' : 'none'; 
-            document.getElementById('fields_victor').style.display = a === 'add_victor' ? 'block' : 'none'; 
-        }
-        function openAdmin() { document.getElementById('adminPanel').style.display='block'; toggleAdmFields(); }
-        function closeAdmin() { document.getElementById('adminPanel').style.display='none'; }
-        function switchTab(t) { document.getElementById('tabDemons').classList.toggle('active', t==='demons'); document.getElementById('tabCreators').classList.toggle('active', t==='creators'); render(); }
-        function toggleLang() { currentLang = currentLang === 'RU' ? 'EN' : 'RU'; render(); }
         function deleteItem(k, p) { if(confirm("Del?")) db.ref(p+'/'+k).remove(); }
+        function openAdmin() { document.getElementById('adminPanel').style.display='block'; }
+        function closeAdmin() { document.getElementById('adminPanel').style.display='none'; }
+        function toggleAdmFields() {
+            const a = document.getElementById('admAction').value;
+            document.getElementById('fields_main').style.display = (a === 'add_demon' || a === 'add_creator') ? 'block' : 'none';
+            document.getElementById('fields_demon').style.display = a === 'add_demon' ? 'block' : 'none';
+            document.getElementById('fields_victor').style.display = a === 'add_victor' ? 'block' : 'none';
+        }
+        function switchTab(t) {
+            document.getElementById('tabDemons').classList.toggle('active', t==='demons');
+            document.getElementById('tabCreators').classList.toggle('active', t==='creators');
+            render();
+        }
     </script>
 </body>
 </html>
