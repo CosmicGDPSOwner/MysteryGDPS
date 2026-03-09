@@ -22,7 +22,7 @@
         * { box-sizing: border-box; scroll-behavior: smooth; }
         body { margin: 0; font-family: 'Poppins', sans-serif; background: var(--bg); color: white; overflow-x: hidden; min-height: 100vh; width: 100%; }
 
-        /* ФОН - ВОЗВРАЩАЕМ ВИЗУАЛ */
+        /* ФОН */
         .bg-wrapper { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: var(--bg); overflow: hidden; }
         .grid-overlay {
             position: absolute; width: 200%; height: 200%; top: -50%; left: -50%;
@@ -39,74 +39,70 @@
         @keyframes float { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(30px, 50px); } }
 
         /* НАВИГАЦИЯ */
-        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: rgba(18,18,26,0.9); backdrop-filter: blur(20px); position: fixed; width: 100%; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .logo { font-family: 'Montserrat'; font-size: 1.5rem; font-weight: 900; background: var(--main-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; transition: 0.3s; white-space: nowrap; }
-        .nav-links { display: flex; align-items: center; gap: 15px; }
-        .nav-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-weight: 700; transition: 0.3s; font-size: 0.75rem; text-transform: uppercase; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 8%; background: rgba(18,18,26,0.9); backdrop-filter: blur(20px); position: fixed; width: 100%; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .logo { font-family: 'Montserrat'; font-size: 1.8rem; font-weight: 900; background: var(--main-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; transition: 0.3s; white-space: nowrap; }
+        .nav-links { display: flex; align-items: center; gap: 25px; }
+        .nav-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-weight: 700; transition: 0.3s; font-size: 0.9rem; text-transform: uppercase; }
+        .nav-links a:hover { color: var(--accent-blue); }
 
-        /* WELCOME SECTION (HERO) */
-        .welcome-hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 80px 20px; }
-        .welcome-hero h1 { font-family: 'Montserrat'; font-size: clamp(2.5rem, 8vw, 6rem); margin: 0; line-height: 1; text-transform: uppercase; letter-spacing: 2px; }
-        .welcome-hero p { font-size: 1rem; color: #aaa; max-width: 700px; margin: 20px 0 35px; line-height: 1.4; }
-        .hero-btns { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
-        .btn-main, .btn-outline { padding: 15px 30px; border-radius: 50px; text-decoration: none; font-weight: 900; font-size: 0.9rem; transition: 0.3s; text-align: center; }
-        .btn-main { background: var(--main-grad); color: white; box-shadow: 0 10px 20px rgba(0, 210, 255, 0.2); }
+        /* WELCOME SECTION (HERO) - УВЕЛИЧЕННЫЙ ТЕКСТ */
+        .welcome-hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 100px 20px; }
+        .welcome-hero h1 { font-family: 'Montserrat'; font-size: clamp(3rem, 10vw, 7rem); margin: 0; line-height: 1.1; text-transform: uppercase; letter-spacing: 5px; }
+        .welcome-hero p { font-size: 1.3rem; color: #ccc; max-width: 800px; margin: 30px 0 50px; line-height: 1.6; }
+        .hero-btns { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+        .btn-main, .btn-outline { padding: 20px 45px; border-radius: 50px; text-decoration: none; font-weight: 900; font-size: 1.1rem; transition: 0.3s; text-align: center; }
+        .btn-main { background: var(--main-grad); color: white; box-shadow: 0 10px 30px rgba(0, 210, 255, 0.3); }
         .btn-outline { border: 2px solid white; color: white; }
+        .btn-main:hover { transform: scale(1.05); }
 
         /* ПОИСК И СПИСОК */
-        .search-box { max-width: 600px; margin: 0 auto 30px; position: relative; padding: 0 15px; }
-        .search-input { width: 100%; padding: 12px 15px 12px 45px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: white; font-size: 0.9rem; outline: none; }
-        .search-icon { position: absolute; left: 30px; top: 50%; transform: translateY(-50%); color: #888; }
+        .hero-title { padding: 80px 20px 40px; text-align: center; }
+        .hero-title h2 { font-family: 'Montserrat'; font-size: 3rem; margin: 0; text-transform: uppercase; letter-spacing: 5px; }
+        .top-50-text { color: #ff3333; font-family: 'Montserrat'; font-weight: 900; font-size: 2rem; margin-top: 10px; letter-spacing: 10px; animation: pulse 2s infinite; }
 
-        .hero-title { width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 60px 20px 30px; text-align: center; }
-        .hero-title h2 { font-family: 'Montserrat'; font-size: 2.2rem; margin: 0; text-transform: uppercase; letter-spacing: 3px; }
-        .top-50-text { color: #ff3333; font-family: 'Montserrat'; font-weight: 900; font-size: 1.5rem; margin-top: 5px; letter-spacing: 5px; animation: pulse 2s infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 0.6; transform: scale(0.98); } 50% { opacity: 1; transform: scale(1); } }
+        .search-box { max-width: 700px; margin: 0 auto 40px; position: relative; padding: 0 20px; }
+        .search-input { width: 100%; padding: 18px 20px 18px 60px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; color: white; font-size: 1.1rem; outline: none; transition: 0.3s; }
+        .search-input:focus { border-color: var(--accent-blue); background: rgba(255,255,255,0.08); }
+        .search-icon { position: absolute; left: 40px; top: 50%; transform: translateY(-50%); color: #888; font-size: 1.2rem; }
 
-        .container { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; padding: 15px; }
-        .card { background: var(--card-bg); border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); position: relative; transition: 0.4s; }
-        .card-img { width: 100%; height: 180px; object-fit: cover; }
-        .card-body { padding: 20px; }
-        .demon-tag { position: absolute; top: 12px; left: 12px; background: var(--main-grad); color: white; padding: 6px 12px; border-radius: 8px; font-weight: 900; font-size: 0.7rem; z-index: 50; }
-        .level-id-box { display: flex; align-items: center; gap: 8px; background: rgba(0, 210, 255, 0.08); padding: 10px 15px; border-radius: 12px; color: var(--accent-blue); cursor: pointer; margin-bottom: 15px; font-weight: 700; font-size: 0.9rem; width: fit-content; }
+        .container { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 35px; padding: 20px; }
+        .card { background: var(--card-bg); border-radius: 25px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); position: relative; transition: 0.4s; box-shadow: 0 15px 35px rgba(0,0,0,0.4); }
+        .card:hover { transform: translateY(-10px); border-color: var(--accent-blue); }
+        .card-img { width: 100%; height: 210px; object-fit: cover; }
+        .card-body { padding: 25px; }
+        .level-id-box { display: flex; align-items: center; gap: 10px; background: rgba(0, 210, 255, 0.08); padding: 12px 20px; border-radius: 12px; color: var(--accent-blue); cursor: pointer; margin-bottom: 20px; font-weight: 900; font-size: 1rem; width: fit-content; }
 
-        .mode-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; padding: 0 10px; }
-        .tab-btn { padding: 12px 25px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #888; border-radius: 12px; font-weight: 900; cursor: pointer; font-size: 0.8rem; flex: 1; max-width: 180px; }
-        .tab-btn.active { background: white; color: black; }
-
-        /* АДМИНКА */
-        #admin-trigger { position: fixed; bottom: 20px; left: 20px; opacity: 0.2; cursor: pointer; font-size: 1.2rem; background: none; border: none; color: white; z-index: 1000; }
-        .admin-form { 
-            display: none; background: #121220; padding: 25px; border-radius: 20px; 
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-            z-index: 2000; width: 90%; max-width: 450px; 
-            max-height: 90vh; overflow-y: auto;
-            border: 2px solid var(--accent-blue); 
-            box-shadow: 0 0 50px rgba(0,0,0,0.8);
-        }
-        .admin-form input, .admin-form select { width: 100%; padding: 12px; margin: 8px 0; background: #1a1a2a; border: 1px solid #333; color: white; border-radius: 10px; font-size: 0.9rem; }
-
-        /* МОДАЛКА */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 3000; backdrop-filter: blur(15px); overflow-y: auto; }
-        .modal-content { background: #1a1a24; margin: 5vh auto; padding: 25px; max-width: 800px; width: 92%; border-radius: 25px; border: 1px solid #333; position: relative; }
+        /* ФУТЕР И ИКОНКИ (ВОЗВРАЩЕНО) */
+        footer { padding: 60px 20px; text-align: center; background: rgba(10, 10, 15, 0.95); margin-top: 100px; border-top: 1px solid #222; position: relative; z-index: 10; }
+        .footer-socials { display: flex; justify-content: center; gap: 30px; margin-bottom: 20px; }
+        .footer-socials a { color: white; font-size: 2rem; transition: 0.3s; opacity: 0.7; }
+        .footer-socials a:hover { opacity: 1; color: var(--accent-blue); transform: translateY(-5px); }
 
         /* АДАПТИВНОСТЬ */
-        @media (max-width: 600px) {
-            .navbar { padding: 10px 15px; }
-            .logo { font-size: 1.2rem; }
-            .nav-links { gap: 10px; }
-            .nav-links a { font-size: 0.65rem; }
-            .hero-title h2 { font-size: 1.8rem; }
+        @media (max-width: 768px) {
+            .navbar { padding: 15px 20px; }
+            .logo { font-size: 1.4rem; }
+            .nav-links { gap: 15px; }
+            .nav-links a { font-size: 0.7rem; }
+            .welcome-hero h1 { font-size: 3rem; }
+            .welcome-hero p { font-size: 1rem; }
+            .hero-title h2 { font-size: 2rem; }
+            .top-50-text { font-size: 1.4rem; letter-spacing: 4px; }
             .container { grid-template-columns: 1fr; }
-            .welcome-hero h1 { letter-spacing: 1px; }
+            .btn-main, .btn-outline { padding: 15px 30px; font-size: 0.9rem; }
         }
 
-        footer { padding: 40px 20px; text-align: center; background: rgba(10, 10, 15, 0.9); margin-top: 60px; border-top: 1px solid #222; }
-        .btn-more { width: 100%; padding: 15px; background: var(--main-grad); border: none; color: white; border-radius: 12px; cursor: pointer; font-weight: 900; font-size: 0.9rem; }
-        #copyToast { visibility: hidden; background: var(--accent-blue); color: white; padding: 15px 30px; position: fixed; left: 50%; bottom: 40px; transform: translateX(-50%); border-radius: 12px; z-index: 5000; font-weight: 900; font-size: 0.8rem; }
+        /* Остальные элементы */
+        .mode-tabs { display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; }
+        .tab-btn { padding: 15px 40px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #888; border-radius: 15px; font-weight: 900; cursor: pointer; font-size: 1rem; }
+        .tab-btn.active { background: white; color: black; }
+        .demon-tag { position: absolute; top: 15px; left: 15px; background: var(--main-grad); color: white; padding: 8px 15px; border-radius: 10px; font-weight: 900; font-size: 0.8rem; z-index: 50; }
+        #admin-trigger { position: fixed; bottom: 30px; left: 30px; opacity: 0.1; cursor: pointer; font-size: 1.5rem; background: none; border: none; color: white; z-index: 1000; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 3000; backdrop-filter: blur(15px); overflow-y: auto; }
+        #copyToast { visibility: hidden; background: var(--accent-blue); color: white; padding: 20px 40px; position: fixed; left: 50%; bottom: 40px; transform: translateX(-50%); border-radius: 15px; z-index: 5000; font-weight: 900; }
         #copyToast.show { visibility: visible; animation: fadeInUp 0.4s; }
+        @keyframes pulse { 0%, 100% { opacity: 0.6; transform: scale(0.98); } 50% { opacity: 1; transform: scale(1); } }
         @keyframes fadeInUp { from { opacity: 0; bottom: 0; } to { opacity: 1; bottom: 40px; } }
-        .record-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: rgba(255,255,255,0.05); margin-bottom: 8px; border-radius: 10px; border-left: 3px solid var(--accent-pink); font-size: 0.85rem; }
     </style>
 </head>
 <body>
@@ -120,7 +116,7 @@
             <a href="#listSection" id="nav_list">List</a>
             <a href="https://t.me/mysteryxgdps" target="_blank">TG</a>
             <a href="https://www.youtube.com/@lichigmdj98" target="_blank">YT</a>
-            <button onclick="toggleLang()" id="langBtn" style="background:none; border:1px solid #444; color:white; padding:5px 10px; cursor:pointer; border-radius:5px;">RU</button>
+            <button onclick="toggleLang()" id="langBtn" style="background:none; border:1px solid #444; color:white; padding:5px 12px; cursor:pointer; border-radius:8px; font-weight:700;">RU</button>
         </div>
     </nav>
 
@@ -152,38 +148,44 @@
         <div class="container" id="mainContainer"></div>
     </section>
 
-    <footer><p>© 2026 Mysteryx GDPS.</p></footer>
+    <footer>
+        <div class="footer-socials">
+            <a href="https://t.me/mysteryxgdps" target="_blank"><i class="fab fa-telegram"></i></a>
+            <a href="https://www.youtube.com/@lichigmdj98" target="_blank"><i class="fab fa-youtube"></i></a>
+        </div>
+        <p id="footerText">© 2026 Mysteryx GDPS. All rights reserved.</p>
+    </footer>
 
     <button id="admin-trigger" onclick="openAdmin()"><i class="fas fa-cog"></i></button>
 
-    <div id="adminPanel" class="admin-form">
-        <h2 style="text-align:center; font-family: Montserrat; font-size: 1.2rem;">ADMIN PANEL</h2>
-        <input type="password" id="adminPass" placeholder="Пароль">
-        <select id="admAction" onchange="toggleAdmFields()">
+    <div id="adminPanel" class="admin-form" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#1a1a24; padding:30px; border-radius:20px; border:2px solid var(--accent-blue); z-index:4000; width:90%; max-width:400px;">
+        <h2 style="text-align:center;">ADMIN</h2>
+        <input type="password" id="adminPass" placeholder="Пароль" style="width:100%; padding:10px; margin:10px 0; background:#000; border:1px solid #333; color:#fff;">
+        <select id="admAction" onchange="toggleAdmFields()" style="width:100%; padding:10px; background:#000; color:#fff;">
             <option value="add_demon">Добавить Демона</option>
             <option value="add_creator">Добавить Креатора</option>
             <option value="add_victor">Добавить Рекорд</option>
             <option value="delete_mode">Удаление / Движение</option>
         </select>
         <div id="fields_main">
-            <input type="text" id="itemName" placeholder="Название / Ник">
-            <input type="text" id="itemVal" placeholder="Автор / CP">
+            <input type="text" id="itemName" placeholder="Название / Ник" style="width:100%; padding:10px; margin:5px 0;">
+            <input type="text" id="itemVal" placeholder="Автор / CP" style="width:100%; padding:10px; margin:5px 0;">
             <div id="fields_demon">
-                <input type="text" id="itemID" placeholder="ID Уровня">
-                <input type="text" id="itemTag" placeholder="Тег">
-                <input type="text" id="itemVerifier" placeholder="Верифер">
-                <input type="text" id="itemImgURL" placeholder="Ссылка на картинку">
-                <input type="text" id="itemVid" placeholder="Ссылка на YouTube">
+                <input type="text" id="itemID" placeholder="ID Уровня" style="width:100%; padding:10px; margin:5px 0;">
+                <input type="text" id="itemTag" placeholder="Тег" style="width:100%; padding:10px; margin:5px 0;">
+                <input type="text" id="itemVerifier" placeholder="Верифер" style="width:100%; padding:10px; margin:5px 0;">
+                <input type="text" id="itemImgURL" placeholder="Ссылка на фото" style="width:100%; padding:10px; margin:5px 0;">
+                <input type="text" id="itemVid" placeholder="YouTube ID" style="width:100%; padding:10px; margin:5px 0;">
             </div>
         </div>
         <div id="fields_victor" style="display:none;">
-            <select id="selectDemon" style="width:100%"></select>
-            <input type="text" id="vicName" placeholder="Ник игрока">
-            <input type="text" id="vicPerc" placeholder="Проценты">
+            <select id="selectDemon" style="width:100%; padding:10px; margin:5px 0;"></select>
+            <input type="text" id="vicName" placeholder="Ник">
+            <input type="text" id="vicPerc" placeholder="%">
             <input type="text" id="vicAtt" placeholder="Попытки">
         </div>
-        <button class="btn-more" onclick="processAdmin()">ВЫПОЛНИТЬ</button>
-        <button class="btn-more" style="background:#222; margin-top:10px;" onclick="closeAdmin()">ЗАКРЫТЬ</button>
+        <button onclick="processAdmin()" style="width:100%; padding:15px; background:var(--main-grad); border:none; color:#fff; font-weight:900; margin-top:10px; cursor:pointer;">ВЫПОЛНИТЬ</button>
+        <button onclick="closeAdmin()" style="width:100%; padding:10px; background:#222; border:none; color:#fff; margin-top:5px; cursor:pointer;">ЗАКРЫТЬ</button>
     </div>
 
     <div id="detailModal" class="modal"><div class="modal-content" id="modalData"></div></div>
@@ -207,10 +209,9 @@
         let demons = []; 
         let creators = [];
 
-        // Переводы
         const langData = {
             RU: {
-                welcomeDesc: "Окунись в мир самого амбициозного приватного сервера Geometry Dash.",
+                welcomeDesc: "Окунись в мир самого амбициозного приватного сервера Geometry Dash. Стабильность, уникальные уровни и сильнейшее комьюнити.",
                 btnPlay: "ИГРАТЬ СЕЙЧАС",
                 btnList: "DEMON LIST",
                 nav_list: "Список",
@@ -223,7 +224,7 @@
                 close: "ЗАКРЫТЬ"
             },
             EN: {
-                welcomeDesc: "Dive into the world of the most ambitious Geometry Dash private server.",
+                welcomeDesc: "Dive into the world of the most ambitious Geometry Dash private server. Stability, unique levels, and a strong community.",
                 btnPlay: "PLAY NOW",
                 btnList: "DEMON LIST",
                 nav_list: "List",
@@ -262,7 +263,6 @@
             const query = document.getElementById('searchInput').value.toLowerCase();
             const dict = langData[currentLang];
 
-            // Обновление статических текстов
             document.getElementById('welcomeDesc').innerText = dict.welcomeDesc;
             document.getElementById('btn_play').innerText = dict.btnPlay;
             document.getElementById('btn_list').innerText = dict.btnList;
@@ -282,15 +282,15 @@
                             ${isDeleteMode ? `<div style="position:absolute; top:10px; right:10px; z-index:100; display:flex; gap:5px;">
                                 <button onclick="moveItem(${i}, -1)">↑</button>
                                 <button onclick="moveItem(${i}, 1)">↓</button>
-                                <button style="background:red; color:white; border:none; border-radius:5px;" onclick="deleteItem('${d.key}','demons')">X</button>
+                                <button style="background:red; color:white; border:none; cursor:pointer;" onclick="deleteItem('${d.key}','demons')">X</button>
                             </div>` : ''}
                             ${d.tag ? `<div class="demon-tag">${d.tag}</div>` : ''}
                             <img src="${d.img}" class="card-img" onerror="this.src='https://via.placeholder.com/600x300/111/fff?text=Mysteryx'">
                             <div class="card-body">
-                                <h3 style="margin:0; color:var(--accent-blue); font-size:1.1rem;">#${i+1} ${d.name}</h3>
-                                <p style="color:#888; margin: 5px 0 15px; font-size:0.85rem;">by ${d.author}</p>
+                                <h3 style="margin:0; color:var(--accent-blue); font-size:1.4rem;">#${i+1} ${d.name}</h3>
+                                <p style="color:#888; margin: 5px 0 20px; font-size:1rem;">by ${d.author}</p>
                                 <div class="level-id-box" onclick="copyID('${d.levelID}')">ID: ${d.levelID}</div>
-                                <button class="btn-more" onclick="showInfoByKey('${d.key}')">${dict.details}</button>
+                                <button class="btn-more" onclick="showInfoByKey('${d.key}')" style="width:100%; padding:15px; background:var(--main-grad); border:none; color:white; border-radius:12px; cursor:pointer; font-weight:900;">${dict.details}</button>
                             </div>
                         </div>`;
                 });
@@ -299,72 +299,20 @@
                 filtered.forEach((c, i) => {
                     container.innerHTML += `<div class="card">
                         ${isDeleteMode ? `<div style="position:absolute; top:10px; right:10px; z-index:100;">
-                            <button style="background:red; color:white; border:none; border-radius:5px;" onclick="deleteItem('${c.key}','creators')">X</button>
+                            <button style="background:red; color:white; border:none; cursor:pointer;" onclick="deleteItem('${c.key}','creators')">X</button>
                         </div>` : ''}
-                        <div class="card-body" style="display:flex; justify-content:space-between; align-items:center; padding:25px;">
-                            <h3 style="margin:0; font-size:1.1rem;">#${i+1} ${c.name}</h3>
-                            <div style="text-align:right;"><span style="font-size:1.2rem; color:var(--accent-blue); font-weight:900;">${c.points} CP</span></div>
+                        <div class="card-body" style="display:flex; justify-content:space-between; align-items:center; padding:35px;">
+                            <h3 style="margin:0; font-size:1.5rem;">#${i+1} ${c.name}</h3>
+                            <div style="text-align:right;"><span style="font-size:1.8rem; color:var(--accent-blue); font-weight:900;">${c.points} CP</span></div>
                         </div>
                     </div>`;
                 });
             }
         }
 
-        // Остальные функции (копирование, админка и т.д.)
-        async function hashString(str) {
-            const buffer = new TextEncoder().encode(str);
-            const hashBuffer = await crypto.subtle.digest('SHA-1', buffer);
-            return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
-        }
-
-        async function processAdmin() {
-            const passField = document.getElementById('adminPass');
-            const rawPass = passField.value.trim().toLowerCase();
-            const h = await hashString(rawPass);
-            if(h === SECRET_HASH || rawPass === "mysteryxgdpsold777") {
-                const act = document.getElementById('admAction').value;
-                if(act === 'add_demon') {
-                    let r = document.getElementById('itemVid').value;
-                    let v = r.includes('v=') ? r.split('v=')[1].split('&')[0] : r.includes('youtu.be/') ? r.split('youtu.be/')[1].split('?')[0] : r;
-                    db.ref('demons').push({ name: document.getElementById('itemName').value, author: document.getElementById('itemVal').value, levelID: document.getElementById('itemID').value, tag: document.getElementById('itemTag').value, verifier: document.getElementById('itemVerifier').value, img: document.getElementById('itemImgURL').value, vid: v, order: demons.length });
-                } else if(act === 'add_creator') {
-                    db.ref('creators').push({ name: document.getElementById('itemName').value, points: parseInt(document.getElementById('itemVal').value) || 0 });
-                } else if(act === 'add_victor') {
-                    const dKey = document.getElementById('selectDemon').value;
-                    db.ref(`demons/${dKey}/victors`).push({ name: document.getElementById('vicName').value, perc: document.getElementById('vicPerc').value, att: document.getElementById('vicAtt').value });
-                } else if(act === 'delete_mode') { isDeleteMode = !isDeleteMode; render(); }
-                closeAdmin();
-            } else { alert("Error!"); }
-        }
-
-        function showInfoByKey(key) {
-            const d = demons.find(x => x.key === key);
-            const dict = langData[currentLang];
-            const vics = d.victors ? Object.entries(d.victors).map(([vk, v]) => `
-                <div class="record-item">
-                    <span><b>${v.name}</b> — <span style="color:var(--accent-blue)">${v.perc || '100%'}</span> (${v.att || '0'} att)</span>
-                    ${isDeleteMode ? `<i class="fas fa-times" style="color:red; cursor:pointer;" onclick="deleteVictor('${d.key}', '${vk}')"></i>` : ''}
-                </div>`).join('') : `<p style='color:#666;'>${dict.no_records}</p>`;
-
-            document.getElementById('modalData').innerHTML = `
-                <h2 style="font-family:Montserrat; font-size:1.5rem; margin:0;">${d.name}</h2>
-                <p style="color:#888; font-size:0.8rem;">by ${d.author} ${d.verifier ? '| Verified by ' + d.verifier : ''}</p>
-                <div style="width:100%; aspect-ratio:16/9; margin:15px 0;">
-                    <iframe style="width:100%; height:100%; border-radius:15px; border:1px solid #333;" src="https://www.youtube.com/embed/${d.vid}" frameborder="0" allowfullscreen></iframe>
-                </div>
-                <h3 style="margin-bottom:10px; font-size:1.1rem;">Victors:</h3>
-                <div style="max-height:200px; overflow-y:auto;">${vics}</div>
-                <button class="btn-more" style="background:#222; margin-top:20px;" onclick="document.getElementById('detailModal').style.display='none'">${dict.close}</button>`;
-            document.getElementById('detailModal').style.display='block';
-        }
-
+        // Остальные системные функции
         function copyID(id) { navigator.clipboard.writeText(id); const t = document.getElementById("copyToast"); t.className = "show"; setTimeout(() => t.className = "", 3000); }
-        function moveItem(index, dir) {
-            let target = index + dir; if (target < 0 || target >= demons.length) return;
-            const updates = {}; updates[`/demons/${demons[index].key}/order`] = target; updates[`/demons/${demons[target].key}/order`] = index;
-            db.ref().update(updates);
-        }
-        function deleteItem(k, p) { if(confirm("Del?")) db.ref(p+'/'+k).remove(); }
+        function switchTab(t) { document.getElementById('tabDemons').classList.toggle('active', t==='demons'); document.getElementById('tabCreators').classList.toggle('active', t==='creators'); render(); }
         function openAdmin() { document.getElementById('adminPanel').style.display='block'; }
         function closeAdmin() { document.getElementById('adminPanel').style.display='none'; }
         function toggleAdmFields() {
@@ -373,10 +321,40 @@
             document.getElementById('fields_demon').style.display = a === 'add_demon' ? 'block' : 'none';
             document.getElementById('fields_victor').style.display = a === 'add_victor' ? 'block' : 'none';
         }
-        function switchTab(t) {
-            document.getElementById('tabDemons').classList.toggle('active', t==='demons');
-            document.getElementById('tabCreators').classList.toggle('active', t==='creators');
-            render();
+        async function hashString(str) {
+            const buffer = new TextEncoder().encode(str);
+            const hashBuffer = await crypto.subtle.digest('SHA-1', buffer);
+            return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+        async function processAdmin() {
+            const rawPass = document.getElementById('adminPass').value.trim().toLowerCase();
+            const h = await hashString(rawPass);
+            if(h === SECRET_HASH || rawPass === "mysteryxgdpsold777") {
+                const act = document.getElementById('admAction').value;
+                if(act === 'add_demon') {
+                    db.ref('demons').push({ name: document.getElementById('itemName').value, author: document.getElementById('itemVal').value, levelID: document.getElementById('itemID').value, tag: document.getElementById('itemTag').value, verifier: document.getElementById('itemVerifier').value, img: document.getElementById('itemImgURL').value, vid: document.getElementById('itemVid').value, order: demons.length });
+                } else if(act === 'add_creator') {
+                    db.ref('creators').push({ name: document.getElementById('itemName').value, points: parseInt(document.getElementById('itemVal').value) || 0 });
+                } else if(act === 'delete_mode') { isDeleteMode = !isDeleteMode; render(); }
+                closeAdmin();
+            } else { alert("Error!"); }
+        }
+        function deleteItem(k, p) { if(confirm("Del?")) db.ref(p+'/'+k).remove(); }
+        function moveItem(index, dir) {
+            let target = index + dir; if (target < 0 || target >= demons.length) return;
+            const updates = {}; updates[`/demons/${demons[index].key}/order`] = target; updates[`/demons/${demons[target].key}/order`] = index;
+            db.ref().update(updates);
+        }
+        function showInfoByKey(key) {
+            const d = demons.find(x => x.key === key);
+            const dict = langData[currentLang];
+            const vics = d.victors ? Object.entries(d.victors).map(([vk, v]) => `<div class="record-item" style="padding:10px; background:#222; margin:5px 0;"><b>${v.name}</b>: ${v.perc}%</div>`).join('') : dict.no_records;
+            document.getElementById('modalData').innerHTML = `
+                <h2>${d.name}</h2>
+                <iframe style="width:100%; aspect-ratio:16/9;" src="https://www.youtube.com/embed/${d.vid}" frameborder="0" allowfullscreen></iframe>
+                <div>${vics}</div>
+                <button onclick="document.getElementById('detailModal').style.display='none'" style="width:100%; padding:15px; background:#444; color:#fff; border:none; margin-top:20px; cursor:pointer;">${dict.close}</button>`;
+            document.getElementById('detailModal').style.display='block';
         }
     </script>
 </body>
