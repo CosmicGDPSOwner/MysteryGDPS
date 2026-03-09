@@ -80,16 +80,25 @@
 
         /* АДАПТИВНОСТЬ */
         @media (max-width: 768px) {
-            .navbar { padding: 15px 20px; }
-            .logo { font-size: 1.4rem; }
-            .nav-links { gap: 15px; }
-            .nav-links a { font-size: 0.7rem; }
-            .welcome-hero h1 { font-size: 3rem; }
-            .welcome-hero p { font-size: 1rem; }
-            .hero-title h2 { font-size: 2rem; }
-            .top-50-text { font-size: 1.4rem; letter-spacing: 4px; }
-            .container { grid-template-columns: 1fr; }
-            .btn-main, .btn-outline { padding: 15px 30px; font-size: 0.9rem; }
+            .navbar { padding: 15px 15px; }
+            .logo { font-size: 1.2rem; }
+            .nav-links { gap: 10px; }
+            .nav-links a { font-size: 0.65rem; }
+            .welcome-hero h1 { font-size: 2.8rem; }
+            .welcome-hero p { font-size: 1rem; margin: 20px 0 35px; }
+            .hero-btns { gap: 10px; }
+            .btn-main, .btn-outline { padding: 15px 25px; font-size: 0.85rem; width: 100%; max-width: 280px; }
+            .hero-title { padding: 60px 10px 30px; }
+            .hero-title h2 { font-size: 1.8rem; }
+            .top-50-text { font-size: 1.2rem; letter-spacing: 3px; }
+            .search-box { margin-bottom: 25px; }
+            .search-input { padding: 15px 15px 15px 50px; font-size: 1rem; }
+            .search-icon { left: 25px; }
+            .container { grid-template-columns: 1fr; gap: 20px; padding: 10px; }
+            .card-body { padding: 20px; }
+            .tab-btn { padding: 12px 25px; font-size: 0.9rem; }
+            .admin-form { width: 95%; padding: 20px; }
+            #copyToast { padding: 15px 30px; font-size: 0.9rem; width: 80%; text-align: center; }
         }
 
         /* Остальные элементы */
@@ -99,6 +108,7 @@
         .demon-tag { position: absolute; top: 15px; left: 15px; background: var(--main-grad); color: white; padding: 8px 15px; border-radius: 10px; font-weight: 900; font-size: 0.8rem; z-index: 50; }
         #admin-trigger { position: fixed; bottom: 30px; left: 30px; opacity: 0.1; cursor: pointer; font-size: 1.5rem; background: none; border: none; color: white; z-index: 1000; }
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 3000; backdrop-filter: blur(15px); overflow-y: auto; }
+        .modal-content { background: #1a1a24; margin: 5vh auto; padding: 30px; max-width: 800px; width: 92%; border-radius: 25px; border: 1px solid #333; position: relative; }
         #copyToast { visibility: hidden; background: var(--accent-blue); color: white; padding: 20px 40px; position: fixed; left: 50%; bottom: 40px; transform: translateX(-50%); border-radius: 15px; z-index: 5000; font-weight: 900; }
         #copyToast.show { visibility: visible; animation: fadeInUp 0.4s; }
         @keyframes pulse { 0%, 100% { opacity: 0.6; transform: scale(0.98); } 50% { opacity: 1; transform: scale(1); } }
@@ -180,9 +190,9 @@
         </div>
         <div id="fields_victor" style="display:none;">
             <select id="selectDemon" style="width:100%; padding:10px; margin:5px 0;"></select>
-            <input type="text" id="vicName" placeholder="Ник">
-            <input type="text" id="vicPerc" placeholder="%">
-            <input type="text" id="vicAtt" placeholder="Попытки">
+            <input type="text" id="vicName" placeholder="Ник" style="width:100%; padding:10px; margin:5px 0; background:#000; border:1px solid #333; color:#fff;">
+            <input type="text" id="vicPerc" placeholder="%" style="width:100%; padding:10px; margin:5px 0; background:#000; border:1px solid #333; color:#fff;">
+            <input type="text" id="vicAtt" placeholder="Попытки" style="width:100%; padding:10px; margin:5px 0; background:#000; border:1px solid #333; color:#fff;">
         </div>
         <button onclick="processAdmin()" style="width:100%; padding:15px; background:var(--main-grad); border:none; color:#fff; font-weight:900; margin-top:10px; cursor:pointer;">ВЫПОЛНИТЬ</button>
         <button onclick="closeAdmin()" style="width:100%; padding:10px; background:#222; border:none; color:#fff; margin-top:5px; cursor:pointer;">ЗАКРЫТЬ</button>
@@ -310,7 +320,6 @@
             }
         }
 
-        // Остальные системные функции
         function copyID(id) { navigator.clipboard.writeText(id); const t = document.getElementById("copyToast"); t.className = "show"; setTimeout(() => t.className = "", 3000); }
         function switchTab(t) { document.getElementById('tabDemons').classList.toggle('active', t==='demons'); document.getElementById('tabCreators').classList.toggle('active', t==='creators'); render(); }
         function openAdmin() { document.getElementById('adminPanel').style.display='block'; }
@@ -348,12 +357,13 @@
         function showInfoByKey(key) {
             const d = demons.find(x => x.key === key);
             const dict = langData[currentLang];
-            const vics = d.victors ? Object.entries(d.victors).map(([vk, v]) => `<div class="record-item" style="padding:10px; background:#222; margin:5px 0;"><b>${v.name}</b>: ${v.perc}%</div>`).join('') : dict.no_records;
+            const vics = d.victors ? Object.entries(d.victors).map(([vk, v]) => `<div class="record-item" style="padding:10px; background:#222; margin:5px 0; border-radius:8px;"><b>${v.name}</b>: ${v.perc}%</div>`).join('') : dict.no_records;
             document.getElementById('modalData').innerHTML = `
-                <h2>${d.name}</h2>
-                <iframe style="width:100%; aspect-ratio:16/9;" src="https://www.youtube.com/embed/${d.vid}" frameborder="0" allowfullscreen></iframe>
-                <div>${vics}</div>
-                <button onclick="document.getElementById('detailModal').style.display='none'" style="width:100%; padding:15px; background:#444; color:#fff; border:none; margin-top:20px; cursor:pointer;">${dict.close}</button>`;
+                <h2 style="font-family:Montserrat;">${d.name}</h2>
+                <iframe style="width:100%; aspect-ratio:16/9; border-radius:15px; border:1px solid #333;" src="https://www.youtube.com/embed/${d.vid}" frameborder="0" allowfullscreen></iframe>
+                <h3 style="margin-top:20px;">Records:</h3>
+                <div style="max-height:200px; overflow-y:auto; margin-top:10px;">${vics}</div>
+                <button onclick="document.getElementById('detailModal').style.display='none'" style="width:100%; padding:15px; background:#444; color:#fff; border:none; margin-top:20px; cursor:pointer; border-radius:12px; font-weight:900;">${dict.close}</button>`;
             document.getElementById('detailModal').style.display='block';
         }
     </script>
