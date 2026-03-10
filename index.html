@@ -12,131 +12,174 @@
 
     <style>
         :root {
-            --bg: #12121a;
-            --card-bg: #1a1a24;
-            --main-grad: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 25%, #ff007f 100%);
-            --accent-pink: #ff007f;
-            --accent-blue: #00d2ff;
+            /* СВЕЖИЙ РЕДИЗАЙН: Глубокий сине-фиолетовый фон и мятно-голубые акценты */
+            --bg: #0b0c10;
+            --card-bg: rgba(31, 40, 51, 0.7);
+            --main-grad: linear-gradient(135deg, #66fcf1 0%, #45a29e 100%);
+            --accent-cyan: #66fcf1;
+            --accent-dark: #1f2833;
+            --text-main: #c5c6c7;
         }
 
         * { box-sizing: border-box; scroll-behavior: smooth; }
-        body { margin: 0; font-family: 'Poppins', sans-serif; background: var(--bg); color: white; overflow-x: hidden; min-height: 100vh; }
+        body { margin: 0; font-family: 'Poppins', sans-serif; background: var(--bg); color: white; overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column; }
 
         /* ФОН */
         .bg-wrapper { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: var(--bg); overflow: hidden; }
         .grid-overlay {
             position: absolute; width: 200%; height: 200%; top: -50%; left: -50%;
-            background-image: linear-gradient(rgba(0, 210, 255, 0.1) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(0, 210, 255, 0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
-            transform: perspective(500px) rotateX(60deg);
-            animation: gridMove 15s linear infinite;
+            background-image: linear-gradient(rgba(102, 252, 241, 0.05) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(102, 252, 241, 0.05) 1px, transparent 1px);
+            background-size: 60px 60px;
+            transform: perspective(600px) rotateX(60deg);
+            animation: gridMove 20s linear infinite;
         }
-        @keyframes gridMove { from { transform: perspective(500px) rotateX(60deg) translateY(0); } to { transform: perspective(500px) rotateX(60deg) translateY(50px); } }
-        .orb { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.25; animation: float 10s ease-in-out infinite; }
-        .orb-1 { width: 500px; height: 500px; background: var(--accent-pink); top: -5%; left: -5%; }
-        .orb-2 { width: 400px; height: 400px; background: var(--accent-blue); bottom: -5%; right: -5%; animation-delay: -5s; }
-        @keyframes float { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(20px, 30px); } }
+        @keyframes gridMove { from { transform: perspective(600px) rotateX(60deg) translateY(0); } to { transform: perspective(600px) rotateX(60deg) translateY(60px); } }
+        .orb { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.15; animation: float 12s ease-in-out infinite; }
+        .orb-1 { width: 600px; height: 600px; background: #66fcf1; top: -10%; left: -10%; }
+        .orb-2 { width: 500px; height: 500px; background: #45a29e; bottom: -10%; right: -10%; animation-delay: -6s; }
+        @keyframes float { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(30px, 40px); } }
 
         /* НАВИГАЦИЯ */
-        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 12px 6%; background: rgba(18,18,26,0.95); backdrop-filter: blur(15px); position: fixed; width: 100%; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .logo { font-family: 'Montserrat'; font-size: 1.5rem; font-weight: 900; background: var(--main-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; transition: 0.3s; letter-spacing: 1px; }
-        .logo:hover { transform: scale(1.03); filter: brightness(1.2); }
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 6%; background: rgba(11, 12, 16, 0.85); backdrop-filter: blur(20px); position: fixed; width: 100%; top: 0; z-index: 1000; border-bottom: 1px solid rgba(102, 252, 241, 0.1); }
+        .logo { font-family: 'Montserrat'; font-size: 1.6rem; font-weight: 900; background: var(--main-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; transition: 0.3s; letter-spacing: 1px; }
+        .logo:hover { transform: scale(1.05); filter: drop-shadow(0 0 10px rgba(102, 252, 241, 0.5)); }
         .nav-links { display: flex; align-items: center; gap: 20px; }
-        .nav-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-weight: 700; transition: 0.3s; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; }
-        .nav-links a:hover { color: white; }
+        
+        .nav-item { color: var(--text-main); text-decoration: none; font-weight: 700; transition: 0.3s; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; background: none; border: none; padding: 0; font-family: 'Poppins', sans-serif; vertical-align: middle; line-height: 1;}
+        .nav-item:hover { color: #fff; text-shadow: 0 0 8px rgba(102, 252, 241, 0.6); }
 
-        /* WELCOME SECTION */
-        .welcome-hero { min-height: 90vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 20px; }
-        .welcome-hero h1 { font-family: 'Montserrat'; font-size: clamp(2.5rem, 8vw, 5rem); margin: 0; line-height: 1.1; text-transform: uppercase; letter-spacing: 4px; }
-        .welcome-hero p { font-size: 1.1rem; color: #aaa; max-width: 700px; margin: 25px 0 40px; line-height: 1.6; }
-        .hero-btns { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
-        .btn-main { padding: 15px 35px; border-radius: 12px; background: var(--main-grad); color: white; text-decoration: none; font-weight: 900; font-size: 1rem; transition: 0.3s; box-shadow: 0 8px 25px rgba(0, 210, 255, 0.2); }
-        .btn-outline { padding: 15px 35px; border-radius: 12px; border: 2px solid white; color: white; text-decoration: none; font-weight: 900; font-size: 1rem; transition: 0.3s; }
-        .btn-main:hover { transform: translateY(-3px); box-shadow: 0 12px 35px rgba(255, 0, 127, 0.3); }
-        .btn-outline:hover { background: white; color: black; transform: translateY(-3px); }
+        /* ИСПРАВЛЕННЫЙ ВЫПАДАЮЩИЙ СПИСОК (ПО КЛИКУ) */
+        .dropdown { position: relative; display: inline-block; }
+        .dropdown-content {
+            display: none; position: absolute; background-color: rgba(31, 40, 51, 0.95);
+            min-width: 160px; box-shadow: 0px 10px 30px 0px rgba(0,0,0,0.8);
+            z-index: 1001; border-radius: 12px; overflow: hidden;
+            border: 1px solid rgba(102, 252, 241, 0.2); top: calc(100% + 15px); left: 50%; transform: translateX(-50%);
+            backdrop-filter: blur(10px);
+        }
+        .dropdown-content.show { display: block; animation: fadeIn 0.2s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateX(-50%) translateY(-10px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+        
+        .dropdown-content a { color: var(--text-main); padding: 14px 16px; text-decoration: none; display: block; text-align: center; font-size: 0.85rem; text-transform: uppercase; font-weight: 700; transition: 0.3s; cursor: pointer;}
+        .dropdown-content a:hover { background-color: rgba(102, 252, 241, 0.1); color: var(--accent-cyan); }
+
+        .btn-download-nav {
+            background: #22c55e; color: #fff !important;
+            padding: 10px 20px; border-radius: 10px; font-weight: 900; transition: 0.3s;
+            display: flex; align-items: center; gap: 8px; border: none; cursor: pointer; font-family: 'Poppins', sans-serif;
+            text-transform: uppercase; font-size: 0.85rem;
+        }
+        .btn-download-nav:hover { box-shadow: 0 0 20px rgba(34, 197, 94, 0.5); transform: translateY(-2px); background: #16a34a; }
+
+        .nav-socials { display: flex; gap: 15px; align-items: center; margin-left: 10px; border-left: 1px solid rgba(255,255,255,0.1); padding-left: 15px; }
+        .nav-socials a { font-size: 1.5rem; color: var(--text-main); transition: 0.3s; display: flex; align-items: center; justify-content: center; text-decoration: none; }
+        .nav-socials a.tg-icon:hover { color: #00a2ed; transform: scale(1.2) translateY(-2px); }
+        .nav-socials a.yt-icon:hover { color: #ff0000; transform: scale(1.2) translateY(-2px); }
+
+        /* СЕКЦИИ */
+        .section-page { display: none; flex: 1; margin-top: 80px; padding-bottom: 50px; animation: fadeInPage 0.4s ease; }
+        .section-page.active { display: block; }
+        @keyframes fadeInPage { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* WELCOME SECTION (О НАС) */
+        .welcome-hero { min-height: calc(100vh - 80px); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 20px; }
+        .welcome-hero h1 { font-family: 'Montserrat'; font-size: clamp(3rem, 8vw, 6rem); margin: 0; line-height: 1.1; text-transform: uppercase; letter-spacing: 5px; text-shadow: 0 10px 30px rgba(102, 252, 241, 0.3); }
+        .welcome-hero p { font-size: 1.15rem; color: var(--text-main); max-width: 700px; margin: 25px 0 40px; line-height: 1.7; }
+        .hero-btns { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+        .btn-main { padding: 16px 40px; border-radius: 12px; background: #22c55e; color: #fff; text-decoration: none; font-weight: 900; font-size: 1rem; transition: 0.3s; border: none; cursor: pointer; font-family: 'Poppins'; text-transform: uppercase;}
+        .btn-outline { padding: 16px 40px; border-radius: 12px; border: 2px solid var(--accent-cyan); color: var(--accent-cyan); text-decoration: none; font-weight: 900; font-size: 1rem; transition: 0.3s; background: transparent; cursor: pointer; font-family: 'Poppins'; text-transform: uppercase;}
+        .btn-main:hover { transform: translateY(-4px); box-shadow: 0 15px 35px rgba(34, 197, 94, 0.4); background: #16a34a; }
+        .btn-outline:hover { background: var(--accent-cyan); color: #0b0c10; transform: translateY(-4px); box-shadow: 0 15px 35px rgba(102, 252, 241, 0.2); }
+
+        /* DOWNLOAD SECTION */
+        .download-container { max-width: 800px; margin: 40px auto; text-align: center; background: var(--card-bg); padding: 50px 30px; border-radius: 25px; border: 1px solid rgba(102, 252, 241, 0.15); backdrop-filter: blur(15px); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        .dl-title { font-family: 'Montserrat'; font-size: 3rem; margin-bottom: 10px; color: #fff; }
+        .dl-version { display: inline-block; background: rgba(102, 252, 241, 0.1); color: var(--accent-cyan); padding: 8px 20px; border-radius: 20px; font-weight: 700; font-size: 1.1rem; margin-bottom: 40px; border: 1px solid rgba(102, 252, 241, 0.3); }
+        .dl-cards { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; }
+        .dl-card { flex: 1; min-width: 250px; background: rgba(11, 12, 16, 0.6); border: 1px solid rgba(255,255,255,0.05); padding: 40px 20px; border-radius: 20px; transition: 0.3s; text-decoration: none; color: white; display: flex; flex-direction: column; align-items: center; }
+        .dl-card:hover { transform: translateY(-10px); border-color: var(--accent-cyan); background: rgba(11, 12, 16, 0.9); box-shadow: 0 15px 30px rgba(102, 252, 241, 0.15); }
+        .dl-icon { font-size: 4rem; margin-bottom: 20px; }
+        .dl-card.pc:hover .dl-icon { color: #00a1f1; }
+        .dl-card.android:hover .dl-icon { color: #3ddc84; }
+        .dl-name { font-size: 1.5rem; font-weight: 900; margin-bottom: 10px; font-family: 'Montserrat'; }
+        .dl-desc { font-size: 0.9rem; color: #888; font-weight: 400; }
+
+        /* ЗАГОЛОВКИ СЕКЦИЙ LIST */
+        .hero-title { width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 40px 20px 30px; text-align: center; }
+        .hero-title h2 { font-family: 'Montserrat'; font-size: 2.8rem; margin: 0; text-transform: uppercase; letter-spacing: 3px; }
+        .top-50-text { color: var(--accent-cyan); font-family: 'Montserrat'; font-weight: 900; font-size: 1.5rem; margin-top: 5px; letter-spacing: 8px; text-shadow: 0 0 15px rgba(102, 252, 241, 0.5); }
 
         /* ПОИСК */
-        .search-box { max-width: 550px; margin: 0 auto 40px; position: relative; padding: 0 20px; }
-        .search-modes { display: flex; justify-content: center; gap: 8px; margin-bottom: 15px; }
-        .search-mode-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #888; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 0.8rem; font-weight: 700; transition: 0.3s; }
-        .search-mode-btn.active { background: var(--accent-blue); color: white; border-color: var(--accent-blue); }
-        .search-input { width: 100%; padding: 14px 20px 14px 45px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: white; font-size: 0.95rem; outline: none; transition: 0.3s; }
-        .search-icon { position: absolute; left: 35px; bottom: 15px; color: #666; font-size: 0.9rem; }
+        .search-box { max-width: 600px; margin: 0 auto 40px; position: relative; padding: 0 20px; }
+        .search-modes { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
+        .search-mode-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: var(--text-main); padding: 10px 20px; border-radius: 10px; cursor: pointer; font-size: 0.85rem; font-weight: 700; transition: 0.3s; }
+        .search-mode-btn.active { background: rgba(102, 252, 241, 0.15); color: var(--accent-cyan); border-color: var(--accent-cyan); }
+        .search-input { width: 100%; padding: 16px 20px 16px 50px; background: rgba(11, 12, 16, 0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; color: white; font-size: 1rem; outline: none; transition: 0.3s; backdrop-filter: blur(5px); }
+        .search-input:focus { border-color: var(--accent-cyan); box-shadow: 0 0 15px rgba(102, 252, 241, 0.2); }
+        .search-icon { position: absolute; left: 40px; bottom: 18px; color: #888; font-size: 1.1rem; }
 
-        /* ЗАГОЛОВКИ СЕКЦИЙ */
-        .hero-title { width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 60px 20px 30px; text-align: center; }
-        .hero-title h2 { font-family: 'Montserrat'; font-size: 2.8rem; margin: 0; text-transform: uppercase; letter-spacing: 3px; }
-        .top-50-text { color: #ff3333; font-family: 'Montserrat'; font-weight: 900; font-size: 1.8rem; margin-top: 5px; letter-spacing: 8px; animation: pulse 2s infinite; }
-
-        /* КОНТЕЙНЕР */
-        .container { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; padding: 20px; }
-        .card { background: var(--card-bg); border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.06); position: relative; transition: 0.3s; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
-        .card:hover { transform: translateY(-8px); border-color: var(--accent-blue); }
-        .card-img { width: 100%; height: 160px; object-fit: cover; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .card-body { padding: 20px; }
+        /* КОНТЕЙНЕР КАРТОЧЕК */
+        .container { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; padding: 20px; }
+        .card { background: var(--card-bg); backdrop-filter: blur(10px); border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); position: relative; transition: 0.3s; box-shadow: 0 15px 35px rgba(0,0,0,0.4); }
+        .card:hover { transform: translateY(-8px); border-color: var(--accent-cyan); box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 20px rgba(102, 252, 241, 0.1); }
+        .card-img { width: 100%; height: 180px; object-fit: cover; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .card-body { padding: 25px; }
         
-        .demon-tag { position: absolute; top: 10px; left: 10px; background: var(--main-grad); color: white; padding: 5px 10px; border-radius: 8px; font-weight: 900; font-size: 0.7rem; z-index: 50; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-        .level-id-box { display: flex; align-items: center; gap: 6px; background: rgba(0, 210, 255, 0.08); padding: 8px 12px; border-radius: 10px; color: var(--accent-blue); cursor: pointer; margin-bottom: 15px; font-weight: 700; transition: 0.2s; width: fit-content; font-size: 0.8rem; }
-        .level-id-box:hover { background: rgba(0, 210, 255, 0.15); }
+        .demon-tag { position: absolute; top: 15px; left: 15px; background: var(--main-grad); color: #0b0c10; padding: 6px 12px; border-radius: 8px; font-weight: 900; font-size: 0.75rem; z-index: 50; box-shadow: 0 5px 15px rgba(0,0,0,0.5); text-transform: uppercase; }
+        .level-id-box { display: flex; align-items: center; gap: 8px; background: rgba(102, 252, 241, 0.08); padding: 10px 15px; border-radius: 10px; color: var(--accent-cyan); cursor: pointer; margin-bottom: 20px; font-weight: 700; transition: 0.2s; width: fit-content; font-size: 0.85rem; border: 1px solid rgba(102, 252, 241, 0.1); }
+        .level-id-box:hover { background: rgba(102, 252, 241, 0.15); border-color: rgba(102, 252, 241, 0.3); }
 
-        /* ТАБЫ */
-        .mode-tabs { display: flex; justify-content: center; gap: 12px; margin-bottom: 30px; }
-        .tab-btn { padding: 10px 25px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #777; border-radius: 10px; font-weight: 800; cursor: pointer; transition: 0.3s; font-size: 0.9rem; }
-        .tab-btn.active { background: white; color: black; border-color: white; }
-
-        /* КНОПКИ УПРАВЛЕНИЯ (ИСПРАВЛЕНО: ЯРКИЕ ЦВЕТА) */
-        .admin-controls { position: absolute; top: 8px; right: 8px; z-index: 100; display: flex; gap: 6px; background: rgba(0,0,0,0.8); padding: 5px; border-radius: 10px; backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.1); }
-        .ctrl-btn { width: 32px; height: 32px; border-radius: 6px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: white !important; font-size: 0.9rem; transition: 0.2s; }
-        .btn-up { background-color: #2ecc71 !important; } /* Зеленый */
-        .btn-down { background-color: #3498db !important; } /* Синий */
-        .btn-del { background-color: #e74c3c !important; } /* Красный */
+        /* КНОПКИ УПРАВЛЕНИЯ */
+        .admin-controls { position: absolute; top: 10px; right: 10px; z-index: 100; display: flex; gap: 8px; background: rgba(0,0,0,0.85); padding: 6px; border-radius: 12px; backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.1); }
+        .ctrl-btn { width: 34px; height: 34px; border-radius: 8px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: white !important; font-size: 0.95rem; transition: 0.2s; }
+        .btn-up { background-color: #2ecc71 !important; } 
+        .btn-down { background-color: #3498db !important; } 
+        .btn-del { background-color: #e74c3c !important; } 
         .ctrl-btn:hover { transform: scale(1.1); filter: brightness(1.2); }
 
-        /* АДМИНКА (ИСПРАВЛЕНО: СКРОЛЛ НА ТЕЛЕФОНЕ) */
-        #admin-trigger { position: fixed; bottom: 20px; left: 20px; opacity: 0.2; cursor: pointer; font-size: 1.2rem; background: none; border: none; color: white; z-index: 1000; }
-        .admin-form { 
-            display: none; 
-            background: #161625; 
-            padding: 30px; 
-            border-radius: 20px; 
-            position: fixed; 
-            top: 50%; 
-            left: 50%; 
-            transform: translate(-50%, -50%); 
-            z-index: 2000; 
-            width: 90%; 
-            max-width: 450px; 
-            max-height: 90vh; /* Ограничение высоты */
-            overflow-y: auto; /* Включение прокрутки */
-            border: 1px solid var(--accent-blue); 
-            box-shadow: 0 0 40px rgba(0,0,0,0.8); 
-        }
-        .admin-form h2 { margin-top: 0; font-size: 1.5rem; }
-        .admin-form input, .admin-form select { width: 100%; padding: 12px; margin: 8px 0; background: #1f1f2f; border: 1px solid #333; color: white; border-radius: 10px; font-size: 0.9rem; }
+        /* АДМИНКА */
+        #admin-trigger { position: fixed; bottom: 20px; left: 20px; opacity: 0.2; cursor: pointer; font-size: 1.5rem; background: none; border: none; color: white; z-index: 1000; transition: 0.3s; }
+        #admin-trigger:hover { opacity: 1; color: var(--accent-cyan); }
+        .admin-form { display: none; background: #12151e; padding: 35px; border-radius: 20px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2000; width: 90%; max-width: 450px; max-height: 90vh; overflow-y: auto; border: 1px solid var(--accent-cyan); box-shadow: 0 0 50px rgba(0,0,0,0.8); }
+        .admin-form h2 { margin-top: 0; font-size: 1.5rem; color: white; text-align: center; font-family: Montserrat; }
+        .admin-form input, .admin-form select { width: 100%; padding: 14px; margin: 10px 0; background: #1a1e29; border: 1px solid #333; color: white; border-radius: 12px; font-size: 0.95rem; outline: none; transition: 0.3s; }
+        .admin-form input:focus, .admin-form select:focus { border-color: var(--accent-cyan); }
 
         /* ФУТЕР */
-        footer { padding: 50px 20px; text-align: center; background: rgba(10, 10, 15, 0.95); margin-top: 80px; border-top: 1px solid #222; }
-        .footer-socials { display: flex; justify-content: center; gap: 25px; margin-bottom: 20px; }
-        .footer-socials a { color: white; font-size: 1.8rem; transition: 0.3s; opacity: 0.6; }
-        .footer-socials a:hover { opacity: 1; color: var(--accent-blue); }
+        footer { padding: 40px 20px; text-align: center; background: rgba(11, 12, 16, 0.95); margin-top: auto; border-top: 1px solid rgba(255,255,255,0.05); }
+        .footer-socials { display: flex; justify-content: center; gap: 30px; margin-bottom: 20px; }
+        .footer-socials a { color: var(--text-main); font-size: 2rem; transition: 0.3s; text-decoration: none; }
+        .footer-socials a:hover { color: var(--accent-cyan); transform: translateY(-3px); }
 
-        .btn-more { width: 100%; padding: 14px; background: var(--main-grad); border: none; color: white; border-radius: 10px; cursor: pointer; font-weight: 900; text-transform: uppercase; transition: 0.3s; font-size: 0.85rem; letter-spacing: 0.5px; }
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 3000; backdrop-filter: blur(10px); }
-        .modal-content { background: #1a1a24; margin: 8vh auto; padding: 30px; max-width: 700px; width: 90%; border-radius: 25px; border: 1px solid #333; position: relative; }
+        .btn-more { width: 100%; padding: 15px; background: rgba(102, 252, 241, 0.1); border: 1px solid rgba(102, 252, 241, 0.3); color: var(--accent-cyan); border-radius: 12px; cursor: pointer; font-weight: 900; text-transform: uppercase; transition: 0.3s; font-size: 0.85rem; letter-spacing: 1px; }
+        .btn-more:hover { background: var(--main-grad); color: #0b0c10; border-color: transparent; }
         
-        #copyToast { visibility: hidden; background: var(--accent-blue); color: white; padding: 15px 30px; position: fixed; left: 50%; bottom: 30px; transform: translateX(-50%); border-radius: 10px; z-index: 5000; font-weight: 800; font-size: 0.9rem; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 3000; backdrop-filter: blur(15px); }
+        .modal-content { background: var(--card-bg); margin: 8vh auto; padding: 40px; max-width: 750px; width: 90%; border-radius: 25px; border: 1px solid rgba(102, 252, 241, 0.2); position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        
+        #copyToast { visibility: hidden; background: var(--main-grad); color: #0b0c10; padding: 15px 30px; position: fixed; left: 50%; bottom: 30px; transform: translateX(-50%); border-radius: 12px; z-index: 5000; font-weight: 900; font-size: 0.95rem; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
         #copyToast.show { visibility: visible; animation: fadeInUp 0.4s; }
 
-        .record-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background: rgba(255,255,255,0.03); margin-bottom: 6px; border-radius: 10px; font-size: 0.9rem; }
+        .record-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 18px; background: rgba(255,255,255,0.03); margin-bottom: 8px; border-radius: 12px; font-size: 0.95rem; border: 1px solid rgba(255,255,255,0.05); }
 
-        @media (max-width: 600px) {
-            .navbar { padding: 10px 4%; }
-            .logo { font-size: 1.2rem; }
-            .nav-links { gap: 12px; }
-            .hero-title h2 { font-size: 2rem; }
-            .top-50-text { font-size: 1.3rem; letter-spacing: 5px; }
-            .welcome-hero h1 { font-size: 2.8rem; }
+        /* VIDEO SECTION */
+        .home-video-section { max-width: 900px; margin: 0 auto 80px; padding: 0 20px; text-align: center; }
+        .home-video-label { display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 18px; }
+        .home-video-line { flex: 1; height: 1px; background: rgba(102, 252, 241, 0.2); max-width: 120px; }
+        .home-video-tag { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--text-main); display: flex; align-items: center; }
+        .home-video-title { font-family: 'Montserrat'; font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 900; margin: 0 0 30px; color: #fff; text-transform: uppercase; letter-spacing: 2px; }
+        .home-video-wrapper { position: relative; width: 100%; aspect-ratio: 16/9; border-radius: 20px; overflow: hidden; border: 1px solid rgba(102, 252, 241, 0.2); box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 40px rgba(102, 252, 241, 0.08); }
+        .home-video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+        @media (max-width: 768px) {
+            .navbar { padding: 15px 4%; flex-wrap: wrap; justify-content: center; gap: 15px; }
+            .logo { font-size: 1.4rem; width: 100%; text-align: center; margin-bottom: 5px; }
+            .nav-links { gap: 15px; justify-content: center; flex-wrap: wrap; width: 100%; }
+            .nav-socials { border-left: none; padding-left: 0; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px; width: 100%; justify-content: center; }
+            .hero-title h2 { font-size: 2.2rem; }
+            .welcome-hero h1 { font-size: 2.5rem; }
+            .dl-cards { flex-direction: column; }
         }
     </style>
 </head>
@@ -145,25 +188,84 @@
     <div class="bg-wrapper"><div class="grid-overlay"></div><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
 
     <nav class="navbar">
-        <div class="logo" onclick="window.scrollTo(0,0)">Mysteryx GDPS</div>
+        <div class="logo" onclick="openSection('homeSection')">Mysteryx GDPS</div>
         <div class="nav-links">
-            <a href="#listSection" id="navDemonList">Demon List</a>
-            <a href="https://t.me/mysteryxgdps" target="_blank">Telegram</a>
-            <a href="https://www.youtube.com/@lichigmdj98" target="_blank">YouTube</a>
-            <button onclick="toggleLang()" id="langBtn" style="background:none; border:1px solid #444; color:white; padding:5px 10px; cursor:pointer; border-radius:5px;">RU</button>
+            
+            <button class="nav-item" onclick="openSection('homeSection')" id="navHome">Главная</button>
+
+            <div class="dropdown">
+                <button class="nav-item" onclick="toggleDropdown('demonDrop', event)" id="navDemonListText">
+                    Demon List <i class="fas fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content" id="demonDrop">
+                    <a onclick="openSection('listSection'); switchTab('demons');" id="navDropTop50">ТОП 50</a>
+                    <a onclick="openSection('listSection'); switchTab('creators');" id="navDropCreators">КРЕАТОРЫ</a>
+                </div>
+            </div>
+
+            <button class="btn-download-nav" onclick="openSection('downloadSection')">
+                <i class="fas fa-download"></i> <span id="navDownloadText">Скачать</span>
+            </button>
+
+            <div class="nav-socials">
+                <a href="https://t.me/mysteryxgdps" target="_blank" class="tg-icon" title="Telegram"><i class="fab fa-telegram"></i></a>
+                <a href="https://www.youtube.com/@lichigmdj98" target="_blank" class="yt-icon" title="YouTube"><i class="fab fa-youtube"></i></a>
+                <button onclick="toggleLang()" id="langBtn" style="background:none; border:1px solid rgba(102, 252, 241, 0.4); color:var(--accent-cyan); padding:5px 12px; cursor:pointer; border-radius:8px; font-weight:700; margin-left:10px;">RU</button>
+            </div>
         </div>
     </nav>
 
-    <header class="welcome-hero">
-        <h1 id="welcomeTitle">MYSTERYX GDPS</h1>
-        <p id="welcomeDesc">Окунись в мир самого амбициозного приватного сервера Geometry Dash. Стабильность, уникальные уровни и сильнейшее комьюнити игроков.</p>
-        <div class="hero-btns">
-            <a href="https://t.me/mysteryxgdps" target="_blank" class="btn-main" id="btnPlay">ИГРАТЬ СЕЙЧАС</a>
-            <a href="#listSection" class="btn-outline" id="btnList">DEMON LIST</a>
-        </div>
-    </header>
+    <main id="homeSection" class="section-page active">
+        <header class="welcome-hero">
+            <h1 id="welcomeTitle">MYSTERYX GDPS</h1>
+            <p id="welcomeDesc">Окунись в мир самого амбициозного приватного сервера Geometry Dash. Стабильность, уникальные уровни и сильнейшее комьюнити игроков.</p>
+            <div class="hero-btns">
+                <button onclick="openSection('downloadSection')" class="btn-main" id="btnPlay">СКАЧАТЬ ИГРУ</button>
+                <button onclick="openSection('listSection'); switchTab('demons');" class="btn-outline" id="btnList">DEMON LIST</button>
+            </div>
+        </header>
 
-    <section id="listSection">
+        <section class="home-video-section">
+            <div class="home-video-label">
+                <span class="home-video-line"></span>
+                <span class="home-video-tag"><i class="fab fa-youtube" style="color:#ff0000; margin-right:8px;"></i>СМОТРЕТЬ НА YOUTUBE</span>
+                <span class="home-video-line"></span>
+            </div>
+            <h2 class="home-video-title">Mysteryx GDPS | Новая Приватка</h2>
+            <div class="home-video-wrapper">
+                <iframe
+                    src="https://www.youtube.com/embed/4FVkdKR-p5Y"
+                    title="Mysteryx GDPS | Новая Приватка"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen>
+                </iframe>
+            </div>
+        </section>
+    </main>
+
+    <main id="downloadSection" class="section-page">
+        <div class="download-container">
+            <h2 class="dl-title" id="dlTitle">СКАЧАТЬ ИГРУ</h2>
+            <div class="dl-version" id="dlVersion">Версия 2.2081</div>
+            
+            <div class="dl-cards">
+                <a href="https://drive.google.com/file/d/1JDpXrU-QtROGSTzLf10vHlgSS-6SvYNl/view?usp=drive_link" target="_blank" class="dl-card pc">
+                    <i class="fab fa-windows dl-icon"></i>
+                    <div class="dl-name">PC / Windows</div>
+                    <div class="dl-desc" id="dlDescPC">Скачать .zip архив для игры на компьютере</div>
+                </a>
+                
+                <a href="https://drive.google.com/file/d/16iEN3S9gwmYAkWNTvQb56yhyV_tD11st/view?usp=sharing" target="_blank" class="dl-card android">
+                    <i class="fab fa-android dl-icon"></i>
+                    <div class="dl-name">Android</div>
+                    <div class="dl-desc" id="dlDescAnd">Скачать .apk файл для игры на телефоне</div>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <main id="listSection" class="section-page">
         <div class="hero-title">
             <h2 id="txtHero">DEMON LIST</h2>
             <div class="top-50-text" id="top50Banner">TOP 50</div>
@@ -177,28 +279,23 @@
             <i class="fas fa-search search-icon"></i>
             <input type="text" id="searchInput" class="search-input" placeholder="Поиск уровня или автора..." oninput="render()">
         </div>
-
-        <div class="mode-tabs">
-            <button id="tabDemons" class="tab-btn active" onclick="switchTab('demons')">Demons</button>
-            <button id="tabCreators" class="tab-btn" onclick="switchTab('creators')">Creators</button>
-        </div>
         
         <div class="container" id="mainContainer"></div>
-    </section>
+    </main>
 
     <footer>
         <div class="footer-socials">
             <a href="https://t.me/mysteryxgdps" target="_blank"><i class="fab fa-telegram"></i></a>
             <a href="https://www.youtube.com/@lichigmdj98" target="_blank"><i class="fab fa-youtube"></i></a>
         </div>
-        <p>© 2026 Mysteryx GDPS. Developed with passion.</p>
-        <a href="https://t.me/mysteryxgdps/11198/11199" id="verifyLink" style="color:#555; text-decoration:none; font-size:0.8rem;" target="_blank">Критерии верификации</a>
+        <p style="color:var(--text-main);">© 2026 Mysteryx GDPS. Developed with passion.</p>
+        <a href="https://t.me/mysteryxgdps/11198/11199" id="verifyLink" style="color:#666; text-decoration:none; font-size:0.85rem; transition:0.3s;" target="_blank">Критерии верификации</a>
     </footer>
 
     <button id="admin-trigger" onclick="openAdmin()"><i class="fas fa-cog"></i></button>
 
     <div id="adminPanel" class="admin-form">
-        <h2 style="text-align:center; font-family: Montserrat;">ADMIN PANEL</h2>
+        <h2>ADMIN PANEL</h2>
         <input type="password" id="adminPass" placeholder="Пароль">
         <select id="admAction" onchange="toggleAdmFields()">
             <option value="add_demon">Добавить Демона</option>
@@ -225,8 +322,8 @@
             <input type="text" id="vicAtt" placeholder="Попытки">
         </div>
 
-        <button class="btn-more" onclick="processAdmin()">ВЫПОЛНИТЬ</button>
-        <button class="btn-more" style="background:#222; margin-top:10px;" onclick="closeAdmin()">ЗАКРЫТЬ</button>
+        <button class="btn-more" style="background:var(--main-grad); color:#0b0c10; margin-top:15px; border:none;" onclick="processAdmin()">ВЫПОЛНИТЬ</button>
+        <button class="btn-more" style="background:transparent; border:1px solid #555; color:#888; margin-top:10px;" onclick="closeAdmin()">ЗАКРЫТЬ</button>
     </div>
 
     <div id="detailModal" class="modal"><div class="modal-content" id="modalData"></div></div>
@@ -248,8 +345,41 @@
         let currentLang = 'RU'; 
         let isDeleteMode = false;
         let searchMode = 'main'; 
+        let currentTab = 'demons'; // demons или creators
         let demons = []; 
         let creators = [];
+
+        // Логика переключения секций
+        function openSection(id) {
+            document.querySelectorAll('.section-page').forEach(sec => sec.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            window.scrollTo(0,0);
+            
+            // Закрыть выпадающее меню, если оно было открыто
+            const drops = document.getElementsByClassName("dropdown-content");
+            for (let i = 0; i < drops.length; i++) {
+                drops[i].classList.remove('show');
+            }
+        }
+
+        // Логика выпадающего меню по клику
+        function toggleDropdown(id, event) {
+            event.stopPropagation(); // Чтобы клик не ушел дальше и не закрыл сразу же
+            document.getElementById(id).classList.toggle("show");
+        }
+
+        // Закрытие меню при клике в любое другое место экрана
+        window.onclick = function(event) {
+            if (!event.target.matches('.nav-item') && !event.target.matches('.fa-caret-down')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
 
         db.ref('demons').on('value', s => { 
             const val = s.val(); 
@@ -279,7 +409,7 @@
 
         function render() {
             const container = document.getElementById('mainContainer');
-            const isDem = document.getElementById('tabDemons').classList.contains('active');
+            const isDem = (currentTab === 'demons');
             const query = document.getElementById('searchInput').value.toLowerCase();
             const topBanner = document.getElementById('top50Banner');
             
@@ -305,10 +435,10 @@
                                 <button class="ctrl-btn btn-del" onclick="deleteItem('${d.key}','demons')"><i class="fas fa-trash"></i></button>
                             </div>` : ''}
                             ${d.tag ? `<div class="demon-tag">${d.tag}</div>` : ''}
-                            <img src="${d.img}" class="card-img" onerror="this.src='https://via.placeholder.com/600x300/111/fff?text=Mysteryx'">
+                            <img src="${d.img}" class="card-img" onerror="this.src='https://via.placeholder.com/600x300/1f2833/66fcf1?text=Mysteryx'">
                             <div class="card-body">
-                                <h3 style="margin:0; color:var(--accent-blue); font-size: 1.15rem;">#${i+1} ${d.name}</h3>
-                                <p style="color:#888; margin: 4px 0 12px; font-size: 0.85rem;">by ${d.author}</p>
+                                <h3 style="margin:0; color:var(--accent-cyan); font-size: 1.25rem;">#${i+1} ${d.name}</h3>
+                                <p style="color:#aaa; margin: 6px 0 15px; font-size: 0.9rem;">by <span style="color:#fff">${d.author}</span></p>
                                 <div class="level-id-box" onclick="copyID('${d.levelID}')">ID: ${d.levelID}</div>
                                 <button class="btn-more" onclick="showInfoByKey('${d.key}')">${currentLang==='EN'?'DETAILS':'ПОДРОБНЕЕ'}</button>
                             </div>
@@ -321,9 +451,9 @@
                         ${isDeleteMode ? `<div class="admin-controls">
                             <button class="ctrl-btn btn-del" onclick="deleteItem('${c.key}','creators')"><i class="fas fa-trash"></i></button>
                         </div>` : ''}
-                        <div class="card-body" style="display:flex; justify-content:space-between; align-items:center; padding:30px 40px;">
-                            <h3 style="margin:0; font-size: 1.1rem;">#${i+1} ${c.name}</h3>
-                            <div style="text-align:right;"><span style="font-size:1.3rem; color:var(--accent-blue); font-weight:900;">${c.points} CP</span></div>
+                        <div class="card-body" style="display:flex; justify-content:space-between; align-items:center; padding:35px 40px;">
+                            <h3 style="margin:0; font-size: 1.2rem; color: #fff;">#${i+1} ${c.name}</h3>
+                            <div style="text-align:right;"><span style="font-size:1.5rem; color:var(--accent-cyan); font-weight:900;">${c.points} CP</span></div>
                         </div>
                     </div>`;
                 });
@@ -362,24 +492,40 @@
                 RU: {
                     welcomeT: "MYSTERYX GDPS",
                     welcomeD: "Окунись в мир самого амбициозного приватного сервера Geometry Dash. Стабильность, уникальные уровни и сильнейшее комьюнити игроков.",
-                    play: "ИГРАТЬ СЕЙЧАС",
+                    play: "СКАЧАТЬ ИГРУ",
                     list: "DEMON LIST",
                     searchM: "Название / Автор",
                     searchT: "По тегу",
                     searchP: "Поиск уровня или автора...",
                     verify: "Критерии верификации",
-                    toast: "ID Скопировано!"
+                    toast: "ID Скопировано!",
+                    navDropTop50: "ТОП 50",
+                    navDropCreators: "КРЕАТОРЫ",
+                    navDownloadText: "Скачать",
+                    navHome: "Главная",
+                    dlTitle: "СКАЧАТЬ ИГРУ",
+                    dlVersion: "Версия 2.2081",
+                    dlDescPC: "Скачать .zip архив для игры на компьютере",
+                    dlDescAnd: "Скачать .apk файл для игры на телефоне"
                 },
                 EN: {
                     welcomeT: "MYSTERYX GDPS",
                     welcomeD: "Dive into the world of the most ambitious Geometry Dash private server. Stability, unique levels, and the strongest community.",
-                    play: "PLAY NOW",
+                    play: "DOWNLOAD GAME",
                     list: "DEMON LIST",
                     searchM: "Name / Author",
                     searchT: "By Tag",
                     searchP: "Search level or creator...",
                     verify: "Verification Criteria",
-                    toast: "ID Copied!"
+                    toast: "ID Copied!",
+                    navDropTop50: "TOP 50",
+                    navDropCreators: "CREATORS",
+                    navDownloadText: "Download",
+                    navHome: "Home",
+                    dlTitle: "DOWNLOAD GAME",
+                    dlVersion: "Version 2.2081",
+                    dlDescPC: "Download .zip archive to play on PC",
+                    dlDescAnd: "Download .apk file to play on mobile"
                 }
             };
 
@@ -393,7 +539,16 @@
             document.getElementById('searchInput').placeholder = t.searchP;
             document.getElementById('verifyLink').innerText = t.verify;
             document.getElementById('copyToast').innerText = t.toast;
-            document.getElementById('navDemonList').innerText = t.list;
+            
+            document.getElementById('navDemonListText').innerHTML = `${t.list} <i class="fas fa-caret-down"></i>`;
+            document.getElementById('navDownloadText').innerText = t.navDownloadText;
+            document.getElementById('navDropTop50').innerText = t.navDropTop50;
+            document.getElementById('navDropCreators').innerText = t.navDropCreators;
+            document.getElementById('navHome').innerText = t.navHome;
+            document.getElementById('dlTitle').innerText = t.dlTitle;
+            document.getElementById('dlVersion').innerText = t.dlVersion;
+            document.getElementById('dlDescPC').innerText = t.dlDescPC;
+            document.getElementById('dlDescAnd').innerText = t.dlDescAnd;
 
             render();
         }
@@ -402,17 +557,17 @@
             const d = demons.find(x => x.key === key);
             const vics = d.victors ? Object.entries(d.victors).map(([vk, v]) => `
                 <div class="record-item">
-                    <span><b>${v.name}</b> — <span style="color:var(--accent-blue)">${v.perc || '100%'}</span> (${v.att || '0'} att)</span>
-                    ${isDeleteMode ? `<i class="fas fa-times" style="color:red; cursor:pointer;" onclick="deleteVictor('${d.key}', '${vk}')"></i>` : ''}
-                </div>`).join('') : `<p style='color:#666;'>${currentLang==='EN'?'No records yet':'Рекордов пока нет'}</p>`;
+                    <span><b style="color:#fff;">${v.name}</b> — <span style="color:var(--accent-cyan); font-weight:700;">${v.perc || '100%'}</span> <span style="color:#aaa;">(${v.att || '0'} att)</span></span>
+                    ${isDeleteMode ? `<i class="fas fa-times" style="color:#ff4d4d; cursor:pointer;" onclick="deleteVictor('${d.key}', '${vk}')"></i>` : ''}
+                </div>`).join('') : `<p style='color:#888;'>${currentLang==='EN'?'No records yet':'Рекордов пока нет'}</p>`;
 
             document.getElementById('modalData').innerHTML = `
-                <h2 style="font-family:Montserrat; font-size:1.8rem; margin:0;">${d.name}</h2>
-                <p style="color:#888; font-size:0.9rem;">by ${d.author} ${d.verifier ? '| Verified by ' + d.verifier : ''}</p>
-                <iframe style="width:100%; aspect-ratio:16/9; border-radius:15px; margin:15px 0; border:1px solid #333;" src="https://www.youtube.com/embed/${d.vid}" frameborder="0" allowfullscreen></iframe>
-                <h3 style="margin-bottom:12px; font-size:1.1rem;">Victors & Records:</h3>
-                <div style="max-height:200px; overflow-y:auto; padding-right:10px;">${vics}</div>
-                <button class="btn-more" style="background:#222; margin-top:25px;" onclick="document.getElementById('detailModal').style.display='none'">${currentLang==='EN'?'CLOSE':'ЗАКРЫТЬ'}</button>`;
+                <h2 style="font-family:Montserrat; font-size:2rem; margin:0; color: #fff;">${d.name}</h2>
+                <p style="color:#aaa; font-size:0.95rem;">by <span style="color:var(--accent-cyan);">${d.author}</span> ${d.verifier ? '| Verified by ' + d.verifier : ''}</p>
+                <iframe style="width:100%; aspect-ratio:16/9; border-radius:15px; margin:20px 0; border:1px solid rgba(102, 252, 241, 0.2);" src="https://www.youtube.com/embed/${d.vid}" frameborder="0" allowfullscreen></iframe>
+                <h3 style="margin-bottom:15px; font-size:1.2rem; color: #fff;">Victors & Records:</h3>
+                <div style="max-height:220px; overflow-y:auto; padding-right:10px;">${vics}</div>
+                <button class="btn-more" style="background:transparent; border:1px solid #555; color:#888; margin-top:25px;" onclick="document.getElementById('detailModal').style.display='none'">${currentLang==='EN'?'CLOSE':'ЗАКРЫТЬ'}</button>`;
             
             document.getElementById('detailModal').style.display='block';
         }
@@ -445,7 +600,7 @@
 
         function openAdmin() { document.getElementById('adminPanel').style.display='block'; toggleAdmFields(); }
         function closeAdmin() { document.getElementById('adminPanel').style.display='none'; }
-        function switchTab(t) { document.getElementById('tabDemons').classList.toggle('active', t==='demons'); document.getElementById('tabCreators').classList.toggle('active', t==='creators'); render(); }
+        function switchTab(t) { currentTab = t; render(); }
         function deleteItem(k, p) { if(confirm("Delete item?")) db.ref(p+'/'+k).remove(); }
     </script>
 </body>
