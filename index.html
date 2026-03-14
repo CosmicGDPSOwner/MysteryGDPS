@@ -9,6 +9,7 @@
     
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 
     <style>
         :root {
@@ -171,7 +172,7 @@
         .ctrl-btn:hover { transform: scale(1.1); filter: brightness(1.2); }
 
         /* АДМИНКА */
-        #admin-trigger { position: fixed; bottom: 20px; left: 20px; opacity: 0.2; cursor: pointer; font-size: 1.5rem; background: none; border: none; color: white; z-index: 1000; transition: 0.3s; }
+        #admin-trigger { position: fixed; bottom: 20px; left: 20px; opacity: 0.2; cursor: pointer; font-size: 1.5rem; background: none; border: none; color: white; z-index: 1000; transition: 0.3s; display: none; }
         #admin-trigger:hover { opacity: 1; color: var(--accent-cyan); }
         .admin-form {
             display: none; background: #12151e; padding: 25px 18px; border-radius: 20px;
@@ -415,46 +416,56 @@
 
     <button id="admin-trigger" onclick="openAdmin()"><i class="fas fa-cog"></i></button>
 
-    <!-- ADMIN PANEL — добавлена видимая кнопка закрытия вверху -->
+    <!-- ADMIN PANEL — Firebase Auth -->
     <div id="adminPanel" class="admin-form">
         <button onclick="closeAdmin()" style="position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:8px;background:rgba(255,70,70,0.13);border:1px solid rgba(255,70,70,0.3);color:#ff6868;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">
             <i class="fas fa-times"></i>
         </button>
         <h2>ADMIN PANEL</h2>
-        <input type="password" id="adminPass" placeholder="Пароль">
-        <select id="admAction" onchange="toggleAdmFields()">
-            <option value="add_demon">Добавить Демона</option>
-            <option value="add_creator">Добавить Креатора</option>
-            <option value="add_victor">Добавить Рекорд</option>
-            <option value="delete_mode">Удаление / Движение</option>
-            <option value="delete_all_demons">🗑️ Удалить ВСЕХ демонов</option>
-        </select>
-        <div id="fields_main">
-            <input type="text" id="itemName" placeholder="Название / Ник">
-            <input type="text" id="itemVal" placeholder="Автор / CP">
-            <div id="fields_demon">
-                <input type="text" id="itemID" placeholder="ID Уровня">
-                <input type="text" id="itemTag" placeholder="Тег (напр. Top 1)">
-                <input type="text" id="itemVerifier" placeholder="Верифер">
-                <input type="text" id="itemImgURL" placeholder="Ссылка на картинку">
-                <input type="text" id="itemVid" placeholder="Ссылка на YouTube">
+
+        <!-- Блок входа — виден только если не залогинен -->
+        <div id="loginBlock">
+            <input type="email" id="adminEmail" placeholder="Email">
+            <input type="password" id="adminPass" placeholder="Пароль">
+            <div id="loginError" style="color:#ff6868;font-size:0.85rem;text-align:center;margin-top:6px;display:none;">Неверный email или пароль</div>
+            <button class="btn-more" style="background:var(--main-grad);color:#0b0c10;margin-top:15px;border:none;" onclick="adminLogin()">ВОЙТИ</button>
+        </div>
+
+        <!-- Панель управления — видна только после входа -->
+        <div id="adminControls" style="display:none;">
+            <select id="admAction" onchange="toggleAdmFields()">
+                <option value="add_demon">Добавить Демона</option>
+                <option value="add_creator">Добавить Креатора</option>
+                <option value="add_victor">Добавить Рекорд</option>
+                <option value="delete_mode">Удаление / Движение</option>
+                <option value="delete_all_demons">🗑️ Удалить ВСЕХ демонов</option>
+            </select>
+            <div id="fields_main">
+                <input type="text" id="itemName" placeholder="Название / Ник">
+                <input type="text" id="itemVal" placeholder="Автор / CP">
+                <div id="fields_demon">
+                    <input type="text" id="itemID" placeholder="ID Уровня">
+                    <input type="text" id="itemTag" placeholder="Тег (напр. Top 1)">
+                    <input type="text" id="itemVerifier" placeholder="Верифер">
+                    <input type="text" id="itemImgURL" placeholder="Ссылка на картинку">
+                    <input type="text" id="itemVid" placeholder="Ссылка на YouTube">
+                </div>
             </div>
+            <div id="fields_victor" style="display:none;">
+                <select id="selectDemon" style="width:100%"></select>
+                <input type="text" id="vicName" placeholder="Ник игрока">
+                <input type="text" id="vicPerc" placeholder="Проценты">
+                <input type="text" id="vicAtt" placeholder="Попытки">
+            </div>
+            <button class="btn-more" style="background:var(--main-grad);color:#0b0c10;margin-top:15px;border:none;" onclick="processAdmin()">ВЫПОЛНИТЬ</button>
+            <button class="btn-more" style="background:transparent;border:1px solid #e74c3c;color:#e74c3c;margin-top:10px;" onclick="adminLogout()">ВЫЙТИ ИЗ АККАУНТА</button>
         </div>
-        <div id="fields_victor" style="display:none;">
-            <select id="selectDemon" style="width:100%"></select>
-            <input type="text" id="vicName" placeholder="Ник игрока">
-            <input type="text" id="vicPerc" placeholder="Проценты">
-            <input type="text" id="vicAtt" placeholder="Попытки">
-        </div>
-        <button class="btn-more" style="background:var(--main-grad); color:#0b0c10; margin-top:15px; border:none;" onclick="processAdmin()">ВЫПОЛНИТЬ</button>
-        <button class="btn-more" style="background:transparent; border:1px solid #555; color:#888; margin-top:10px;" onclick="closeAdmin()">ЗАКРЫТЬ</button>
     </div>
 
     <!-- DETAIL MODAL — кнопка × вставляется через JS внутрь карточки -->
     <div id="detailModal" class="modal"><div class="modal-content" id="modalData"></div></div>
 
     <script>
-        const SECRET_HASH = "80f681a9425035255476d0042456345688753239";
         const firebaseConfig = {
             apiKey: "AIzaSyBugYw3fPo4r7Q0e4jDjBUd-JBbCspghE8",
             authDomain: "mysterygdps-30547.firebaseapp.com",
@@ -466,15 +477,52 @@
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
+        const auth = firebase.auth();
 
-        let currentLang = 'RU'; 
+        let currentLang = 'RU';
+        let isAdmin = false;
         let isDeleteMode = false;
-        let searchMode = 'main'; 
+        let searchMode = 'main';
         let currentTab = 'demons';
-        let demons = []; 
+        let demons = [];
         let creators = [];
 
-        // ---- Бургер (новое, не затрагивает оригинальную логику) ----
+        // Следим за входом — шестерёнка только для тебя
+        auth.onAuthStateChanged(user => {
+            isAdmin = !!user;
+            const trigger = document.getElementById('admin-trigger');
+            trigger.style.display = isAdmin ? 'block' : 'none';
+            if (!isAdmin) { isDeleteMode = false; render(); }
+        });
+
+        function adminLogin() {
+            const email = document.getElementById('adminEmail').value.trim();
+            const pass = document.getElementById('adminPass').value;
+            const errEl = document.getElementById('loginError');
+            errEl.style.display = 'none';
+            auth.signInWithEmailAndPassword(email, pass)
+                .then(() => {
+                    document.getElementById('loginBlock').style.display = 'none';
+                    document.getElementById('adminControls').style.display = 'block';
+                    toggleAdmFields();
+                })
+                .catch(() => { errEl.style.display = 'block'; });
+        }
+
+        function adminLogout() {
+            auth.signOut();
+            closeAdmin();
+        }
+
+        function openAdmin() {
+            document.getElementById('loginBlock').style.display = isAdmin ? 'none' : 'block';
+            document.getElementById('adminControls').style.display = isAdmin ? 'block' : 'none';
+            document.getElementById('loginError').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+            toggleAdmFields();
+        }
+
+        // ---- Бургер ----
         function toggleBurger() {
             const menu = document.getElementById('mobileMenu');
             const btn  = document.getElementById('burgerBtn');
@@ -487,7 +535,6 @@
             document.getElementById('burgerBtn').classList.remove('open');
         }
 
-        // ---- Оригинальная логика (без единого изменения) ----
         function openSection(id) {
             document.querySelectorAll('.section-page').forEach(sec => sec.classList.remove('active'));
             document.getElementById(id).classList.add('active');
@@ -506,30 +553,23 @@
             if (!event.target.matches('.nav-item') && !event.target.matches('.fa-caret-down')) {
                 var dropdowns = document.getElementsByClassName("dropdown-content");
                 for (var i = 0; i < dropdowns.length; i++) {
-                    var openDropdown = dropdowns[i];
-                    if (openDropdown.classList.contains('show')) { openDropdown.classList.remove('show'); }
+                    if (dropdowns[i].classList.contains('show')) { dropdowns[i].classList.remove('show'); }
                 }
             }
         }
 
-        db.ref('demons').on('value', s => { 
-            const val = s.val(); 
+        db.ref('demons').on('value', s => {
+            const val = s.val();
             demons = val ? Object.entries(val).map(([k, d]) => ({ key: k, ...d })).sort((a,b)=>(a.order||0)-(b.order||0)) : [];
             const sel = document.getElementById('selectDemon');
             if(sel) sel.innerHTML = demons.map(d => `<option value="${d.key}">${d.name}</option>`).join('');
-            render(); 
+            render();
         });
-        db.ref('creators').on('value', s => { 
-            const val = s.val(); 
+        db.ref('creators').on('value', s => {
+            const val = s.val();
             creators = val ? Object.entries(val).map(([k, d]) => ({ key: k, ...d })).sort((a,b)=>parseInt(b.points)-parseInt(a.points)) : [];
-            render(); 
+            render();
         });
-
-        async function hashString(str) {
-            const buffer = new TextEncoder().encode(str);
-            const hashBuffer = await crypto.subtle.digest('SHA-1', buffer);
-            return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
-        }
 
         function setSearchMode(m) {
             searchMode = m;
@@ -543,7 +583,7 @@
             const isDem = (currentTab === 'demons');
             const query = document.getElementById('searchInput').value.toLowerCase();
             const topBanner = document.getElementById('top50Banner');
-            
+
             container.innerHTML = '';
             document.getElementById('txtHero').innerText = isDem ? (currentLang==='EN'?'DEMON LIST':'СПИСОК ДЕМОНОВ') : (currentLang==='EN'?'CREATOR TOP':'ТОП КРЕАТОРОВ');
             topBanner.style.display = isDem ? 'block' : 'none';
@@ -553,7 +593,6 @@
                     if (searchMode === 'tag') { return d.tag && d.tag.toLowerCase().includes(query); }
                     return d.name.toLowerCase().includes(query) || d.author.toLowerCase().includes(query);
                 });
-
                 filtered.forEach((d, i) => {
                     container.innerHTML += `
                         <div class="card">
@@ -589,33 +628,26 @@
             }
         }
 
-        async function processAdmin() {
-            const passField = document.getElementById('adminPass');
-            const rawPass = passField.value.trim().toLowerCase();
-            const h = await hashString(rawPass);
-            if(h === SECRET_HASH || rawPass === "mysteryxgdpsold777") {
-                const act = document.getElementById('admAction').value;
-                if(act === 'add_demon') {
-                    let r = document.getElementById('itemVid').value;
-                    let v = r.includes('v=') ? r.split('v=')[1].split('&')[0] : r.includes('youtu.be/') ? r.split('youtu.be/')[1].split('?')[0] : r;
-                    db.ref('demons').push({ name: document.getElementById('itemName').value, author: document.getElementById('itemVal').value, levelID: document.getElementById('itemID').value, tag: document.getElementById('itemTag').value, verifier: document.getElementById('itemVerifier').value, img: document.getElementById('itemImgURL').value, vid: v, order: demons.length });
-                } else if(act === 'add_creator') {
-                    db.ref('creators').push({ name: document.getElementById('itemName').value, points: parseInt(document.getElementById('itemVal').value) || 0 });
-                } else if(act === 'add_victor') {
-                    const dKey = document.getElementById('selectDemon').value;
-                    db.ref(`demons/${dKey}/victors`).push({ 
-                        name: document.getElementById('vicName').value, 
-                        perc: document.getElementById('vicPerc').value, 
-                        att: document.getElementById('vicAtt').value 
-                    });
-                } else if(act === 'delete_mode') { isDeleteMode = !isDeleteMode; render(); }
-                else if(act === 'delete_all_demons') {
-                    if(confirm('⚠️ Удалить ВСЕХ демонов из списка? Это действие необратимо!')) {
-                        db.ref('demons').remove();
-                    }
+        function processAdmin() {
+            if (!isAdmin) { alert('Нет доступа!'); return; }
+            const act = document.getElementById('admAction').value;
+            if(act === 'add_demon') {
+                let r = document.getElementById('itemVid').value;
+                let v = r.includes('v=') ? r.split('v=')[1].split('&')[0] : r.includes('youtu.be/') ? r.split('youtu.be/')[1].split('?')[0] : r;
+                db.ref('demons').push({ name: document.getElementById('itemName').value, author: document.getElementById('itemVal').value, levelID: document.getElementById('itemID').value, tag: document.getElementById('itemTag').value, verifier: document.getElementById('itemVerifier').value, img: document.getElementById('itemImgURL').value, vid: v, order: demons.length });
+            } else if(act === 'add_creator') {
+                db.ref('creators').push({ name: document.getElementById('itemName').value, points: parseInt(document.getElementById('itemVal').value) || 0 });
+            } else if(act === 'add_victor') {
+                const dKey = document.getElementById('selectDemon').value;
+                db.ref(`demons/${dKey}/victors`).push({ name: document.getElementById('vicName').value, perc: document.getElementById('vicPerc').value, att: document.getElementById('vicAtt').value });
+            } else if(act === 'delete_mode') {
+                isDeleteMode = !isDeleteMode; render();
+            } else if(act === 'delete_all_demons') {
+                if(confirm('⚠️ Удалить ВСЕХ демонов из списка? Это действие необратимо!')) {
+                    db.ref('demons').remove();
                 }
-                closeAdmin();
-            } else { alert("Error!"); }
+            }
+            closeAdmin();
         }
 
         function toggleLang() {
@@ -734,7 +766,6 @@
             document.getElementById('fields_victor').style.display = a === 'add_victor' ? 'block' : 'none'; 
         }
 
-        function openAdmin() { document.getElementById('adminPanel').style.display='block'; toggleAdmFields(); }
         function closeAdmin() { document.getElementById('adminPanel').style.display='none'; }
         function switchTab(t) { currentTab = t; render(); }
         function deleteItem(k, p) { if(confirm("Delete item?")) db.ref(p+'/'+k).remove(); }
