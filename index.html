@@ -488,11 +488,23 @@
         let creators = [];
 
         // Следим за входом — шестерёнка только для тебя
+        // Показать шестерёнку сразу если уже входил раньше
+        if (localStorage.getItem('mxAdmin') === '1') {
+            document.getElementById('admin-trigger').style.display = 'block';
+        }
+
         auth.onAuthStateChanged(user => {
             isAdmin = !!user;
             const trigger = document.getElementById('admin-trigger');
-            trigger.style.display = isAdmin ? 'block' : 'none';
-            if (!isAdmin) { isDeleteMode = false; render(); }
+            if (isAdmin) {
+                localStorage.setItem('mxAdmin', '1');
+                trigger.style.display = 'block';
+            } else {
+                localStorage.removeItem('mxAdmin');
+                trigger.style.display = 'none';
+                isDeleteMode = false;
+                render();
+            }
         });
 
         function adminLogin() {
