@@ -24,7 +24,6 @@
         * { box-sizing: border-box; scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
         body { margin: 0; font-family: 'Poppins', sans-serif; background: var(--bg); color: white; overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column; }
 
-        /* ФОН */
         .bg-wrapper { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: var(--bg); overflow: hidden; }
         .grid-overlay {
             position: absolute; width: 200%; height: 200%; top: -50%; left: -50%;
@@ -40,7 +39,6 @@
         .orb-2 { width: 500px; height: 500px; background: #45a29e; bottom: -10%; right: -10%; animation-delay: -6s; }
         @keyframes float { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(30px, 40px); } }
 
-        /* НАВИГАЦИЯ */
         .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 6%; background: rgba(11, 12, 16, 0.85); backdrop-filter: blur(20px); position: fixed; width: 100%; top: 0; z-index: 1000; border-bottom: 1px solid rgba(102, 252, 241, 0.1); }
         .logo { font-family: 'Montserrat'; font-size: 1.6rem; font-weight: 900; background: var(--main-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; transition: 0.3s; letter-spacing: 1px; }
         .logo:hover { transform: scale(1.05); filter: drop-shadow(0 0 10px rgba(102, 252, 241, 0.5)); }
@@ -75,7 +73,6 @@
         .nav-socials a.tg-icon:hover { color: #00a2ed; transform: scale(1.2) translateY(-2px); }
         .nav-socials a.yt-icon:hover { color: #ff0000; transform: scale(1.2) translateY(-2px); }
 
-        /* БУРГЕР-КНОПКА (только мобиль) */
         .burger-btn {
             display: none; flex-direction: column; justify-content: center; align-items: center;
             width: 44px; height: 44px; background: rgba(102,252,241,0.07);
@@ -87,7 +84,6 @@
         .burger-btn.open span:nth-child(2) { opacity: 0; }
         .burger-btn.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-        /* МОБИЛЬНОЕ ВЫПАДАЮЩЕЕ МЕНЮ */
         .mobile-menu {
             display: none; position: fixed; top: 60px; left: 0; width: 100%;
             background: rgba(11,12,16,0.97); backdrop-filter: blur(20px);
@@ -111,12 +107,10 @@
         .m-socials a { font-size: 1.9rem; text-decoration: none; transition: 0.3s; }
         .m-lang { align-self: center; background: none; border: 1px solid rgba(102,252,241,0.4); color: var(--accent-cyan); padding: 7px 22px; cursor: pointer; border-radius: 8px; font-weight: 700; font-family: 'Poppins', sans-serif; font-size: 0.9rem; }
 
-        /* СЕКЦИИ */
         .section-page { display: none; flex: 1; margin-top: 80px; padding-bottom: 50px; animation: fadeInPage 0.4s ease; }
         .section-page.active { display: block; }
         @keyframes fadeInPage { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* WELCOME */
         .welcome-hero { min-height: calc(100vh - 80px); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 20px; }
         .welcome-hero h1 { font-family: 'Montserrat'; font-size: clamp(3rem, 8vw, 6rem); margin: 0; line-height: 1.1; text-transform: uppercase; letter-spacing: 5px; text-shadow: 0 10px 30px rgba(102, 252, 241, 0.3); }
         .welcome-hero p { font-size: 1.15rem; color: var(--text-main); max-width: 700px; margin: 25px 0 40px; line-height: 1.7; }
@@ -126,7 +120,6 @@
         .btn-main:hover { transform: translateY(-4px); box-shadow: 0 15px 35px rgba(34, 197, 94, 0.4); background: #16a34a; }
         .btn-outline:hover { background: var(--accent-cyan); color: #0b0c10; transform: translateY(-4px); box-shadow: 0 15px 35px rgba(102, 252, 241, 0.2); }
 
-        /* DOWNLOAD */
         .download-container { max-width: 800px; margin: 40px auto; text-align: center; background: var(--card-bg); padding: 50px 30px; border-radius: 25px; border: 1px solid rgba(102, 252, 241, 0.15); backdrop-filter: blur(15px); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
         .dl-title { font-family: 'Montserrat'; font-size: 3rem; margin-bottom: 10px; color: #fff; }
         .dl-version { display: inline-block; background: rgba(102, 252, 241, 0.1); color: var(--accent-cyan); padding: 8px 20px; border-radius: 20px; font-weight: 700; font-size: 1.1rem; margin-bottom: 40px; border: 1px solid rgba(102, 252, 241, 0.3); }
@@ -139,12 +132,10 @@
         .dl-name { font-size: 1.5rem; font-weight: 900; margin-bottom: 10px; font-family: 'Montserrat'; }
         .dl-desc { font-size: 0.9rem; color: #888; font-weight: 400; }
 
-        /* LIST */
         .hero-title { width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 40px 20px 30px; text-align: center; }
         .hero-title h2 { font-family: 'Montserrat'; font-size: 2.8rem; margin: 0; text-transform: uppercase; letter-spacing: 3px; }
         .top-50-text { color: var(--accent-cyan); font-family: 'Montserrat'; font-weight: 900; font-size: 1.5rem; margin-top: 5px; letter-spacing: 8px; text-shadow: 0 0 15px rgba(102, 252, 241, 0.5); }
 
-        /* ПОИСК */
         .search-box { max-width: 600px; margin: 0 auto 40px; position: relative; padding: 0 20px; }
         .search-modes { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
         .search-mode-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: var(--text-main); padding: 10px 20px; border-radius: 10px; cursor: pointer; font-size: 0.85rem; font-weight: 700; transition: 0.3s; }
@@ -153,7 +144,6 @@
         .search-input:focus { border-color: var(--accent-cyan); box-shadow: 0 0 15px rgba(102, 252, 241, 0.2); }
         .search-icon { position: absolute; left: 40px; bottom: 18px; color: #888; font-size: 1.1rem; }
 
-        /* КАРТОЧКИ */
         .container { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; padding: 20px; }
         .card { background: var(--card-bg); backdrop-filter: blur(10px); border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); position: relative; transition: 0.3s; box-shadow: 0 15px 35px rgba(0,0,0,0.4); }
         .card:hover { transform: translateY(-8px); border-color: var(--accent-cyan); box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 20px rgba(102, 252, 241, 0.1); }
@@ -163,7 +153,6 @@
         .level-id-box { display: flex; align-items: center; gap: 8px; background: rgba(102, 252, 241, 0.08); padding: 10px 15px; border-radius: 10px; color: var(--accent-cyan); cursor: pointer; margin-bottom: 20px; font-weight: 700; transition: 0.2s; width: fit-content; font-size: 0.85rem; border: 1px solid rgba(102, 252, 241, 0.1); }
         .level-id-box:hover { background: rgba(102, 252, 241, 0.15); border-color: rgba(102, 252, 241, 0.3); }
 
-        /* КНОПКИ УПРАВЛЕНИЯ */
         .admin-controls { position: absolute; top: 10px; right: 10px; z-index: 100; display: flex; gap: 8px; background: rgba(0,0,0,0.85); padding: 6px; border-radius: 12px; backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.1); }
         .ctrl-btn { width: 34px; height: 34px; border-radius: 8px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: white !important; font-size: 0.95rem; transition: 0.2s; }
         .btn-up { background-color: #2ecc71 !important; } 
@@ -171,7 +160,6 @@
         .btn-del { background-color: #e74c3c !important; } 
         .ctrl-btn:hover { transform: scale(1.1); filter: brightness(1.2); }
 
-        /* АДМИНКА */
         #admin-trigger { position: fixed; bottom: 20px; left: 20px; opacity: 0.2; cursor: pointer; font-size: 1.5rem; background: none; border: none; color: white; z-index: 1000; transition: 0.3s; display: none; }
         #admin-trigger:hover { opacity: 1; color: var(--accent-cyan); }
         .admin-form {
@@ -185,7 +173,6 @@
         .admin-form input, .admin-form select { width: 100%; padding: 14px; margin: 10px 0; background: #1a1e29; border: 1px solid #333; color: white; border-radius: 12px; font-size: 0.95rem; outline: none; transition: 0.3s; }
         .admin-form input:focus, .admin-form select:focus { border-color: var(--accent-cyan); }
 
-        /* ФУТЕР */
         footer { padding: 40px 20px; text-align: center; background: rgba(11, 12, 16, 0.95); margin-top: auto; border-top: 1px solid rgba(255,255,255,0.05); }
         .footer-socials { display: flex; justify-content: center; gap: 30px; margin-bottom: 20px; }
         .footer-socials a { color: var(--text-main); font-size: 2rem; transition: 0.3s; text-decoration: none; }
@@ -194,7 +181,6 @@
         .btn-more { width: 100%; padding: 15px; background: rgba(102, 252, 241, 0.1); border: 1px solid rgba(102, 252, 241, 0.3); color: var(--accent-cyan); border-radius: 12px; cursor: pointer; font-weight: 900; text-transform: uppercase; transition: 0.3s; font-size: 0.85rem; letter-spacing: 1px; }
         .btn-more:hover { background: var(--main-grad); color: #0b0c10; border-color: transparent; }
         
-        /* МОДАЛКА — скроллится сама, кнопка закрытия всегда видна */
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.9); z-index: 3000; backdrop-filter: blur(15px);
@@ -206,7 +192,6 @@
             border: 1px solid rgba(102, 252, 241, 0.2); position: relative;
             box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
-        /* Кнопка × прибита к верхнему правому углу карточки, не уезжает */
         .modal-close-pin {
             position: absolute; top: 14px; right: 14px;
             width: 36px; height: 36px; border-radius: 9px; flex-shrink: 0;
@@ -222,7 +207,6 @@
 
         .record-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 18px; background: rgba(255,255,255,0.03); margin-bottom: 8px; border-radius: 12px; font-size: 0.95rem; border: 1px solid rgba(255,255,255,0.05); gap: 8px; }
 
-        /* VIDEO */
         .home-video-section { max-width: 900px; margin: 0 auto 80px; padding: 0 20px; text-align: center; }
         .home-video-label { display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 18px; }
         .home-video-line { flex: 1; height: 1px; background: rgba(102, 252, 241, 0.2); max-width: 120px; }
@@ -231,50 +215,41 @@
         .home-video-wrapper { position: relative; width: 100%; aspect-ratio: 16/9; border-radius: 20px; overflow: hidden; border: 1px solid rgba(102, 252, 241, 0.2); box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 40px rgba(102, 252, 241, 0.08); }
         .home-video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 
-        /* ===== МОБИЛЬНЫЕ СТИЛИ ===== */
         @media (max-width: 768px) {
-            /* Навбар: только лого + бургер */
             .navbar { padding: 0 14px; height: 60px; flex-wrap: nowrap; }
             .logo { font-size: 1.2rem; }
             .nav-links { display: none !important; }
             .burger-btn { display: flex !important; }
             .section-page { margin-top: 60px; }
 
-            /* Hero */
             .welcome-hero { padding: 28px 16px; min-height: calc(100vh - 60px); }
             .welcome-hero h1 { font-size: clamp(1.9rem, 9vw, 3.2rem); letter-spacing: 2px; }
             .welcome-hero p { font-size: 0.95rem; margin: 16px 0 26px; }
             .hero-btns { gap: 12px; }
             .btn-main, .btn-outline { padding: 14px 22px; font-size: 0.88rem; flex: 1; min-width: 125px; max-width: 190px; }
 
-            /* Download */
             .download-container { margin: 18px 14px; padding: 28px 16px; }
             .dl-title { font-size: 1.9rem; }
             .dl-version { font-size: 0.95rem; margin-bottom: 24px; }
             .dl-cards { flex-direction: column; align-items: stretch; gap: 14px; }
             .dl-card { min-width: 0; padding: 26px 20px; }
 
-            /* List */
             .hero-title { padding: 22px 14px 14px; }
             .hero-title h2 { font-size: 1.9rem; letter-spacing: 2px; }
             .top-50-text { font-size: 1.1rem; letter-spacing: 5px; }
 
-            /* Search */
             .search-box { padding: 0 12px; margin-bottom: 22px; }
             .search-modes { gap: 8px; }
             .search-mode-btn { padding: 9px 12px; font-size: 0.77rem; flex: 1; text-align: center; }
             .search-input { padding: 13px 14px 13px 42px; font-size: 0.93rem; }
             .search-icon { left: 26px; bottom: 15px; font-size: 1rem; }
 
-            /* Cards */
             .container { grid-template-columns: 1fr; gap: 14px; padding: 8px 12px; }
             .card-body { padding: 18px; }
             .card-img { height: 155px; }
 
-            /* Video */
             .home-video-section { padding: 0 14px; margin-bottom: 48px; }
 
-            /* Admin */
             .admin-form { padding: 20px 14px; }
             .admin-form input, .admin-form select { padding: 12px; }
         }
@@ -284,7 +259,6 @@
             .hero-title h2 { font-size: 1.55rem; }
         }
 
-        /* Десктоп: скрыть мобильные элементы */
         @media (min-width: 769px) {
             .burger-btn { display: none !important; }
             .mobile-menu { display: none !important; }
@@ -298,7 +272,6 @@
     <nav class="navbar">
         <div class="logo" onclick="openSection('homeSection')">Mysteryx GDPS</div>
 
-        <!-- Десктоп-навигация (оригинал) -->
         <div class="nav-links">
             <button class="nav-item" onclick="openSection('homeSection')" id="navHome">Главная</button>
             <div class="dropdown">
@@ -320,13 +293,11 @@
             </div>
         </div>
 
-        <!-- Бургер (только мобиль) -->
         <button class="burger-btn" id="burgerBtn" onclick="toggleBurger()">
             <span></span><span></span><span></span>
         </button>
     </nav>
 
-    <!-- Мобильное меню -->
     <div class="mobile-menu" id="mobileMenu">
         <button class="m-btn" onclick="openSection('homeSection'); closeBurger();">
             <i class="fas fa-home"></i> Главная
@@ -416,14 +387,12 @@
 
     <button id="admin-trigger" onclick="openAdmin()"><i class="fas fa-cog"></i></button>
 
-    <!-- ADMIN PANEL — Firebase Auth -->
     <div id="adminPanel" class="admin-form">
         <button onclick="closeAdmin()" style="position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:8px;background:rgba(255,70,70,0.13);border:1px solid rgba(255,70,70,0.3);color:#ff6868;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">
             <i class="fas fa-times"></i>
         </button>
         <h2>ADMIN PANEL</h2>
 
-        <!-- Блок входа — виден только если не залогинен -->
         <div id="loginBlock">
             <input type="email" id="adminEmail" placeholder="Email">
             <input type="password" id="adminPass" placeholder="Пароль">
@@ -431,7 +400,6 @@
             <button class="btn-more" style="background:var(--main-grad);color:#0b0c10;margin-top:15px;border:none;" onclick="adminLogin()">ВОЙТИ</button>
         </div>
 
-        <!-- Панель управления — видна только после входа -->
         <div id="adminControls" style="display:none;">
             <select id="admAction" onchange="toggleAdmFields()">
                 <option value="add_demon">Добавить Демона</option>
@@ -463,7 +431,6 @@
         </div>
     </div>
 
-    <!-- DETAIL MODAL — кнопка × вставляется через JS внутрь карточки -->
     <div id="detailModal" class="modal"><div class="modal-content" id="modalData"></div></div>
 
     <script>
@@ -488,8 +455,6 @@
         let demons = [];
         let creators = [];
 
-        // Следим за входом — шестерёнка только для тебя
-        // Показать шестерёнку сразу если уже входил раньше
         if (localStorage.getItem('mxAdmin') === '1') {
             document.getElementById('admin-trigger').style.display = 'block';
         }
@@ -535,7 +500,6 @@
             toggleAdmFields();
         }
 
-        // ---- Бургер ----
         function toggleBurger() {
             const menu = document.getElementById('mobileMenu');
             const btn  = document.getElementById('burgerBtn');
@@ -789,7 +753,7 @@
         function switchTab(t) { currentTab = t; render(); }
         function deleteItem(k, p) { if(confirm("Delete item?")) db.ref(p+'/'+k).remove(); }
     </script>
-    <!-- ТЕХПЕРЕРЫВ -->
+
     <div id="maintenanceOverlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:9999; background:#0b0c10; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:20px;">
         <div style="font-size:4rem; margin-bottom:20px;">🔧</div>
         <h1 style="font-family:'Montserrat',sans-serif; font-size:clamp(2rem,6vw,4rem); margin:0 0 16px; background:linear-gradient(135deg,#66fcf1,#45a29e); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">ТЕХНИЧЕСКИЙ ПЕРЕРЫВ</h1>
@@ -798,7 +762,6 @@
     </div>
 
     <script>
-        // Проверяем техперерыв при загрузке
         db.ref('maintenance').on('value', s => {
             const on = s.val() === true;
             const overlay = document.getElementById('maintenanceOverlay');
