@@ -145,8 +145,50 @@
         .search-icon { position: absolute; left: 40px; bottom: 18px; color: #888; font-size: 1.1rem; }
 
         .container { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; padding: 20px; }
-        .card { background: var(--card-bg); backdrop-filter: blur(10px); border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); position: relative; transition: 0.3s; box-shadow: 0 15px 35px rgba(0,0,0,0.4); }
-        .card:hover { transform: translateY(-8px); border-color: var(--accent-cyan); box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 20px rgba(102, 252, 241, 0.1); }
+        
+        /* Drag & Drop стили */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 2px solid rgba(255,255,255,0.05);
+            position: relative;
+            transition: 0.2s;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            cursor: default;
+        }
+        .card.dragging {
+            opacity: 0.5;
+            transform: scale(0.98);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 30px rgba(102, 252, 241, 0.3);
+        }
+        .card.drag-over {
+            border-color: var(--accent-cyan);
+            border-width: 2px;
+            transform: scale(1.02);
+            box-shadow: 0 0 30px rgba(102, 252, 241, 0.5);
+        }
+        .card.drag-over::after {
+            content: '▼';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            color: var(--accent-cyan);
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 100;
+        }
+        .card[draggable="true"] {
+            cursor: grab;
+        }
+        .card[draggable="true"]:active {
+            cursor: grabbing;
+        }
+        
         .card-img { width: 100%; height: 180px; object-fit: cover; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .card-body { padding: 25px; }
         .demon-tag { position: absolute; top: 15px; left: 15px; background: var(--main-grad); color: #0b0c10; padding: 6px 12px; border-radius: 8px; font-weight: 900; font-size: 0.75rem; z-index: 50; box-shadow: 0 5px 15px rgba(0,0,0,0.5); text-transform: uppercase; }
@@ -172,6 +214,29 @@
         .admin-form h2 { margin-top: 0; font-size: 1.5rem; color: white; text-align: center; font-family: Montserrat; }
         .admin-form input, .admin-form select { width: 100%; padding: 14px; margin: 10px 0; background: #1a1e29; border: 1px solid #333; color: white; border-radius: 12px; font-size: 0.95rem; outline: none; transition: 0.3s; }
         .admin-form input:focus, .admin-form select:focus { border-color: var(--accent-cyan); }
+
+        /* Индикатор режима Drag & Drop */
+        .drag-indicator {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: var(--accent-cyan);
+            color: #0b0c10;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 900;
+            z-index: 1000;
+            box-shadow: 0 0 20px rgba(102, 252, 241, 0.5);
+            animation: pulse 1.5s infinite;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
 
         footer { padding: 40px 20px; text-align: center; background: rgba(11, 12, 16, 0.95); margin-top: auto; border-top: 1px solid rgba(255,255,255,0.05); }
         .footer-socials { display: flex; justify-content: center; gap: 30px; margin-bottom: 20px; }
@@ -373,6 +438,12 @@
             <i class="fas fa-search search-icon"></i>
             <input type="text" id="searchInput" class="search-input" placeholder="Поиск уровня или автора..." oninput="render()">
         </div>
+        
+        <!-- Индикатор Drag & Drop режима -->
+        <div id="dragIndicator" class="drag-indicator" style="display: none;">
+            <i class="fas fa-arrows-alt"></i> Drag & Drop активен
+        </div>
+        
         <div class="container" id="mainContainer"></div>
     </main>
 
@@ -408,6 +479,7 @@
                 <option value="delete_mode">Удаление / Движение</option>
                 <option value="delete_all_demons">🗑️ Удалить ВСЕХ демонов</option>
                 <option value="maintenance">🔧 Техперерыв вкл/выкл</option>
+                <option value="drag_drop">🖱️ Drag & Drop режим</option>
             </select>
             <div id="fields_main">
                 <input type="text" id="itemName" placeholder="Название / Ник">
@@ -450,10 +522,15 @@
         let currentLang = 'RU';
         let isAdmin = false;
         let isDeleteMode = false;
+        let isDragDropMode = false;
         let searchMode = 'main';
         let currentTab = 'demons';
         let demons = [];
         let creators = [];
+
+        // Переменные для Drag & Drop
+        let draggedItem = null;
+        let draggedIndex = -1;
 
         if (localStorage.getItem('mxAdmin') === '1') {
             document.getElementById('admin-trigger').style.display = 'block';
@@ -469,6 +546,7 @@
                 localStorage.removeItem('mxAdmin');
                 trigger.style.display = 'none';
                 isDeleteMode = false;
+                isDragDropMode = false;
                 render();
             }
         });
@@ -555,6 +633,83 @@
             render();
         }
 
+        // Drag & Drop функции
+        function handleDragStart(index, event) {
+            if (!isDragDropMode) {
+                event.preventDefault();
+                return;
+            }
+            draggedIndex = index;
+            draggedItem = demons[index];
+            event.dataTransfer.setData('text/plain', index);
+            event.currentTarget.classList.add('dragging');
+        }
+
+        function handleDragOver(index, event) {
+            if (!isDragDropMode || draggedIndex === -1) return;
+            event.preventDefault();
+            document.querySelectorAll('.card').forEach(c => c.classList.remove('drag-over'));
+            event.currentTarget.classList.add('drag-over');
+        }
+
+        function handleDragLeave(event) {
+            event.currentTarget.classList.remove('drag-over');
+        }
+
+        function handleDrop(targetIndex, event) {
+            event.preventDefault();
+            event.currentTarget.classList.remove('drag-over');
+            
+            if (!isDragDropMode || draggedIndex === -1 || draggedIndex === targetIndex) return;
+
+            // Создаем копию массива для перестановки
+            const newDemons = [...demons];
+            const dragged = newDemons[draggedIndex];
+            
+            // Удаляем перетаскиваемый элемент
+            newDemons.splice(draggedIndex, 1);
+            // Вставляем на новое место
+            newDemons.splice(targetIndex, 0, dragged);
+
+            // Обновляем order в Firebase
+            const updates = {};
+            newDemons.forEach((demon, idx) => {
+                if (demon.order !== idx) {
+                    updates[`/demons/${demon.key}/order`] = idx;
+                }
+            });
+            
+            db.ref().update(updates).then(() => {
+                // Показываем уведомление
+                showToast('Порядок обновлён!');
+            });
+
+            draggedIndex = -1;
+            draggedItem = null;
+        }
+
+        function handleDragEnd(event) {
+            event.currentTarget.classList.remove('dragging');
+            document.querySelectorAll('.card').forEach(c => c.classList.remove('drag-over'));
+            draggedIndex = -1;
+            draggedItem = null;
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('copyToast');
+            toast.innerText = message;
+            toast.className = 'show';
+            setTimeout(() => toast.className = '', 2000);
+        }
+
+        function toggleDragDropMode() {
+            isDragDropMode = !isDragDropMode;
+            const indicator = document.getElementById('dragIndicator');
+            indicator.style.display = isDragDropMode ? 'flex' : 'none';
+            render();
+            showToast(isDragDropMode ? 'Drag & Drop режим включён' : 'Drag & Drop режим выключён');
+        }
+
         function render() {
             const container = document.getElementById('mainContainer');
             const isDem = (currentTab === 'demons');
@@ -570,24 +725,43 @@
                     if (searchMode === 'tag') { return d.tag && d.tag.toLowerCase().includes(query); }
                     return d.name.toLowerCase().includes(query) || d.author.toLowerCase().includes(query);
                 });
+                
                 filtered.forEach((d, i) => {
-                    container.innerHTML += `
-                        <div class="card">
-                            ${isDeleteMode ? `
-                            <div class="admin-controls">
-                                <button class="ctrl-btn btn-up" onclick="moveItem(${i}, -1)"><i class="fas fa-arrow-up"></i></button>
-                                <button class="ctrl-btn btn-down" onclick="moveItem(${i}, 1)"><i class="fas fa-arrow-down"></i></button>
-                                <button class="ctrl-btn btn-del" onclick="deleteItem('${d.key}','demons')"><i class="fas fa-trash"></i></button>
-                            </div>` : ''}
-                            ${d.tag ? `<div class="demon-tag">${d.tag}</div>` : ''}
-                            <img src="${d.img}" class="card-img" onerror="this.src='https://via.placeholder.com/600x300/1f2833/66fcf1?text=Mysteryx'">
-                            <div class="card-body">
-                                <h3 style="margin:0; color:var(--accent-cyan); font-size: 1.25rem;">#${i+1} ${d.name}</h3>
-                                <p style="color:#aaa; margin: 6px 0 15px; font-size: 0.9rem;">by <span style="color:#fff">${d.author}</span></p>
-                                <div class="level-id-box" onclick="copyID('${d.levelID}')">ID: ${d.levelID}</div>
-                                <button class="btn-more" onclick="showInfoByKey('${d.key}')">${currentLang==='EN'?'DETAILS':'ПОДРОБНЕЕ'}</button>
-                            </div>
-                        </div>`;
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    
+                    // Добавляем Drag & Drop атрибуты если включен режим
+                    if (isDragDropMode && isAdmin) {
+                        card.setAttribute('draggable', 'true');
+                        card.setAttribute('data-index', i);
+                        card.ondragstart = (e) => handleDragStart(i, e);
+                        card.ondragover = (e) => handleDragOver(i, e);
+                        card.ondragleave = handleDragLeave;
+                        card.ondrop = (e) => handleDrop(i, e);
+                        card.ondragend = handleDragEnd;
+                    }
+                    
+                    card.innerHTML = `
+                        ${isDeleteMode ? `
+                        <div class="admin-controls">
+                            <button class="ctrl-btn btn-up" onclick="moveItem(${i}, -1)"><i class="fas fa-arrow-up"></i></button>
+                            <button class="ctrl-btn btn-down" onclick="moveItem(${i}, 1)"><i class="fas fa-arrow-down"></i></button>
+                            <button class="ctrl-btn btn-del" onclick="deleteItem('${d.key}','demons')"><i class="fas fa-trash"></i></button>
+                        </div>` : ''}
+                        ${isDragDropMode && isAdmin ? `
+                        <div style="position: absolute; top: 10px; left: 10px; background: rgba(102,252,241,0.2); padding: 4px 8px; border-radius: 5px; font-size: 0.7rem; color: var(--accent-cyan); z-index: 50;">
+                            <i class="fas fa-grip-vertical"></i> Drag me
+                        </div>` : ''}
+                        ${d.tag ? `<div class="demon-tag">${d.tag}</div>` : ''}
+                        <img src="${d.img}" class="card-img" onerror="this.src='https://via.placeholder.com/600x300/1f2833/66fcf1?text=Mysteryx'">
+                        <div class="card-body">
+                            <h3 style="margin:0; color:var(--accent-cyan); font-size: 1.25rem;">#${i+1} ${d.name}</h3>
+                            <p style="color:#aaa; margin: 6px 0 15px; font-size: 0.9rem;">by <span style="color:#fff">${d.author}</span></p>
+                            <div class="level-id-box" onclick="copyID('${d.levelID}')">ID: ${d.levelID}</div>
+                            <button class="btn-more" onclick="showInfoByKey('${d.key}')">${currentLang==='EN'?'DETAILS':'ПОДРОБНЕЕ'}</button>
+                        </div>
+                    `;
+                    container.appendChild(card);
                 });
             } else {
                 const filtered = creators.filter(c => c.name.toLowerCase().includes(query));
@@ -629,6 +803,8 @@
                     db.ref('maintenance').set(!current);
                     alert(!current ? '🔧 Техперерыв ВКЛЮЧЁН — сайт закрыт для посетителей' : '✅ Техперерыв ВЫКЛЮЧЕН — сайт открыт');
                 });
+            } else if(act === 'drag_drop') {
+                toggleDragDropMode();
             }
             closeAdmin();
         }
