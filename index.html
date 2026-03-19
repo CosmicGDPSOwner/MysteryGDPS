@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mysteryx GDPS | Official Global List</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <title>Night GDPS | Official Global List</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -13,317 +13,265 @@
 
     <style>
         :root {
-            --bg: #0b0c10;
-            --card-bg: rgba(31, 40, 51, 0.7);
-            --main-grad: linear-gradient(135deg, #66fcf1 0%, #45a29e 100%);
-            --accent-cyan: #66fcf1;
-            --accent-dark: #1f2833;
-            --text-main: #c5c6c7;
+            --bg: #04050d;
+            --bg2: #080b18;
+            --card-bg: rgba(12, 16, 38, 0.75);
+            --main-grad: linear-gradient(135deg, #7b5ea7 0%, #3d85c8 50%, #a78bfa 100%);
+            --accent: #a78bfa;
+            --accent2: #60a5fa;
+            --accent3: #f472b6;
+            --moon: #e2d4f0;
+            --text-main: #94a3b8;
+            --card-border: rgba(167, 139, 250, 0.12);
+            --glow: rgba(167, 139, 250, 0.25);
         }
 
         * { box-sizing: border-box; scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
-        body { margin: 0; font-family: 'Poppins', sans-serif; background: var(--bg); color: white; overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column; }
+        body { margin: 0; font-family: 'Nunito', sans-serif; background: var(--bg); color: white; overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column; }
 
         .bg-wrapper { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: var(--bg); overflow: hidden; }
-        .grid-overlay {
-            position: absolute; width: 200%; height: 200%; top: -50%; left: -50%;
-            background-image: linear-gradient(rgba(102, 252, 241, 0.05) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(102, 252, 241, 0.05) 1px, transparent 1px);
-            background-size: 60px 60px;
-            transform: perspective(600px) rotateX(60deg);
-            animation: gridMove 20s linear infinite;
-        }
-        @keyframes gridMove { from { transform: perspective(600px) rotateX(60deg) translateY(0); } to { transform: perspective(600px) rotateX(60deg) translateY(60px); } }
-        .orb { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.15; animation: float 12s ease-in-out infinite; }
-        .orb-1 { width: 600px; height: 600px; background: #66fcf1; top: -10%; left: -10%; }
-        .orb-2 { width: 500px; height: 500px; background: #45a29e; bottom: -10%; right: -10%; animation-delay: -6s; }
-        @keyframes float { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(30px, 40px); } }
 
-        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 6%; background: rgba(11, 12, 16, 0.85); backdrop-filter: blur(20px); position: fixed; width: 100%; top: 0; z-index: 1000; border-bottom: 1px solid rgba(102, 252, 241, 0.1); }
-        .logo { font-family: 'Montserrat'; font-size: 1.6rem; font-weight: 900; background: var(--main-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; transition: 0.3s; letter-spacing: 1px; }
-        .logo:hover { transform: scale(1.05); filter: drop-shadow(0 0 10px rgba(102, 252, 241, 0.5)); }
+        .stars-layer {
+            position: absolute; width: 100%; height: 100%;
+            background-image:
+                radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.85) 0%, transparent 100%),
+                radial-gradient(1px 1px at 25% 40%, rgba(255,255,255,0.6) 0%, transparent 100%),
+                radial-gradient(1.5px 1.5px at 40% 10%, rgba(255,255,255,0.9) 0%, transparent 100%),
+                radial-gradient(1px 1px at 55% 30%, rgba(255,255,255,0.7) 0%, transparent 100%),
+                radial-gradient(1px 1px at 70% 20%, rgba(255,255,255,0.8) 0%, transparent 100%),
+                radial-gradient(1.5px 1.5px at 85% 5%, rgba(255,255,255,0.9) 0%, transparent 100%),
+                radial-gradient(1px 1px at 15% 60%, rgba(255,255,255,0.5) 0%, transparent 100%),
+                radial-gradient(1px 1px at 30% 80%, rgba(255,255,255,0.6) 0%, transparent 100%),
+                radial-gradient(1px 1px at 45% 70%, rgba(255,255,255,0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 60% 55%, rgba(255,255,255,0.7) 0%, transparent 100%),
+                radial-gradient(1.5px 1.5px at 75% 65%, rgba(255,255,255,0.85) 0%, transparent 100%),
+                radial-gradient(1px 1px at 90% 45%, rgba(255,255,255,0.6) 0%, transparent 100%),
+                radial-gradient(1px 1px at 5% 90%, rgba(255,255,255,0.5) 0%, transparent 100%),
+                radial-gradient(1px 1px at 20% 95%, rgba(255,255,255,0.7) 0%, transparent 100%),
+                radial-gradient(1px 1px at 50% 88%, rgba(255,255,255,0.6) 0%, transparent 100%),
+                radial-gradient(1px 1px at 80% 85%, rgba(255,255,255,0.5) 0%, transparent 100%),
+                radial-gradient(1px 1px at 95% 75%, rgba(255,255,255,0.8) 0%, transparent 100%),
+                radial-gradient(1px 1px at 35% 50%, rgba(255,255,255,0.4) 0%, transparent 100%),
+                radial-gradient(2px 2px at 65% 85%, rgba(200,180,255,0.9) 0%, transparent 100%),
+                radial-gradient(1.5px 1.5px at 88% 30%, rgba(160,200,255,0.9) 0%, transparent 100%);
+        }
+        .stars-layer-2 {
+            position: absolute; width: 100%; height: 100%; animation: twinkle 4s ease-in-out infinite alternate;
+            background-image:
+                radial-gradient(1px 1px at 7% 22%, rgba(255,255,255,0.6) 0%, transparent 100%),
+                radial-gradient(1px 1px at 18% 48%, rgba(255,255,255,0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 32% 65%, rgba(255,255,255,0.7) 0%, transparent 100%),
+                radial-gradient(1px 1px at 48% 42%, rgba(255,255,255,0.5) 0%, transparent 100%),
+                radial-gradient(1.5px 1.5px at 58% 12%, rgba(255,255,255,0.8) 0%, transparent 100%),
+                radial-gradient(1px 1px at 72% 58%, rgba(255,255,255,0.6) 0%, transparent 100%),
+                radial-gradient(1px 1px at 82% 78%, rgba(255,255,255,0.5) 0%, transparent 100%),
+                radial-gradient(1px 1px at 93% 18%, rgba(255,255,255,0.7) 0%, transparent 100%),
+                radial-gradient(1px 1px at 42% 92%, rgba(255,255,255,0.6) 0%, transparent 100%),
+                radial-gradient(1.5px 1.5px at 3% 72%, rgba(200,170,255,0.8) 0%, transparent 100%);
+        }
+        @keyframes twinkle { 0% { opacity: 0.6; } 100% { opacity: 1; } }
+
+        .moon {
+            position: absolute; top: 60px; right: 8%;
+            width: 90px; height: 90px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, #f0e6ff, #c4a8f0 50%, #8b5cf6 100%);
+            box-shadow: 0 0 40px rgba(167,139,250,0.5), 0 0 80px rgba(167,139,250,0.2), inset -10px -10px 20px rgba(100,60,200,0.3);
+            animation: moonGlow 5s ease-in-out infinite alternate;
+        }
+        .moon::before {
+            content: '';
+            position: absolute; top: 15px; left: 20px;
+            width: 14px; height: 14px; border-radius: 50%;
+            background: rgba(140,80,220,0.3);
+            box-shadow: 20px 8px 0 rgba(140,80,220,0.2), 8px 30px 0 rgba(140,80,220,0.15);
+        }
+        @keyframes moonGlow {
+            0% { box-shadow: 0 0 40px rgba(167,139,250,0.4), 0 0 80px rgba(167,139,250,0.15); }
+            100% { box-shadow: 0 0 60px rgba(167,139,250,0.7), 0 0 120px rgba(167,139,250,0.3); }
+        }
+
+        .orb { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.12; animation: float 14s ease-in-out infinite; }
+        .orb-1 { width: 700px; height: 700px; background: radial-gradient(circle, #7b5ea7, #3d85c8); top: -15%; left: -15%; }
+        .orb-2 { width: 600px; height: 600px; background: radial-gradient(circle, #f472b6, #7b5ea7); bottom: -10%; right: -10%; animation-delay: -7s; }
+        .orb-3 { width: 400px; height: 400px; background: radial-gradient(circle, #60a5fa, #a78bfa); top: 40%; left: 30%; animation-delay: -3.5s; opacity: 0.07; }
+        @keyframes float { 0%,100% { transform: translate(0,0); } 50% { transform: translate(25px, 35px); } }
+
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 6%; background: rgba(4,5,13,0.88); backdrop-filter: blur(20px); position: fixed; width: 100%; top: 0; z-index: 1000; border-bottom: 1px solid rgba(167,139,250,0.15); }
+        .logo { font-family: 'Orbitron'; font-size: 1.5rem; font-weight: 900; background: var(--main-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; transition: 0.3s; letter-spacing: 2px; display: flex; align-items: center; gap: 10px; }
+        .logo-icon { font-size: 1.3rem; -webkit-text-fill-color: var(--accent); }
+        .logo:hover { transform: scale(1.05); filter: drop-shadow(0 0 12px rgba(167,139,250,0.6)); }
         .nav-links { display: flex; align-items: center; gap: 20px; }
-        
-        .nav-item { color: var(--text-main); text-decoration: none; font-weight: 700; transition: 0.3s; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; background: none; border: none; padding: 0; font-family: 'Poppins', sans-serif; vertical-align: middle; line-height: 1;}
-        .nav-item:hover { color: #fff; text-shadow: 0 0 8px rgba(102, 252, 241, 0.6); }
+        .nav-item { color: var(--text-main); text-decoration: none; font-weight: 700; transition: 0.3s; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; background: none; border: none; padding: 0; font-family: 'Nunito', sans-serif; vertical-align: middle; line-height: 1; }
+        .nav-item:hover { color: var(--accent); text-shadow: 0 0 10px rgba(167,139,250,0.6); }
 
         .dropdown { position: relative; display: inline-block; }
-        .dropdown-content {
-            display: none; position: absolute; background-color: rgba(31, 40, 51, 0.95);
-            min-width: 160px; box-shadow: 0px 10px 30px 0px rgba(0,0,0,0.8);
-            z-index: 1001; border-radius: 12px; overflow: hidden;
-            border: 1px solid rgba(102, 252, 241, 0.2); top: calc(100% + 15px); left: 50%; transform: translateX(-50%);
-            backdrop-filter: blur(10px);
-        }
+        .dropdown-content { display: none; position: absolute; background-color: rgba(12,16,38,0.97); min-width: 160px; box-shadow: 0px 10px 30px 0px rgba(0,0,0,0.8); z-index: 1001; border-radius: 12px; overflow: hidden; border: 1px solid rgba(167,139,250,0.2); top: calc(100% + 15px); left: 50%; transform: translateX(-50%); backdrop-filter: blur(10px); }
         .dropdown-content.show { display: block; animation: fadeIn 0.2s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateX(-50%) translateY(-10px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
-        .dropdown-content a { color: var(--text-main); padding: 14px 16px; text-decoration: none; display: block; text-align: center; font-size: 0.85rem; text-transform: uppercase; font-weight: 700; transition: 0.3s; cursor: pointer;}
-        .dropdown-content a:hover { background-color: rgba(102, 252, 241, 0.1); color: var(--accent-cyan); }
+        .dropdown-content a { color: var(--text-main); padding: 14px 16px; text-decoration: none; display: block; text-align: center; font-size: 0.85rem; text-transform: uppercase; font-weight: 700; transition: 0.3s; cursor: pointer; }
+        .dropdown-content a:hover { background-color: rgba(167,139,250,0.1); color: var(--accent); }
 
-        .btn-download-nav {
-            background: #22c55e; color: #fff !important;
-            padding: 10px 20px; border-radius: 10px; font-weight: 900; transition: 0.3s;
-            display: flex; align-items: center; gap: 8px; border: none; cursor: pointer; font-family: 'Poppins', sans-serif;
-            text-transform: uppercase; font-size: 0.85rem;
-        }
-        .btn-download-nav:hover { box-shadow: 0 0 20px rgba(34, 197, 94, 0.5); transform: translateY(-2px); background: #16a34a; }
+        .btn-download-nav { background: linear-gradient(135deg, #7b5ea7, #3d85c8); color: #fff !important; padding: 10px 20px; border-radius: 10px; font-weight: 900; transition: 0.3s; display: flex; align-items: center; gap: 8px; border: none; cursor: pointer; font-family: 'Nunito', sans-serif; text-transform: uppercase; font-size: 0.85rem; }
+        .btn-download-nav:hover { box-shadow: 0 0 20px rgba(167,139,250,0.5); transform: translateY(-2px); }
 
         .nav-socials { display: flex; gap: 15px; align-items: center; margin-left: 10px; border-left: 1px solid rgba(255,255,255,0.1); padding-left: 15px; }
-        .nav-socials a { font-size: 1.5rem; color: var(--text-main); transition: 0.3s; display: flex; align-items: center; justify-content: center; text-decoration: none; }
+        .nav-socials a { font-size: 1.5rem; color: var(--text-main); transition: 0.3s; display: flex; align-items: center; text-decoration: none; }
         .nav-socials a.tg-icon:hover { color: #00a2ed; transform: scale(1.2) translateY(-2px); }
         .nav-socials a.yt-icon:hover { color: #ff0000; transform: scale(1.2) translateY(-2px); }
 
-        .burger-btn {
-            display: none; flex-direction: column; justify-content: center; align-items: center;
-            width: 44px; height: 44px; background: rgba(102,252,241,0.07);
-            border: 1px solid rgba(102,252,241,0.25); border-radius: 10px;
-            cursor: pointer; gap: 5px; padding: 0; flex-shrink: 0;
-        }
-        .burger-btn span { display: block; width: 20px; height: 2px; background: var(--accent-cyan); border-radius: 2px; transition: 0.3s; }
+        .burger-btn { display: none; flex-direction: column; justify-content: center; align-items: center; width: 44px; height: 44px; background: rgba(167,139,250,0.07); border: 1px solid rgba(167,139,250,0.25); border-radius: 10px; cursor: pointer; gap: 5px; padding: 0; flex-shrink: 0; }
+        .burger-btn span { display: block; width: 20px; height: 2px; background: var(--accent); border-radius: 2px; transition: 0.3s; }
         .burger-btn.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
         .burger-btn.open span:nth-child(2) { opacity: 0; }
         .burger-btn.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-        .mobile-menu {
-            display: none; position: fixed; top: 60px; left: 0; width: 100%;
-            background: rgba(11,12,16,0.97); backdrop-filter: blur(20px);
-            z-index: 999; border-bottom: 1px solid rgba(102,252,241,0.12);
-            padding: 14px; flex-direction: column; gap: 8px;
-            max-height: calc(100vh - 60px); overflow-y: auto;
-        }
+        .mobile-menu { display: none; position: fixed; top: 60px; left: 0; width: 100%; background: rgba(4,5,13,0.97); backdrop-filter: blur(20px); z-index: 999; border-bottom: 1px solid rgba(167,139,250,0.12); padding: 14px; flex-direction: column; gap: 8px; max-height: calc(100vh - 60px); overflow-y: auto; }
         .mobile-menu.open { display: flex; animation: mSlide 0.25s ease; }
         @keyframes mSlide { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:translateY(0); } }
-        .m-btn {
-            width: 100%; padding: 15px 18px; background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.08); border-radius: 13px;
-            color: var(--text-main); font-weight: 700; font-size: 0.95rem;
-            text-transform: uppercase; cursor: pointer; font-family: 'Poppins', sans-serif;
-            text-align: left; transition: 0.2s; display: flex; align-items: center; gap: 12px;
-        }
-        .m-btn:active { background: rgba(102,252,241,0.1); color: var(--accent-cyan); border-color: rgba(102,252,241,0.3); }
-        .m-btn.green { background: #22c55e; color: #fff; border-color: transparent; }
-        .m-btn.green:active { background: #16a34a; }
+        .m-btn { width: 100%; padding: 15px 18px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 13px; color: var(--text-main); font-weight: 700; font-size: 0.95rem; text-transform: uppercase; cursor: pointer; font-family: 'Nunito', sans-serif; text-align: left; transition: 0.2s; display: flex; align-items: center; gap: 12px; }
+        .m-btn:active { background: rgba(167,139,250,0.1); color: var(--accent); border-color: rgba(167,139,250,0.3); }
+        .m-btn.purple { background: linear-gradient(135deg, #7b5ea7, #3d85c8); color: #fff; border-color: transparent; }
         .m-socials { display: flex; justify-content: center; gap: 28px; padding: 8px 0 4px; }
         .m-socials a { font-size: 1.9rem; text-decoration: none; transition: 0.3s; }
-        .m-lang { align-self: center; background: none; border: 1px solid rgba(102,252,241,0.4); color: var(--accent-cyan); padding: 7px 22px; cursor: pointer; border-radius: 8px; font-weight: 700; font-family: 'Poppins', sans-serif; font-size: 0.9rem; }
+        .m-lang { align-self: center; background: none; border: 1px solid rgba(167,139,250,0.4); color: var(--accent); padding: 7px 22px; cursor: pointer; border-radius: 8px; font-weight: 700; font-family: 'Nunito', sans-serif; font-size: 0.9rem; }
 
         .section-page { display: none; flex: 1; margin-top: 80px; padding-bottom: 50px; animation: fadeInPage 0.4s ease; }
         .section-page.active { display: block; }
         @keyframes fadeInPage { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
         .welcome-hero { min-height: calc(100vh - 80px); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 20px; }
-        .welcome-hero h1 { font-family: 'Montserrat'; font-size: clamp(3rem, 8vw, 6rem); margin: 0; line-height: 1.1; text-transform: uppercase; letter-spacing: 5px; text-shadow: 0 10px 30px rgba(102, 252, 241, 0.3); }
-        .welcome-hero p { font-size: 1.15rem; color: var(--text-main); max-width: 700px; margin: 25px 0 40px; line-height: 1.7; }
+        .hero-eyebrow { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; color: var(--accent); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 3px; }
+        .hero-eyebrow::before, .hero-eyebrow::after { content: ''; display: block; width: 40px; height: 1px; background: var(--accent); opacity: 0.5; }
+        .welcome-hero h1 { font-family: 'Orbitron'; font-size: clamp(2.5rem, 7vw, 5.5rem); margin: 0; line-height: 1.1; text-transform: uppercase; letter-spacing: 4px; }
+        .h1-night { background: linear-gradient(135deg, #e2d4f0 0%, #a78bfa 40%, #60a5fa 70%, #f472b6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 30px rgba(167,139,250,0.4)); }
+        .welcome-hero p { font-size: 1.1rem; color: var(--text-main); max-width: 650px; margin: 25px 0 40px; line-height: 1.8; }
         .hero-btns { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
-        .btn-main { padding: 16px 40px; border-radius: 12px; background: #22c55e; color: #fff; text-decoration: none; font-weight: 900; font-size: 1rem; transition: 0.3s; border: none; cursor: pointer; font-family: 'Poppins'; text-transform: uppercase;}
-        .btn-outline { padding: 16px 40px; border-radius: 12px; border: 2px solid var(--accent-cyan); color: var(--accent-cyan); text-decoration: none; font-weight: 900; font-size: 1rem; transition: 0.3s; background: transparent; cursor: pointer; font-family: 'Poppins'; text-transform: uppercase;}
-        .btn-main:hover { transform: translateY(-4px); box-shadow: 0 15px 35px rgba(34, 197, 94, 0.4); background: #16a34a; }
-        .btn-outline:hover { background: var(--accent-cyan); color: #0b0c10; transform: translateY(-4px); box-shadow: 0 15px 35px rgba(102, 252, 241, 0.2); }
+        .btn-main { padding: 16px 40px; border-radius: 12px; background: linear-gradient(135deg, #7b5ea7, #3d85c8); color: #fff; text-decoration: none; font-weight: 900; font-size: 1rem; transition: 0.3s; border: none; cursor: pointer; font-family: 'Nunito'; text-transform: uppercase; position: relative; overflow: hidden; }
+        .btn-main::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: 0.5s; }
+        .btn-main:hover::before { left: 100%; }
+        .btn-main:hover { transform: translateY(-4px); box-shadow: 0 15px 35px rgba(123,94,167,0.5); }
+        .btn-outline { padding: 16px 40px; border-radius: 12px; border: 1px solid rgba(167,139,250,0.5); color: var(--accent); text-decoration: none; font-weight: 900; font-size: 1rem; transition: 0.3s; background: rgba(167,139,250,0.05); cursor: pointer; font-family: 'Nunito'; text-transform: uppercase; }
+        .btn-outline:hover { background: rgba(167,139,250,0.15); border-color: var(--accent); color: #fff; transform: translateY(-4px); box-shadow: 0 15px 35px rgba(167,139,250,0.2); }
 
-        .download-container { max-width: 800px; margin: 40px auto; text-align: center; background: var(--card-bg); padding: 50px 30px; border-radius: 25px; border: 1px solid rgba(102, 252, 241, 0.15); backdrop-filter: blur(15px); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
-        .dl-title { font-family: 'Montserrat'; font-size: 3rem; margin-bottom: 10px; color: #fff; }
-        .dl-version { display: inline-block; background: rgba(102, 252, 241, 0.1); color: var(--accent-cyan); padding: 8px 20px; border-radius: 20px; font-weight: 700; font-size: 1.1rem; margin-bottom: 40px; border: 1px solid rgba(102, 252, 241, 0.3); }
+        .download-container { max-width: 800px; margin: 40px auto; text-align: center; background: var(--card-bg); padding: 50px 30px; border-radius: 25px; border: 1px solid var(--card-border); backdrop-filter: blur(15px); box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 60px rgba(167,139,250,0.05); }
+        .dl-title { font-family: 'Orbitron'; font-size: 2.5rem; margin-bottom: 10px; background: var(--main-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .dl-version { display: inline-block; background: rgba(167,139,250,0.1); color: var(--accent); padding: 8px 20px; border-radius: 20px; font-weight: 700; font-size: 1rem; margin-bottom: 40px; border: 1px solid rgba(167,139,250,0.3); }
         .dl-cards { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; }
-        .dl-card { flex: 1; min-width: 250px; background: rgba(11, 12, 16, 0.6); border: 1px solid rgba(255,255,255,0.05); padding: 40px 20px; border-radius: 20px; transition: 0.3s; text-decoration: none; color: white; display: flex; flex-direction: column; align-items: center; }
-        .dl-card:hover { transform: translateY(-10px); border-color: var(--accent-cyan); background: rgba(11, 12, 16, 0.9); box-shadow: 0 15px 30px rgba(102, 252, 241, 0.15); }
-        .dl-icon { font-size: 4rem; margin-bottom: 20px; }
-        .dl-card.pc:hover .dl-icon { color: #00a1f1; }
-        .dl-card.android:hover .dl-icon { color: #3ddc84; }
-        .dl-name { font-size: 1.5rem; font-weight: 900; margin-bottom: 10px; font-family: 'Montserrat'; }
-        .dl-desc { font-size: 0.9rem; color: #888; font-weight: 400; }
+        .dl-card { flex: 1; min-width: 250px; background: rgba(4,5,13,0.6); border: 1px solid rgba(255,255,255,0.05); padding: 40px 20px; border-radius: 20px; transition: 0.3s; text-decoration: none; color: white; display: flex; flex-direction: column; align-items: center; }
+        .dl-card:hover { transform: translateY(-10px); border-color: var(--accent); background: rgba(4,5,13,0.9); box-shadow: 0 15px 30px rgba(167,139,250,0.15); }
+        .dl-icon { font-size: 4rem; margin-bottom: 20px; color: var(--text-main); transition: 0.3s; }
+        .dl-card.pc:hover .dl-icon { color: var(--accent2); }
+        .dl-card.android:hover .dl-icon { color: #4ade80; }
+        .dl-name { font-size: 1.4rem; font-weight: 900; margin-bottom: 10px; font-family: 'Orbitron'; }
+        .dl-desc { font-size: 0.9rem; color: #666; font-weight: 400; }
 
         .hero-title { width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 40px 20px 30px; text-align: center; }
-        .hero-title h2 { font-family: 'Montserrat'; font-size: 2.8rem; margin: 0; text-transform: uppercase; letter-spacing: 3px; }
-        .top-50-text { color: var(--accent-cyan); font-family: 'Montserrat'; font-weight: 900; font-size: 1.5rem; margin-top: 5px; letter-spacing: 8px; text-shadow: 0 0 15px rgba(102, 252, 241, 0.5); }
+        .hero-title h2 { font-family: 'Orbitron'; font-size: 2.6rem; margin: 0; text-transform: uppercase; letter-spacing: 3px; background: var(--main-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .top-50-text { color: var(--accent); font-family: 'Orbitron'; font-weight: 900; font-size: 1.2rem; margin-top: 8px; letter-spacing: 8px; text-shadow: 0 0 20px rgba(167,139,250,0.6); opacity: 0.8; }
 
         .search-box { max-width: 600px; margin: 0 auto 40px; position: relative; padding: 0 20px; }
         .search-modes { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
-        .search-mode-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: var(--text-main); padding: 10px 20px; border-radius: 10px; cursor: pointer; font-size: 0.85rem; font-weight: 700; transition: 0.3s; }
-        .search-mode-btn.active { background: rgba(102, 252, 241, 0.15); color: var(--accent-cyan); border-color: var(--accent-cyan); }
-        .search-input { width: 100%; padding: 16px 20px 16px 50px; background: rgba(11, 12, 16, 0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; color: white; font-size: 1rem; outline: none; transition: 0.3s; backdrop-filter: blur(5px); }
-        .search-input:focus { border-color: var(--accent-cyan); box-shadow: 0 0 15px rgba(102, 252, 241, 0.2); }
+        .search-mode-btn { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: var(--text-main); padding: 10px 20px; border-radius: 10px; cursor: pointer; font-size: 0.85rem; font-weight: 700; transition: 0.3s; font-family: 'Nunito'; }
+        .search-mode-btn.active { background: rgba(167,139,250,0.12); color: var(--accent); border-color: rgba(167,139,250,0.4); }
+        .search-input { width: 100%; padding: 16px 20px 16px 50px; background: rgba(4,5,13,0.7); border: 1px solid rgba(167,139,250,0.15); border-radius: 15px; color: white; font-size: 1rem; outline: none; transition: 0.3s; backdrop-filter: blur(5px); font-family: 'Nunito'; }
+        .search-input:focus { border-color: var(--accent); box-shadow: 0 0 20px rgba(167,139,250,0.15); }
         .search-icon { position: absolute; left: 40px; bottom: 18px; color: #888; font-size: 1.1rem; }
 
-        .container { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; padding: 20px; }
-        
-        /* Drag & Drop стили */
-        .card {
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            overflow: hidden;
-            border: 2px solid rgba(255,255,255,0.05);
-            position: relative;
-            transition: 0.2s;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-            cursor: default;
-        }
-        .card.dragging {
-            opacity: 0.5;
-            transform: scale(0.98);
-            border-color: var(--accent-cyan);
-            box-shadow: 0 0 30px rgba(102, 252, 241, 0.3);
-        }
-        .card.drag-over {
-            border-color: var(--accent-cyan);
-            border-width: 2px;
-            transform: scale(1.02);
-            box-shadow: 0 0 30px rgba(102, 252, 241, 0.5);
-        }
-        .card.drag-over::after {
-            content: '▼';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 3rem;
-            color: var(--accent-cyan);
-            opacity: 0.5;
-            pointer-events: none;
-            z-index: 100;
-        }
-        .card[draggable="true"] {
-            cursor: grab;
-        }
-        .card[draggable="true"]:active {
-            cursor: grabbing;
-        }
-        
-        .card-img { width: 100%; height: 180px; object-fit: cover; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .container { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 28px; padding: 20px; }
+
+        .card { background: var(--card-bg); backdrop-filter: blur(10px); border-radius: 20px; overflow: hidden; border: 1px solid var(--card-border); position: relative; transition: 0.3s; box-shadow: 0 10px 30px rgba(0,0,0,0.4); cursor: default; }
+        .card:hover { border-color: rgba(167,139,250,0.35); box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 30px rgba(167,139,250,0.1); transform: translateY(-4px); }
+        .card.dragging { opacity: 0.5; transform: scale(0.98); border-color: var(--accent); box-shadow: 0 0 30px rgba(167,139,250,0.3); }
+        .card.drag-over { border-color: var(--accent); transform: scale(1.02); box-shadow: 0 0 30px rgba(167,139,250,0.5); }
+        .card.drag-over::after { content: '▼'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 3rem; color: var(--accent); opacity: 0.5; pointer-events: none; z-index: 100; }
+        .card[draggable="true"] { cursor: grab; }
+        .card[draggable="true"]:active { cursor: grabbing; }
+
+        .card-img { width: 100%; height: 180px; object-fit: cover; border-bottom: 1px solid rgba(167,139,250,0.08); }
         .card-body { padding: 25px; }
-        .demon-tag { position: absolute; top: 15px; left: 15px; background: var(--main-grad); color: #0b0c10; padding: 6px 12px; border-radius: 8px; font-weight: 900; font-size: 0.75rem; z-index: 50; box-shadow: 0 5px 15px rgba(0,0,0,0.5); text-transform: uppercase; }
-        .level-id-box { display: flex; align-items: center; gap: 8px; background: rgba(102, 252, 241, 0.08); padding: 10px 15px; border-radius: 10px; color: var(--accent-cyan); cursor: pointer; margin-bottom: 20px; font-weight: 700; transition: 0.2s; width: fit-content; font-size: 0.85rem; border: 1px solid rgba(102, 252, 241, 0.1); }
-        .level-id-box:hover { background: rgba(102, 252, 241, 0.15); border-color: rgba(102, 252, 241, 0.3); }
+
+        .demon-tag { position: absolute; top: 15px; left: 15px; background: linear-gradient(135deg, #7b5ea7, #3d85c8); color: #fff; padding: 5px 12px; border-radius: 8px; font-weight: 900; font-size: 0.72rem; z-index: 50; box-shadow: 0 4px 15px rgba(0,0,0,0.5); text-transform: uppercase; letter-spacing: 1px; }
+
+        .level-id-box { display: flex; align-items: center; gap: 8px; background: rgba(167,139,250,0.07); padding: 10px 15px; border-radius: 10px; color: var(--accent); cursor: pointer; margin-bottom: 20px; font-weight: 700; transition: 0.2s; width: fit-content; font-size: 0.85rem; border: 1px solid rgba(167,139,250,0.12); }
+        .level-id-box:hover { background: rgba(167,139,250,0.14); border-color: rgba(167,139,250,0.3); }
 
         .admin-controls { position: absolute; top: 10px; right: 10px; z-index: 100; display: flex; gap: 8px; background: rgba(0,0,0,0.85); padding: 6px; border-radius: 12px; backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.1); }
         .ctrl-btn { width: 34px; height: 34px; border-radius: 8px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: white !important; font-size: 0.95rem; transition: 0.2s; }
-        .btn-up { background-color: #2ecc71 !important; } 
-        .btn-down { background-color: #3498db !important; } 
-        .btn-del { background-color: #e74c3c !important; } 
+        .btn-up { background-color: #2ecc71 !important; }
+        .btn-down { background-color: #3498db !important; }
+        .btn-del { background-color: #e74c3c !important; }
         .ctrl-btn:hover { transform: scale(1.1); filter: brightness(1.2); }
 
         #admin-trigger { position: fixed; bottom: 20px; left: 20px; opacity: 0.2; cursor: pointer; font-size: 1.5rem; background: none; border: none; color: white; z-index: 1000; transition: 0.3s; display: none; }
-        #admin-trigger:hover { opacity: 1; color: var(--accent-cyan); }
-        .admin-form {
-            display: none; background: #12151e; padding: 25px 18px; border-radius: 20px;
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            z-index: 2000; width: calc(100% - 28px); max-width: 450px;
-            max-height: calc(100vh - 40px); overflow-y: auto;
-            border: 1px solid var(--accent-cyan); box-shadow: 0 0 50px rgba(0,0,0,0.8);
-        }
-        .admin-form h2 { margin-top: 0; font-size: 1.5rem; color: white; text-align: center; font-family: Montserrat; }
-        .admin-form input, .admin-form select { width: 100%; padding: 14px; margin: 10px 0; background: #1a1e29; border: 1px solid #333; color: white; border-radius: 12px; font-size: 0.95rem; outline: none; transition: 0.3s; }
-        .admin-form input:focus, .admin-form select:focus { border-color: var(--accent-cyan); }
+        #admin-trigger:hover { opacity: 1; color: var(--accent); }
 
-        /* Индикатор режима Drag & Drop */
-        .drag-indicator {
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            background: var(--accent-cyan);
-            color: #0b0c10;
-            padding: 10px 20px;
-            border-radius: 30px;
-            font-weight: 900;
-            z-index: 1000;
-            box-shadow: 0 0 20px rgba(102, 252, 241, 0.5);
-            animation: pulse 1.5s infinite;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
+        .admin-form { display: none; background: #090b18; padding: 25px 18px; border-radius: 20px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2000; width: calc(100% - 28px); max-width: 450px; max-height: calc(100vh - 40px); overflow-y: auto; border: 1px solid rgba(167,139,250,0.4); box-shadow: 0 0 50px rgba(0,0,0,0.8), 0 0 30px rgba(167,139,250,0.1); }
+        .admin-form h2 { margin-top: 0; font-size: 1.5rem; color: white; text-align: center; font-family: Orbitron; background: var(--main-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .admin-form input, .admin-form select { width: 100%; padding: 14px; margin: 10px 0; background: #0f1225; border: 1px solid rgba(167,139,250,0.2); color: white; border-radius: 12px; font-size: 0.95rem; outline: none; transition: 0.3s; font-family: 'Nunito'; }
+        .admin-form input:focus, .admin-form select:focus { border-color: var(--accent); box-shadow: 0 0 10px rgba(167,139,250,0.15); }
 
-        footer { padding: 40px 20px; text-align: center; background: rgba(11, 12, 16, 0.95); margin-top: auto; border-top: 1px solid rgba(255,255,255,0.05); }
-        .footer-socials { display: flex; justify-content: center; gap: 30px; margin-bottom: 20px; }
-        .footer-socials a { color: var(--text-main); font-size: 2rem; transition: 0.3s; text-decoration: none; }
-        .footer-socials a:hover { color: var(--accent-cyan); transform: translateY(-3px); }
+        .drag-indicator { position: fixed; top: 100px; right: 20px; background: linear-gradient(135deg, #7b5ea7, #3d85c8); color: #fff; padding: 10px 20px; border-radius: 30px; font-weight: 900; z-index: 1000; box-shadow: 0 0 20px rgba(167,139,250,0.5); animation: pulse 1.5s infinite; display: flex; align-items: center; gap: 8px; font-family: 'Nunito'; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
 
-        .btn-more { width: 100%; padding: 15px; background: rgba(102, 252, 241, 0.1); border: 1px solid rgba(102, 252, 241, 0.3); color: var(--accent-cyan); border-radius: 12px; cursor: pointer; font-weight: 900; text-transform: uppercase; transition: 0.3s; font-size: 0.85rem; letter-spacing: 1px; }
-        .btn-more:hover { background: var(--main-grad); color: #0b0c10; border-color: transparent; }
-        
-        .modal {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9); z-index: 3000; backdrop-filter: blur(15px);
-            overflow-y: auto; -webkit-overflow-scrolling: touch;
-        }
-        .modal-content {
-            background: var(--card-bg); margin: 16px auto 50px; padding: 20px;
-            max-width: 750px; width: calc(100% - 28px); border-radius: 20px;
-            border: 1px solid rgba(102, 252, 241, 0.2); position: relative;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-        }
-        .modal-close-pin {
-            position: absolute; top: 14px; right: 14px;
-            width: 36px; height: 36px; border-radius: 9px; flex-shrink: 0;
-            background: rgba(255,70,70,0.13); border: 1px solid rgba(255,70,70,0.3);
-            color: #ff6868; font-size: 1rem; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; transition: 0.2s; z-index: 10;
-        }
+        .btn-more { width: 100%; padding: 14px; background: rgba(167,139,250,0.07); border: 1px solid rgba(167,139,250,0.2); color: var(--accent); border-radius: 12px; cursor: pointer; font-weight: 900; text-transform: uppercase; transition: 0.3s; font-size: 0.83rem; letter-spacing: 1px; font-family: 'Nunito'; }
+        .btn-more:hover { background: linear-gradient(135deg, #7b5ea7, #3d85c8); color: #fff; border-color: transparent; }
+
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); z-index: 3000; backdrop-filter: blur(20px); overflow-y: auto; -webkit-overflow-scrolling: touch; }
+        .modal-content { background: rgba(10,12,28,0.98); margin: 16px auto 50px; padding: 20px; max-width: 750px; width: calc(100% - 28px); border-radius: 20px; border: 1px solid rgba(167,139,250,0.2); position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 40px rgba(167,139,250,0.08); }
+        .modal-close-pin { position: absolute; top: 14px; right: 14px; width: 36px; height: 36px; border-radius: 9px; flex-shrink: 0; background: rgba(255,70,70,0.13); border: 1px solid rgba(255,70,70,0.3); color: #ff6868; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; z-index: 10; }
         .modal-close-pin:hover { background: rgba(255,70,70,0.28); }
 
-        #copyToast { visibility: hidden; background: var(--main-grad); color: #0b0c10; padding: 15px 30px; position: fixed; left: 50%; bottom: 30px; transform: translateX(-50%); border-radius: 12px; z-index: 5000; font-weight: 900; font-size: 0.95rem; box-shadow: 0 10px 20px rgba(0,0,0,0.5); white-space: nowrap; }
+        #copyToast { visibility: hidden; background: linear-gradient(135deg, #7b5ea7, #3d85c8); color: #fff; padding: 15px 30px; position: fixed; left: 50%; bottom: 30px; transform: translateX(-50%); border-radius: 12px; z-index: 5000; font-weight: 900; font-size: 0.95rem; box-shadow: 0 10px 20px rgba(0,0,0,0.5); white-space: nowrap; font-family: 'Nunito'; }
         #copyToast.show { visibility: visible; animation: fadeInUp 0.4s; }
         @keyframes fadeInUp { from { opacity:0; transform:translateX(-50%) translateY(10px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }
 
-        .record-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 18px; background: rgba(255,255,255,0.03); margin-bottom: 8px; border-radius: 12px; font-size: 0.95rem; border: 1px solid rgba(255,255,255,0.05); gap: 8px; }
+        .record-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 18px; background: rgba(167,139,250,0.04); margin-bottom: 8px; border-radius: 12px; font-size: 0.95rem; border: 1px solid rgba(167,139,250,0.08); gap: 8px; }
 
         .home-video-section { max-width: 900px; margin: 0 auto 80px; padding: 0 20px; text-align: center; }
         .home-video-label { display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 18px; }
-        .home-video-line { flex: 1; height: 1px; background: rgba(102, 252, 241, 0.2); max-width: 120px; }
+        .home-video-line { flex: 1; height: 1px; background: rgba(167,139,250,0.2); max-width: 120px; }
         .home-video-tag { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--text-main); display: flex; align-items: center; }
-        .home-video-title { font-family: 'Montserrat'; font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 900; margin: 0 0 30px; color: #fff; text-transform: uppercase; letter-spacing: 2px; }
-        .home-video-wrapper { position: relative; width: 100%; aspect-ratio: 16/9; border-radius: 20px; overflow: hidden; border: 1px solid rgba(102, 252, 241, 0.2); box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 40px rgba(102, 252, 241, 0.08); }
+        .home-video-title { font-family: 'Orbitron'; font-size: clamp(1.2rem, 3vw, 1.8rem); font-weight: 900; margin: 0 0 30px; color: #fff; text-transform: uppercase; letter-spacing: 2px; }
+        .home-video-wrapper { position: relative; width: 100%; aspect-ratio: 16/9; border-radius: 20px; overflow: hidden; border: 1px solid rgba(167,139,250,0.2); box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 40px rgba(167,139,250,0.08); }
         .home-video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+        footer { padding: 40px 20px; text-align: center; background: rgba(4,5,13,0.95); margin-top: auto; border-top: 1px solid rgba(167,139,250,0.08); }
+        .footer-socials { display: flex; justify-content: center; gap: 30px; margin-bottom: 20px; }
+        .footer-socials a { color: var(--text-main); font-size: 2rem; transition: 0.3s; text-decoration: none; }
+        .footer-socials a:hover { color: var(--accent); transform: translateY(-3px); }
+        .footer-moon { font-size: 1.2rem; margin-bottom: 8px; }
+
+        #maintenanceOverlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:9999; background:#04050d; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:20px; }
 
         @media (max-width: 768px) {
             .navbar { padding: 0 14px; height: 60px; flex-wrap: nowrap; }
-            .logo { font-size: 1.2rem; }
+            .logo { font-size: 1rem; }
             .nav-links { display: none !important; }
             .burger-btn { display: flex !important; }
             .section-page { margin-top: 60px; }
-
+            .moon { width: 55px; height: 55px; top: 70px; right: 5%; }
             .welcome-hero { padding: 28px 16px; min-height: calc(100vh - 60px); }
-            .welcome-hero h1 { font-size: clamp(1.9rem, 9vw, 3.2rem); letter-spacing: 2px; }
+            .welcome-hero h1 { font-size: clamp(1.7rem, 9vw, 2.8rem); letter-spacing: 2px; }
             .welcome-hero p { font-size: 0.95rem; margin: 16px 0 26px; }
             .hero-btns { gap: 12px; }
             .btn-main, .btn-outline { padding: 14px 22px; font-size: 0.88rem; flex: 1; min-width: 125px; max-width: 190px; }
-
             .download-container { margin: 18px 14px; padding: 28px 16px; }
-            .dl-title { font-size: 1.9rem; }
-            .dl-version { font-size: 0.95rem; margin-bottom: 24px; }
-            .dl-cards { flex-direction: column; align-items: stretch; gap: 14px; }
+            .dl-title { font-size: 1.6rem; }
+            .dl-cards { flex-direction: column; gap: 14px; }
             .dl-card { min-width: 0; padding: 26px 20px; }
-
             .hero-title { padding: 22px 14px 14px; }
-            .hero-title h2 { font-size: 1.9rem; letter-spacing: 2px; }
-            .top-50-text { font-size: 1.1rem; letter-spacing: 5px; }
-
+            .hero-title h2 { font-size: 1.7rem; }
             .search-box { padding: 0 12px; margin-bottom: 22px; }
             .search-modes { gap: 8px; }
             .search-mode-btn { padding: 9px 12px; font-size: 0.77rem; flex: 1; text-align: center; }
             .search-input { padding: 13px 14px 13px 42px; font-size: 0.93rem; }
-            .search-icon { left: 26px; bottom: 15px; font-size: 1rem; }
-
+            .search-icon { left: 26px; bottom: 15px; }
             .container { grid-template-columns: 1fr; gap: 14px; padding: 8px 12px; }
             .card-body { padding: 18px; }
             .card-img { height: 155px; }
-
             .home-video-section { padding: 0 14px; margin-bottom: 48px; }
-
-            .admin-form { padding: 20px 14px; }
-            .admin-form input, .admin-form select { padding: 12px; }
         }
-
-        @media (max-width: 400px) {
-            .logo { font-size: 1rem; }
-            .hero-title h2 { font-size: 1.55rem; }
-        }
-
         @media (min-width: 769px) {
             .burger-btn { display: none !important; }
             .mobile-menu { display: none !important; }
@@ -332,11 +280,20 @@
 </head>
 <body>
     <div id="copyToast">ID Скопировано!</div>
-    <div class="bg-wrapper"><div class="grid-overlay"></div><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
+
+    <div class="bg-wrapper">
+        <div class="stars-layer"></div>
+        <div class="stars-layer-2"></div>
+        <div class="moon"></div>
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
 
     <nav class="navbar">
-        <div class="logo" onclick="openSection('homeSection')">Mysteryx GDPS</div>
-
+        <div class="logo" onclick="openSection('homeSection')">
+            <span class="logo-icon">🌙</span> Night GDPS
+        </div>
         <div class="nav-links">
             <button class="nav-item" onclick="openSection('homeSection')" id="navHome">Главная</button>
             <div class="dropdown">
@@ -352,12 +309,11 @@
                 <i class="fas fa-download"></i> <span id="navDownloadText">Скачать</span>
             </button>
             <div class="nav-socials">
-                <a href="https://t.me/mysteryxgdps" target="_blank" class="tg-icon" title="Telegram"><i class="fab fa-telegram"></i></a>
+                <a href="https://t.me/nightgdps2" target="_blank" class="tg-icon" title="Telegram"><i class="fab fa-telegram"></i></a>
                 <a href="https://www.youtube.com/@lichigmdj98" target="_blank" class="yt-icon" title="YouTube"><i class="fab fa-youtube"></i></a>
-                <button onclick="toggleLang()" id="langBtn" style="background:none; border:1px solid rgba(102, 252, 241, 0.4); color:var(--accent-cyan); padding:5px 12px; cursor:pointer; border-radius:8px; font-weight:700; margin-left:10px;">RU</button>
+                <button onclick="toggleLang()" id="langBtn" style="background:none; border:1px solid rgba(167,139,250,0.4); color:var(--accent); padding:5px 12px; cursor:pointer; border-radius:8px; font-weight:700; margin-left:10px; font-family:'Nunito';">RU</button>
             </div>
         </div>
-
         <button class="burger-btn" id="burgerBtn" onclick="toggleBurger()">
             <span></span><span></span><span></span>
         </button>
@@ -373,7 +329,7 @@
         <button class="m-btn" onclick="openSection('listSection'); switchTab('creators'); closeBurger();">
             <i class="fas fa-star"></i> Топ Креаторов
         </button>
-        <button class="m-btn green" onclick="openSection('downloadSection'); closeBurger();">
+        <button class="m-btn purple" onclick="openSection('downloadSection'); closeBurger();">
             <i class="fas fa-download"></i> Скачать игру
         </button>
         <div class="m-socials">
@@ -385,23 +341,23 @@
 
     <main id="homeSection" class="section-page active">
         <header class="welcome-hero">
-            <h1 id="welcomeTitle">MYSTERYX GDPS</h1>
+            <div class="hero-eyebrow">🌙 Private Server</div>
+            <h1><span class="h1-night" id="welcomeTitle">NIGHT GDPS</span></h1>
             <p id="welcomeDesc">Окунись в мир самого амбициозного приватного сервера Geometry Dash. Стабильность, уникальные уровни и сильнейшее комьюнити игроков.</p>
             <div class="hero-btns">
                 <button onclick="openSection('downloadSection')" class="btn-main" id="btnPlay">СКАЧАТЬ ИГРУ</button>
                 <button onclick="openSection('listSection'); switchTab('demons');" class="btn-outline" id="btnList">DEMON LIST</button>
             </div>
         </header>
-
         <section class="home-video-section">
             <div class="home-video-label">
                 <span class="home-video-line"></span>
                 <span class="home-video-tag"><i class="fab fa-youtube" style="color:#ff0000; margin-right:8px;"></i>СМОТРЕТЬ НА YOUTUBE</span>
                 <span class="home-video-line"></span>
             </div>
-            <h2 class="home-video-title">Mysteryx GDPS | Новая Приватка</h2>
+            <h2 class="home-video-title">Night GDPS | Новая Приватка</h2>
             <div class="home-video-wrapper">
-                <iframe src="https://www.youtube.com/embed/4FVkdKR-p5Y" title="Mysteryx GDPS | Новая Приватка" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                <iframe src="https://www.youtube.com/embed/4FVkdKR-p5Y" title="Night GDPS | Новая Приватка" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
             </div>
         </section>
     </main>
@@ -411,12 +367,12 @@
             <h2 class="dl-title" id="dlTitle">СКАЧАТЬ ИГРУ</h2>
             <div class="dl-version" id="dlVersion">Версия 2.2081</div>
             <div class="dl-cards">
-                <a href="https://drive.google.com/file/d/1JDpXrU-QtROGSTzLf10vHlgSS-6SvYNl/view?usp=drive_link" target="_blank" class="dl-card pc">
+                <a href="https://drive.google.com/file/d/1z0DBED8_lI5quVCouCaYS3j_Mn6zeiGg/view?usp=drive_link" target="_blank" class="dl-card pc">
                     <i class="fab fa-windows dl-icon"></i>
                     <div class="dl-name">PC / Windows</div>
                     <div class="dl-desc" id="dlDescPC">Скачать .zip архив для игры на компьютере</div>
                 </a>
-                <a href="https://drive.google.com/file/d/16iEN3S9gwmYAkWNTvQb56yhyV_tD11st/view?usp=sharing" target="_blank" class="dl-card android">
+                <a href="https://drive.google.com/file/d/1DAXcLX1Fe8tY0DLiao7juDzGldgR9VYi/view?usp=drive_link" target="_blank" class="dl-card android">
                     <i class="fab fa-android dl-icon"></i>
                     <div class="dl-name">Android</div>
                     <div class="dl-desc" id="dlDescAnd">Скачать .apk файл для игры на телефоне</div>
@@ -428,7 +384,7 @@
     <main id="listSection" class="section-page">
         <div class="hero-title">
             <h2 id="txtHero">DEMON LIST</h2>
-            <div class="top-50-text" id="top50Banner">TOP 50</div>
+            <div class="top-50-text" id="top50Banner">✦ TOP 50 ✦</div>
         </div>
         <div class="search-box">
             <div class="search-modes">
@@ -438,22 +394,20 @@
             <i class="fas fa-search search-icon"></i>
             <input type="text" id="searchInput" class="search-input" placeholder="Поиск уровня или автора..." oninput="render()">
         </div>
-        
-        <!-- Индикатор Drag & Drop режима -->
         <div id="dragIndicator" class="drag-indicator" style="display: none;">
             <i class="fas fa-arrows-alt"></i> Drag & Drop активен
         </div>
-        
         <div class="container" id="mainContainer"></div>
     </main>
 
     <footer>
+        <div class="footer-moon">🌙</div>
         <div class="footer-socials">
-            <a href="https://t.me/mysteryxgdps" target="_blank"><i class="fab fa-telegram"></i></a>
+            <a href="https://t.me/nightgdps2" target="_blank"><i class="fab fa-telegram"></i></a>
             <a href="https://www.youtube.com/@lichigmdj98" target="_blank"><i class="fab fa-youtube"></i></a>
         </div>
-        <p style="color:var(--text-main);">© 2026 Mysteryx GDPS. Developed with passion.</p>
-        <a href="https://t.me/mysteryxgdps/11198/11199" id="verifyLink" style="color:#666; text-decoration:none; font-size:0.85rem; transition:0.3s;" target="_blank">Критерии верификации</a>
+        <p style="color:var(--text-main);">© 2026 Night GDPS. Developed with passion.</p>
+        <a href="https://t.me/nightgdps2/11198/11199" id="verifyLink" style="color:#555; text-decoration:none; font-size:0.85rem; transition:0.3s;" target="_blank">Критерии верификации</a>
     </footer>
 
     <button id="admin-trigger" onclick="openAdmin()"><i class="fas fa-cog"></i></button>
@@ -463,14 +417,12 @@
             <i class="fas fa-times"></i>
         </button>
         <h2>ADMIN PANEL</h2>
-
         <div id="loginBlock">
             <input type="email" id="adminEmail" placeholder="Email">
             <input type="password" id="adminPass" placeholder="Пароль">
             <div id="loginError" style="color:#ff6868;font-size:0.85rem;text-align:center;margin-top:6px;display:none;">Неверный email или пароль</div>
-            <button class="btn-more" style="background:var(--main-grad);color:#0b0c10;margin-top:15px;border:none;" onclick="adminLogin()">ВОЙТИ</button>
+            <button class="btn-more" style="background:linear-gradient(135deg,#7b5ea7,#3d85c8);color:#fff;margin-top:15px;border:none;" onclick="adminLogin()">ВОЙТИ</button>
         </div>
-
         <div id="adminControls" style="display:none;">
             <select id="admAction" onchange="toggleAdmFields()">
                 <option value="add_demon">Добавить Демона</option>
@@ -498,12 +450,19 @@
                 <input type="text" id="vicPerc" placeholder="Проценты">
                 <input type="text" id="vicAtt" placeholder="Попытки">
             </div>
-            <button class="btn-more" style="background:var(--main-grad);color:#0b0c10;margin-top:15px;border:none;" onclick="processAdmin()">ВЫПОЛНИТЬ</button>
+            <button class="btn-more" style="background:linear-gradient(135deg,#7b5ea7,#3d85c8);color:#fff;margin-top:15px;border:none;" onclick="processAdmin()">ВЫПОЛНИТЬ</button>
             <button class="btn-more" style="background:transparent;border:1px solid #e74c3c;color:#e74c3c;margin-top:10px;" onclick="adminLogout()">ВЫЙТИ ИЗ АККАУНТА</button>
         </div>
     </div>
 
     <div id="detailModal" class="modal"><div class="modal-content" id="modalData"></div></div>
+
+    <div id="maintenanceOverlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:9999; background:#04050d; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:20px;">
+        <div style="font-size:4rem; margin-bottom:20px;">🌙</div>
+        <h1 style="font-family:'Orbitron',sans-serif; font-size:clamp(1.6rem,5vw,3rem); margin:0 0 16px; background:linear-gradient(135deg,#a78bfa,#60a5fa); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">ТЕХНИЧЕСКИЙ ПЕРЕРЫВ</h1>
+        <p style="color:#94a3b8; font-size:1.1rem; max-width:500px; line-height:1.7; margin:0 0 30px;">Сайт временно недоступен. Мы проводим технические работы. Скоро вернёмся!</p>
+        <div style="background:rgba(167,139,250,0.08); border:1px solid rgba(167,139,250,0.2); border-radius:12px; padding:12px 24px; color:#a78bfa; font-weight:700; font-size:0.9rem; letter-spacing:1px; font-family:'Orbitron';">🌙 NIGHT GDPS</div>
+    </div>
 
     <script>
         const firebaseConfig = {
@@ -527,8 +486,6 @@
         let currentTab = 'demons';
         let demons = [];
         let creators = [];
-
-        // Переменные для Drag & Drop
         let draggedItem = null;
         let draggedIndex = -1;
 
@@ -539,16 +496,8 @@
         auth.onAuthStateChanged(user => {
             isAdmin = !!user;
             const trigger = document.getElementById('admin-trigger');
-            if (isAdmin) {
-                localStorage.setItem('mxAdmin', '1');
-                trigger.style.display = 'block';
-            } else {
-                localStorage.removeItem('mxAdmin');
-                trigger.style.display = 'none';
-                isDeleteMode = false;
-                isDragDropMode = false;
-                render();
-            }
+            if (isAdmin) { localStorage.setItem('mxAdmin', '1'); trigger.style.display = 'block'; }
+            else { localStorage.removeItem('mxAdmin'); trigger.style.display = 'none'; isDeleteMode = false; isDragDropMode = false; render(); }
         });
 
         function adminLogin() {
@@ -557,18 +506,10 @@
             const errEl = document.getElementById('loginError');
             errEl.style.display = 'none';
             auth.signInWithEmailAndPassword(email, pass)
-                .then(() => {
-                    document.getElementById('loginBlock').style.display = 'none';
-                    document.getElementById('adminControls').style.display = 'block';
-                    toggleAdmFields();
-                })
+                .then(() => { document.getElementById('loginBlock').style.display = 'none'; document.getElementById('adminControls').style.display = 'block'; toggleAdmFields(); })
                 .catch(() => { errEl.style.display = 'block'; });
         }
-
-        function adminLogout() {
-            auth.signOut();
-            closeAdmin();
-        }
+        function adminLogout() { auth.signOut(); closeAdmin(); }
 
         function openAdmin() {
             document.getElementById('loginBlock').style.display = isAdmin ? 'none' : 'block';
@@ -633,72 +574,40 @@
             render();
         }
 
-        // Drag & Drop функции
         function handleDragStart(index, event) {
-            if (!isDragDropMode) {
-                event.preventDefault();
-                return;
-            }
-            draggedIndex = index;
-            draggedItem = demons[index];
+            if (!isDragDropMode) { event.preventDefault(); return; }
+            draggedIndex = index; draggedItem = demons[index];
             event.dataTransfer.setData('text/plain', index);
             event.currentTarget.classList.add('dragging');
         }
-
         function handleDragOver(index, event) {
             if (!isDragDropMode || draggedIndex === -1) return;
             event.preventDefault();
             document.querySelectorAll('.card').forEach(c => c.classList.remove('drag-over'));
             event.currentTarget.classList.add('drag-over');
         }
-
-        function handleDragLeave(event) {
-            event.currentTarget.classList.remove('drag-over');
-        }
-
+        function handleDragLeave(event) { event.currentTarget.classList.remove('drag-over'); }
         function handleDrop(targetIndex, event) {
-            event.preventDefault();
-            event.currentTarget.classList.remove('drag-over');
-            
+            event.preventDefault(); event.currentTarget.classList.remove('drag-over');
             if (!isDragDropMode || draggedIndex === -1 || draggedIndex === targetIndex) return;
-
-            // Создаем копию массива для перестановки
             const newDemons = [...demons];
             const dragged = newDemons[draggedIndex];
-            
-            // Удаляем перетаскиваемый элемент
             newDemons.splice(draggedIndex, 1);
-            // Вставляем на новое место
             newDemons.splice(targetIndex, 0, dragged);
-
-            // Обновляем order в Firebase
             const updates = {};
-            newDemons.forEach((demon, idx) => {
-                if (demon.order !== idx) {
-                    updates[`/demons/${demon.key}/order`] = idx;
-                }
-            });
-            
-            db.ref().update(updates).then(() => {
-                // Показываем уведомление
-                showToast('Порядок обновлён!');
-            });
-
-            draggedIndex = -1;
-            draggedItem = null;
+            newDemons.forEach((demon, idx) => { if (demon.order !== idx) { updates[`/demons/${demon.key}/order`] = idx; } });
+            db.ref().update(updates).then(() => { showToast('Порядок обновлён!'); });
+            draggedIndex = -1; draggedItem = null;
         }
-
         function handleDragEnd(event) {
             event.currentTarget.classList.remove('dragging');
             document.querySelectorAll('.card').forEach(c => c.classList.remove('drag-over'));
-            draggedIndex = -1;
-            draggedItem = null;
+            draggedIndex = -1; draggedItem = null;
         }
 
         function showToast(message) {
             const toast = document.getElementById('copyToast');
-            toast.innerText = message;
-            toast.className = 'show';
+            toast.innerText = message; toast.className = 'show';
             setTimeout(() => toast.className = '', 2000);
         }
 
@@ -715,7 +624,6 @@
             const isDem = (currentTab === 'demons');
             const query = document.getElementById('searchInput').value.toLowerCase();
             const topBanner = document.getElementById('top50Banner');
-
             container.innerHTML = '';
             document.getElementById('txtHero').innerText = isDem ? (currentLang==='EN'?'DEMON LIST':'СПИСОК ДЕМОНОВ') : (currentLang==='EN'?'CREATOR TOP':'ТОП КРЕАТОРОВ');
             topBanner.style.display = isDem ? 'block' : 'none';
@@ -725,12 +633,9 @@
                     if (searchMode === 'tag') { return d.tag && d.tag.toLowerCase().includes(query); }
                     return d.name.toLowerCase().includes(query) || d.author.toLowerCase().includes(query);
                 });
-                
                 filtered.forEach((d, i) => {
                     const card = document.createElement('div');
                     card.className = 'card';
-                    
-                    // Добавляем Drag & Drop атрибуты если включен режим
                     if (isDragDropMode && isAdmin) {
                         card.setAttribute('draggable', 'true');
                         card.setAttribute('data-index', i);
@@ -740,27 +645,21 @@
                         card.ondrop = (e) => handleDrop(i, e);
                         card.ondragend = handleDragEnd;
                     }
-                    
                     card.innerHTML = `
-                        ${isDeleteMode ? `
-                        <div class="admin-controls">
+                        ${isDeleteMode ? `<div class="admin-controls">
                             <button class="ctrl-btn btn-up" onclick="moveItem(${i}, -1)"><i class="fas fa-arrow-up"></i></button>
                             <button class="ctrl-btn btn-down" onclick="moveItem(${i}, 1)"><i class="fas fa-arrow-down"></i></button>
                             <button class="ctrl-btn btn-del" onclick="deleteItem('${d.key}','demons')"><i class="fas fa-trash"></i></button>
                         </div>` : ''}
-                        ${isDragDropMode && isAdmin ? `
-                        <div style="position: absolute; top: 10px; left: 10px; background: rgba(102,252,241,0.2); padding: 4px 8px; border-radius: 5px; font-size: 0.7rem; color: var(--accent-cyan); z-index: 50;">
-                            <i class="fas fa-grip-vertical"></i> Drag me
-                        </div>` : ''}
+                        ${isDragDropMode && isAdmin ? `<div style="position:absolute;top:10px;left:10px;background:rgba(167,139,250,0.2);padding:4px 8px;border-radius:5px;font-size:0.7rem;color:var(--accent);z-index:50;"><i class="fas fa-grip-vertical"></i> Drag me</div>` : ''}
                         ${d.tag ? `<div class="demon-tag">${d.tag}</div>` : ''}
-                        <img src="${d.img}" class="card-img" onerror="this.src='https://via.placeholder.com/600x300/1f2833/66fcf1?text=Mysteryx'">
+                        <img src="${d.img}" class="card-img" onerror="this.src='https://via.placeholder.com/600x300/0c1026/a78bfa?text=Night+GDPS'">
                         <div class="card-body">
-                            <h3 style="margin:0; color:var(--accent-cyan); font-size: 1.25rem;">#${i+1} ${d.name}</h3>
-                            <p style="color:#aaa; margin: 6px 0 15px; font-size: 0.9rem;">by <span style="color:#fff">${d.author}</span></p>
-                            <div class="level-id-box" onclick="copyID('${d.levelID}')">ID: ${d.levelID}</div>
+                            <h3 style="margin:0; color:var(--accent); font-size:1.2rem; font-family:'Orbitron';">#${i+1} ${d.name}</h3>
+                            <p style="color:#888; margin:6px 0 15px; font-size:0.9rem;">by <span style="color:#c4b5fd;">${d.author}</span></p>
+                            <div class="level-id-box" onclick="copyID('${d.levelID}')"><i class="fas fa-hashtag" style="font-size:0.75rem;"></i> ${d.levelID}</div>
                             <button class="btn-more" onclick="showInfoByKey('${d.key}')">${currentLang==='EN'?'DETAILS':'ПОДРОБНЕЕ'}</button>
-                        </div>
-                    `;
+                        </div>`;
                     container.appendChild(card);
                 });
             } else {
@@ -770,9 +669,9 @@
                         ${isDeleteMode ? `<div class="admin-controls">
                             <button class="ctrl-btn btn-del" onclick="deleteItem('${c.key}','creators')"><i class="fas fa-trash"></i></button>
                         </div>` : ''}
-                        <div class="card-body" style="display:flex; justify-content:space-between; align-items:center; padding:35px 40px;">
-                            <h3 style="margin:0; font-size: 1.2rem; color: #fff;">#${i+1} ${c.name}</h3>
-                            <div style="text-align:right;"><span style="font-size:1.5rem; color:var(--accent-cyan); font-weight:900;">${c.points} CP</span></div>
+                        <div class="card-body" style="display:flex;justify-content:space-between;align-items:center;padding:35px 40px;">
+                            <h3 style="margin:0;font-size:1.1rem;color:#fff;font-family:'Orbitron';">#${i+1} ${c.name}</h3>
+                            <div style="text-align:right;"><span style="font-size:1.4rem;color:var(--accent);font-weight:900;">${c.points} CP</span></div>
                         </div>
                     </div>`;
                 });
@@ -794,9 +693,7 @@
             } else if(act === 'delete_mode') {
                 isDeleteMode = !isDeleteMode; render();
             } else if(act === 'delete_all_demons') {
-                if(confirm('⚠️ Удалить ВСЕХ демонов из списка? Это действие необратимо!')) {
-                    db.ref('demons').remove();
-                }
+                if(confirm('⚠️ Удалить ВСЕХ демонов из списка? Это действие необратимо!')) { db.ref('demons').remove(); }
             } else if(act === 'maintenance') {
                 db.ref('maintenance').once('value', s => {
                     const current = s.val() === true;
@@ -812,48 +709,10 @@
         function toggleLang() {
             currentLang = currentLang === 'RU' ? 'EN' : 'RU';
             document.getElementById('langBtn').innerText = currentLang;
-            
             const translations = {
-                RU: {
-                    welcomeT: "MYSTERYX GDPS",
-                    welcomeD: "Окунись в мир самого амбициозного приватного сервера Geometry Dash. Стабильность, уникальные уровни и сильнейшее комьюнити игроков.",
-                    play: "СКАЧАТЬ ИГРУ",
-                    list: "DEMON LIST",
-                    searchM: "Название / Автор",
-                    searchT: "По тегу",
-                    searchP: "Поиск уровня или автора...",
-                    verify: "Критерии верификации",
-                    toast: "ID Скопировано!",
-                    navDropTop50: "ТОП 50",
-                    navDropCreators: "КРЕАТОРЫ",
-                    navDownloadText: "Скачать",
-                    navHome: "Главная",
-                    dlTitle: "СКАЧАТЬ ИГРУ",
-                    dlVersion: "Версия 2.2081",
-                    dlDescPC: "Скачать .zip архив для игры на компьютере",
-                    dlDescAnd: "Скачать .apk файл для игры на телефоне"
-                },
-                EN: {
-                    welcomeT: "MYSTERYX GDPS",
-                    welcomeD: "Dive into the world of the most ambitious Geometry Dash private server. Stability, unique levels, and the strongest community.",
-                    play: "DOWNLOAD GAME",
-                    list: "DEMON LIST",
-                    searchM: "Name / Author",
-                    searchT: "By Tag",
-                    searchP: "Search level or creator...",
-                    verify: "Verification Criteria",
-                    toast: "ID Copied!",
-                    navDropTop50: "TOP 50",
-                    navDropCreators: "CREATORS",
-                    navDownloadText: "Download",
-                    navHome: "Home",
-                    dlTitle: "DOWNLOAD GAME",
-                    dlVersion: "Version 2.2081",
-                    dlDescPC: "Download .zip archive to play on PC",
-                    dlDescAnd: "Download .apk file to play on mobile"
-                }
+                RU: { welcomeT:"NIGHT GDPS", welcomeD:"Окунись в мир самого амбициозного приватного сервера Geometry Dash. Стабильность, уникальные уровни и сильнейшее комьюнити игроков.", play:"СКАЧАТЬ ИГРУ", list:"DEMON LIST", searchM:"Название / Автор", searchT:"По тегу", searchP:"Поиск уровня или автора...", verify:"Критерии верификации", toast:"ID Скопировано!", navDropTop50:"ТОП 50", navDropCreators:"КРЕАТОРЫ", navDownloadText:"Скачать", navHome:"Главная", dlTitle:"СКАЧАТЬ ИГРУ", dlVersion:"Версия 2.2081", dlDescPC:"Скачать .zip архив для игры на компьютере", dlDescAnd:"Скачать .apk файл для игры на телефоне" },
+                EN: { welcomeT:"NIGHT GDPS", welcomeD:"Dive into the world of the most ambitious Geometry Dash private server. Stability, unique levels, and the strongest community.", play:"DOWNLOAD GAME", list:"DEMON LIST", searchM:"Name / Author", searchT:"By Tag", searchP:"Search level or creator...", verify:"Verification Criteria", toast:"ID Copied!", navDropTop50:"TOP 50", navDropCreators:"CREATORS", navDownloadText:"Download", navHome:"Home", dlTitle:"DOWNLOAD GAME", dlVersion:"Version 2.2081", dlDescPC:"Download .zip archive to play on PC", dlDescAnd:"Download .apk file to play on mobile" }
             };
-
             const t = translations[currentLang];
             document.getElementById('welcomeTitle').innerText = t.welcomeT;
             document.getElementById('welcomeDesc').innerText = t.welcomeD;
@@ -880,76 +739,41 @@
             const d = demons.find(x => x.key === key);
             const vics = d.victors ? Object.entries(d.victors).map(([vk, v]) => `
                 <div class="record-item">
-                    <span><b style="color:#fff;">${v.name}</b> — <span style="color:var(--accent-cyan); font-weight:700;">${v.perc || '100%'}</span> <span style="color:#aaa;">(${v.att || '0'} att)</span></span>
+                    <span><b style="color:#fff;">${v.name}</b> — <span style="color:var(--accent); font-weight:700;">${v.perc || '100%'}</span> <span style="color:#888;">(${v.att || '0'} att)</span></span>
                     ${isDeleteMode ? `<i class="fas fa-times" style="color:#ff4d4d; cursor:pointer; flex-shrink:0;" onclick="deleteVictor('${d.key}', '${vk}')"></i>` : ''}
-                </div>`).join('') : `<p style='color:#888;'>${currentLang==='EN'?'No records yet':'Рекордов пока нет'}</p>`;
-
+                </div>`).join('') : `<p style='color:#555;'>${currentLang==='EN'?'No records yet':'Рекордов пока нет'}</p>`;
             document.getElementById('modalData').innerHTML = `
                 <button class="modal-close-pin" onclick="document.getElementById('detailModal').style.display='none'">
                     <i class="fas fa-times"></i>
                 </button>
-                <h2 style="font-family:Montserrat; font-size:clamp(1.3rem,5vw,2rem); margin:0 44px 4px 0; color: #fff;">${d.name}</h2>
-                <p style="color:#aaa; font-size:0.9rem; margin:0 0 14px;">by <span style="color:var(--accent-cyan);">${d.author}</span> ${d.verifier ? '| Verified by ' + d.verifier : ''}</p>
-                <iframe style="width:100%; aspect-ratio:16/9; border-radius:14px; margin:0 0 18px; border:1px solid rgba(102, 252, 241, 0.2);" src="https://www.youtube.com/embed/${d.vid}" frameborder="0" allowfullscreen></iframe>
-                <h3 style="margin-bottom:12px; font-size:1.1rem; color: #fff;">Victors & Records:</h3>
+                <h2 style="font-family:Orbitron; font-size:clamp(1.1rem,4vw,1.7rem); margin:0 44px 4px 0; color:#fff; background:var(--main-grad); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">${d.name}</h2>
+                <p style="color:#888; font-size:0.9rem; margin:0 0 14px;">by <span style="color:var(--accent);">${d.author}</span> ${d.verifier ? '| Verified by ' + d.verifier : ''}</p>
+                <iframe style="width:100%; aspect-ratio:16/9; border-radius:14px; margin:0 0 18px; border:1px solid rgba(167,139,250,0.2);" src="https://www.youtube.com/embed/${d.vid}" frameborder="0" allowfullscreen></iframe>
+                <h3 style="margin-bottom:12px; font-size:1rem; color:#fff; font-family:Orbitron;">Victors & Records:</h3>
                 <div style="max-height:220px; overflow-y:auto; padding-right:6px;">${vics}</div>
-                <button class="btn-more" style="background:transparent; border:1px solid #555; color:#888; margin-top:20px;" onclick="document.getElementById('detailModal').style.display='none'">${currentLang==='EN'?'CLOSE':'ЗАКРЫТЬ'}</button>`;
-            
+                <button class="btn-more" style="background:transparent; border:1px solid #333; color:#666; margin-top:20px;" onclick="document.getElementById('detailModal').style.display='none'">${currentLang==='EN'?'CLOSE':'ЗАКРЫТЬ'}</button>`;
             document.getElementById('detailModal').style.display='block';
             document.getElementById('detailModal').scrollTop = 0;
         }
 
-        function deleteVictor(dk, vk) { 
+        function deleteVictor(dk, vk) {
             if(confirm(currentLang==='EN'?"Delete record?":"Удалить рекорд?")) {
-                db.ref(`demons/${dk}/victors/${vk}`).remove().then(() => {
-                    document.getElementById('detailModal').style.display='none';
-                });
-            } 
+                db.ref(`demons/${dk}/victors/${vk}`).remove().then(() => { document.getElementById('detailModal').style.display='none'; });
+            }
         }
-
         function copyID(id) { navigator.clipboard.writeText(id); const t = document.getElementById("copyToast"); t.className = "show"; setTimeout(() => t.className = "", 3000); }
-        
-        function moveItem(index, dir) {
-            let target = index + dir; 
-            if (target < 0 || target >= demons.length) return;
-            const updates = {}; 
-            updates[`/demons/${demons[index].key}/order`] = target; 
-            updates[`/demons/${demons[target].key}/order`] = index;
-            db.ref().update(updates);
-        }
-
-        function toggleAdmFields() { 
-            const a = document.getElementById('admAction').value; 
-            document.getElementById('fields_main').style.display = (a === 'add_demon' || a === 'add_creator') ? 'block' : 'none'; 
-            document.getElementById('fields_demon').style.display = a === 'add_demon' ? 'block' : 'none'; 
-            document.getElementById('fields_victor').style.display = a === 'add_victor' ? 'block' : 'none'; 
-        }
-
+        function moveItem(index, dir) { let target = index + dir; if (target < 0 || target >= demons.length) return; const updates = {}; updates[`/demons/${demons[index].key}/order`] = target; updates[`/demons/${demons[target].key}/order`] = index; db.ref().update(updates); }
+        function toggleAdmFields() { const a = document.getElementById('admAction').value; document.getElementById('fields_main').style.display = (a === 'add_demon' || a === 'add_creator') ? 'block' : 'none'; document.getElementById('fields_demon').style.display = a === 'add_demon' ? 'block' : 'none'; document.getElementById('fields_victor').style.display = a === 'add_victor' ? 'block' : 'none'; }
         function closeAdmin() { document.getElementById('adminPanel').style.display='none'; }
         function switchTab(t) { currentTab = t; render(); }
         function deleteItem(k, p) { if(confirm("Delete item?")) db.ref(p+'/'+k).remove(); }
-    </script>
 
-    <div id="maintenanceOverlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:9999; background:#0b0c10; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:20px;">
-        <div style="font-size:4rem; margin-bottom:20px;">🔧</div>
-        <h1 style="font-family:'Montserrat',sans-serif; font-size:clamp(2rem,6vw,4rem); margin:0 0 16px; background:linear-gradient(135deg,#66fcf1,#45a29e); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">ТЕХНИЧЕСКИЙ ПЕРЕРЫВ</h1>
-        <p style="color:#c5c6c7; font-size:1.1rem; max-width:500px; line-height:1.7; margin:0 0 30px;">Сайт временно недоступен. Мы проводим технические работы. Скоро вернёмся!</p>
-        <div style="background:rgba(102,252,241,0.08); border:1px solid rgba(102,252,241,0.2); border-radius:12px; padding:12px 24px; color:#66fcf1; font-weight:700; font-size:0.9rem; letter-spacing:1px;">MYSTERYX GDPS</div>
-    </div>
-
-    <script>
         db.ref('maintenance').on('value', s => {
             const on = s.val() === true;
             const overlay = document.getElementById('maintenanceOverlay');
-            if (on && !isAdmin) {
-                overlay.style.display = 'flex';
-                document.body.style.overflow = 'hidden';
-            } else {
-                overlay.style.display = 'none';
-                document.body.style.overflow = '';
-            }
+            if (on && !isAdmin) { overlay.style.display = 'flex'; document.body.style.overflow = 'hidden'; }
+            else { overlay.style.display = 'none'; document.body.style.overflow = ''; }
         });
     </script>
-
 </body>
 </html>
