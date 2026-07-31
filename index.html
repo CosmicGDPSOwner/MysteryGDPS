@@ -384,7 +384,7 @@
         .btn-edit { background-color: #f39c12 !important; }
         .ctrl-btn:hover { transform: scale(1.1); filter: brightness(1.2); }
 
-        #admin-trigger { position: fixed; bottom: 20px; left: 20px; opacity: 0.2; cursor: pointer; font-size: 1.5rem; background: none; border: none; color: white; z-index: 1000; transition: 0.3s; display: block; }
+        #admin-trigger { position: fixed; bottom: 20px; left: 20px; opacity: 0.2; cursor: pointer; font-size: 1.5rem; background: none; border: none; color: white; z-index: 1000; transition: 0.3s; display: none; }
         #admin-trigger:hover { opacity: 1; color: var(--accent); }
 
         .admin-form { display: none; background: #090b18; padding: 25px 18px; border-radius: 20px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2000; width: calc(100% - 28px); max-width: 450px; max-height: calc(100vh - 40px); overflow-y: auto; border: 1px solid rgba(167,139,250,0.4); box-shadow: 0 0 50px rgba(0,0,0,0.8), 0 0 30px rgba(167,139,250,0.1); }
@@ -1744,8 +1744,8 @@
         function canReorderCurrent() { return canEditTab(currentTab); }
 
 
-        // Кнопка входа для команды всегда доступна. Это важно после смены домена:
-        // Firebase-сессия и localStorage привязаны к origin и на новом адресе начинаются с нуля.
+        // Вход для команды доступен только через закрытую страницу modloginpage.
+        // Обычным посетителям кнопка входа не показывается.
 
         // ===== AUTH STATE =====
         auth.onAuthStateChanged(user => {
@@ -1811,9 +1811,8 @@
                 }
             } else {
                 localStorage.removeItem('mxAdmin');
-                // Не скрываем кнопку: через неё админ или модератор может войти заново
-                // после смены GitHub Pages/Vercel-домена или очистки данных браузера.
-                trigger.style.display = 'block';
+                // Посетители не должны видеть вход для команды.
+                trigger.style.display = 'none';
                 if (modTrigger) modTrigger.style.display = 'none';
                 modInd.style.display = 'none';
             }
@@ -4615,10 +4614,14 @@
                 return;
             }
 
-            if (hash === '#mod-login') {
+            // Закрытая страница входа для команды.
+            // #mod-login оставлен для совместимости со старыми ссылками.
+            if (hash === '#modloginpage' || hash === '#mod-login') {
                 if (!isModerator) {
                     openModLoginPage();
                 } else {
+                    document.getElementById('modLoginPage').style.display = 'none';
+                    document.body.style.overflow = '';
                     history.replaceState(null, '', window.location.pathname + window.location.search);
                     showToast('Ты уже вошёл как ' + (currentUserRole === 'admin' ? 'администратор' : 'модератор'));
                 }
