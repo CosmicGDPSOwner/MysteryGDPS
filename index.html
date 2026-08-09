@@ -382,6 +382,7 @@
         .btn-down { background-color: #3498db !important; }
         .btn-del { background-color: #e74c3c !important; }
         .btn-edit { background-color: #f39c12 !important; }
+        .btn-history { background-color: #7c3aed !important; }
         .ctrl-btn:hover { transform: scale(1.1); filter: brightness(1.2); }
 
         #admin-trigger { position: fixed; bottom: 20px; left: 20px; opacity: 0.2; cursor: pointer; font-size: 1.5rem; background: none; border: none; color: white; z-index: 1000; transition: 0.3s; display: none; }
@@ -1266,7 +1267,10 @@
             <input type="text" id="mVerifier" placeholder="Верифер" style="width:100%;padding:10px 12px;margin:4px 0;background:#0a0d1e;border:1px solid rgba(167,139,250,0.2);color:white;border-radius:10px;font-family:Nunito;font-size:0.88rem;outline:none;">
             <input type="text" id="mImg" placeholder="Ссылка на картинку" style="width:100%;padding:10px 12px;margin:4px 0;background:#0a0d1e;border:1px solid rgba(167,139,250,0.2);color:white;border-radius:10px;font-family:Nunito;font-size:0.88rem;outline:none;">
             <input type="text" id="mVid" placeholder="Ссылка на YouTube" style="width:100%;padding:10px 12px;margin:4px 0;background:#0a0d1e;border:1px solid rgba(167,139,250,0.2);color:white;border-radius:10px;font-family:Nunito;font-size:0.88rem;outline:none;">
-            <input type="text" id="mPoints" placeholder="⚡ Баллы сложности (напр. 0.31)" style="width:100%;padding:10px 12px;margin:4px 0 10px;background:#0a0d1e;border:1px solid rgba(167,139,250,0.2);color:white;border-radius:10px;font-family:Nunito;font-size:0.88rem;outline:none;">
+            <input type="text" id="mPoints" placeholder="⚡ Баллы сложности (напр. 0.31)" style="width:100%;padding:10px 12px;margin:4px 0;background:#0a0d1e;border:1px solid rgba(167,139,250,0.2);color:white;border-radius:10px;font-family:Nunito;font-size:0.88rem;outline:none;">
+            <select id="mPosition" style="width:100%;padding:10px 12px;margin:4px 0 10px;background:#0a0d1e;border:1px solid rgba(167,139,250,0.2);color:white;border-radius:10px;font-family:Nunito;font-size:0.88rem;outline:none;">
+                <option value="end">📍 Позиция: в конец</option>
+            </select>
             <button id="modAddLevelBtn" onclick="modAddLevel()" style="width:100%;padding:12px;background:linear-gradient(135deg,#7b5ea7,#3d85c8);color:#fff;border:none;border-radius:10px;font-weight:900;font-size:0.85rem;text-transform:uppercase;cursor:pointer;font-family:Nunito;">
                 <i class="fas fa-plus"></i> <span id="modAddLevelBtnText">Добавить демона</span>
             </button>
@@ -1345,6 +1349,9 @@
                     <input type="text" id="itemImgURL" placeholder="Ссылка на картинку">
                     <input type="text" id="itemVid" placeholder="Ссылка на YouTube">
                     <input type="text" id="itemPoints" placeholder="⚡ Баллы сложности (напр. 0.31)">
+                    <select id="itemPosition">
+                        <option value="end">📍 Позиция: в конец</option>
+                    </select>
                 </div>
             </div>
             <div id="fields_victor" style="display:none;">
@@ -2903,6 +2910,8 @@
             detectListChanges('demons', demons);
             const sel = document.getElementById('selectDemon');
             if(sel) sel.innerHTML = demons.map(d => `<option value="${escapeHtml(d.key)}">${escapeHtml(d.name)}</option>`).join('');
+            populatePositionSelect('itemPosition', 'demons', document.getElementById('admAction')?.value === 'add_demon');
+            populatePositionSelect('mPosition', 'demons', document.getElementById('mLevelType')?.value === 'demons');
             if (currentTab === 'demons') render();
         });
         
@@ -2913,6 +2922,8 @@
             detectListChanges('challenges', challenges);
             const selC = document.getElementById('selectChallenge');
             if (selC) selC.innerHTML = challenges.map(c => `<option value="${escapeHtml(c.key)}">${escapeHtml(c.name)}</option>`).join('');
+            populatePositionSelect('itemPosition', 'challenges', document.getElementById('admAction')?.value === 'add_challenge');
+            populatePositionSelect('mPosition', 'challenges', document.getElementById('mLevelType')?.value === 'challenges');
             if (currentTab === 'challenges') render();
         });
 
@@ -3245,6 +3256,93 @@
             showToast(isDragDropMode ? 'Drag & Drop режим включён' : 'Drag & Drop режим выключён');
         }
 
+        // ===== ДОБАВЛЕНИЕ УРОВНЯ: ПОЗИЦИЯ + ЗАЩИТА ОТ ДУБЛЕЙ =====
+        function normalizeLevelID(id) {
+            return String(id ?? '').trim();
+        }
+
+        function findDuplicateLevelByID(levelID) {
+            const id = normalizeLevelID(levelID);
+            if (!id) return null;
+            const demon = demons.find(d => normalizeLevelID(d.levelID) === id);
+            if (demon) return { type: 'demons', item: demon };
+            const challenge = challenges.find(c => normalizeLevelID(c.levelID) === id);
+            if (challenge) return { type: 'challenges', item: challenge };
+            return null;
+        }
+
+        function duplicateLevelMessage(dup, levelID) {
+            const listName = dup.type === 'challenges' ? 'Challenge List' : 'Demon List';
+            return `⚠️ Уровень с ID ${levelID} уже находится в ${listName}: ${dup.item.name || 'без названия'}`;
+        }
+
+        function populatePositionSelect(selectId, type, shouldUpdate = true) {
+            if (!shouldUpdate) return;
+            const sel = document.getElementById(selectId);
+            if (!sel) return;
+            const list = type === 'challenges' ? challenges : demons;
+            const previous = sel.value;
+            let html = '';
+            for (let pos = 1; pos <= list.length; pos++) {
+                const item = list[pos - 1];
+                html += `<option value="${pos}">#${pos} — перед ${escapeHtml(item.name || 'уровнем')}</option>`;
+            }
+            html += `<option value="end">В конец (#${list.length + 1})</option>`;
+            sel.innerHTML = html;
+            if (previous && Array.from(sel.options).some(o => o.value === previous)) sel.value = previous;
+            else sel.value = 'end';
+        }
+
+        function getInsertIndex(selectId, list) {
+            const value = document.getElementById(selectId)?.value || 'end';
+            if (value === 'end') return list.length;
+            const pos = parseInt(value, 10);
+            if (!Number.isFinite(pos)) return list.length;
+            return Math.max(0, Math.min(list.length, pos - 1));
+        }
+
+        function addLevelAtPosition(type, data, insertIndex) {
+            const list = type === 'challenges' ? challenges : demons;
+            const safeIndex = Math.max(0, Math.min(list.length, insertIndex));
+            const today = new Date().toISOString().slice(0, 10);
+            const newRef = db.ref(type).push();
+            const newHistoryKey = newRef.child('history').push().key;
+            const updates = {};
+
+            updates[`/${type}/${newRef.key}`] = {
+                ...data,
+                order: safeIndex,
+                addedAt: Date.now(),
+                history: { [newHistoryKey]: { pos: safeIndex + 1, date: today } }
+            };
+
+            // Всё, что было на выбранной позиции и ниже, сдвигаем на одну строку вниз.
+            list.forEach((item, idx) => {
+                const newOrder = idx >= safeIndex ? idx + 1 : idx;
+                if (item.order !== newOrder) updates[`/${type}/${item.key}/order`] = newOrder;
+                if (idx >= safeIndex) {
+                    const hKey = db.ref(`${type}/${item.key}/history`).push().key;
+                    updates[`/${type}/${item.key}/history/${hKey}`] = { pos: newOrder + 1, date: today };
+                }
+            });
+
+            return db.ref().update(updates);
+        }
+
+        // Очистка истории только у одной карточки уровня. Оставлена admin-only, как и общая очистка.
+        function clearItemPositionHistory(key, type = 'demons') {
+            if (!isAdmin) { showToast('Только администратор может очищать историю позиций'); return; }
+            const list = type === 'challenges' ? challenges : demons;
+            const item = list.find(x => x.key === key);
+            if (!item) return;
+            const count = item.history ? Object.keys(item.history).length : 0;
+            if (!count) { showToast('У этого уровня история позиций уже пустая'); return; }
+            if (!confirm(`🧹 Очистить историю позиций уровня «${item.name}»?\n\nБудет удалено записей: ${count}. Это действие необратимо.`)) return;
+            db.ref(`${type}/${key}/history`).remove()
+                .then(() => showToast(`🧹 История «${item.name}» очищена`))
+                .catch(e => showToast('Ошибка: ' + e.message));
+        }
+
         // Очистка истории позиций (только админ) — удаляет узлы /history у всех уровней
         function clearPositionHistory() {
             if (!isAdmin) { alert('Только администратор!'); return; }
@@ -3326,14 +3424,16 @@
                         adminHtml = `<div class="admin-controls">
                             <button class="ctrl-btn btn-up" onclick="moveItem(${i}, -1, '${listType}')"><i class="fas fa-arrow-up"></i></button>
                             <button class="ctrl-btn btn-down" onclick="moveItem(${i}, 1, '${listType}')"><i class="fas fa-arrow-down"></i></button>
-                            <button class="ctrl-btn btn-edit" onclick="openEditModal('${d.key}', '${listType}')"><i class="fas fa-pen"></i></button>
+                            <button class="ctrl-btn btn-edit" onclick="openEditModal('${d.key}', '${listType}')" title="Редактировать"><i class="fas fa-pen"></i></button>
+                            ${isAdmin ? `<button class="ctrl-btn btn-history" onclick="event.stopPropagation(); clearItemPositionHistory('${d.key}', '${listType}')" title="Очистить историю позиций"><i class="fas fa-broom"></i></button>` : ''}
                             <button class="ctrl-btn btn-del" onclick="deleteItem('${d.key}', '${listType}')"><i class="fas fa-trash"></i></button>
                         </div>`;
                     } else if (isEditMode && canEdit) {
                         adminHtml = `<div class="admin-controls">
                             <button class="ctrl-btn btn-up" onclick="moveItem(${i}, -1, '${listType}')"><i class="fas fa-arrow-up"></i></button>
                             <button class="ctrl-btn btn-down" onclick="moveItem(${i}, 1, '${listType}')"><i class="fas fa-arrow-down"></i></button>
-                            <button class="ctrl-btn btn-edit" onclick="openEditModal('${d.key}', '${listType}')"><i class="fas fa-pen"></i></button>
+                            <button class="ctrl-btn btn-edit" onclick="openEditModal('${d.key}', '${listType}')" title="Редактировать"><i class="fas fa-pen"></i></button>
+                            ${isAdmin ? `<button class="ctrl-btn btn-history" onclick="event.stopPropagation(); clearItemPositionHistory('${d.key}', '${listType}')" title="Очистить историю позиций"><i class="fas fa-broom"></i></button>` : ''}
                         </div>`;
                     }
 
@@ -3438,24 +3538,30 @@
                 if (act === 'add_demon'     && !isAdmin && !currentUserPermissions.canAddDemons)     { alert('Нет прав: добавление демонов не разрешено!'); return; }
                 if (act === 'add_challenge' && !isAdmin && !currentUserPermissions.canAddChallenges) { alert('Нет прав: добавление челленджей не разрешено!'); return; }
                 if (!isModerator) { alert('Нет доступа!'); return; }
+
                 const targetDb = act === 'add_demon' ? 'demons' : 'challenges';
                 const targetList = act === 'add_demon' ? demons : challenges;
+                const levelID = normalizeLevelID(document.getElementById('itemID').value);
+                const duplicate = findDuplicateLevelByID(levelID);
+                if (duplicate) { showToast(duplicateLevelMessage(duplicate, levelID), 5500); return; }
 
-                let r = document.getElementById('itemVid').value;
+                let r = document.getElementById('itemVid').value.trim();
                 let v = r.includes('v=') ? r.split('v=')[1].split('&')[0] : r.includes('youtu.be/') ? r.split('youtu.be/')[1].split('?')[0] : r;
-                db.ref(targetDb).push({ 
-                    name: document.getElementById('itemName').value, 
-                    author: document.getElementById('itemVal').value, 
-                    levelID: document.getElementById('itemID').value, 
-                    tag: document.getElementById('itemTag').value, 
-                    verifier: document.getElementById('itemVerifier').value, 
-                    img: document.getElementById('itemImgURL').value, 
-                    vid: v, 
-                    points: document.getElementById('itemPoints').value.trim(), 
-                    order: targetList.length,
-                    addedAt: Date.now()
-                });
-                closeAdmin();
+                const insertIndex = getInsertIndex('itemPosition', targetList);
+
+                addLevelAtPosition(targetDb, {
+                    name: document.getElementById('itemName').value.trim(),
+                    author: document.getElementById('itemVal').value.trim(),
+                    levelID,
+                    tag: document.getElementById('itemTag').value.trim(),
+                    verifier: document.getElementById('itemVerifier').value.trim(),
+                    img: document.getElementById('itemImgURL').value.trim(),
+                    vid: v,
+                    points: document.getElementById('itemPoints').value.trim()
+                }, insertIndex).then(() => {
+                    showToast(`✅ Уровень добавлен на позицию #${insertIndex + 1}`);
+                    closeAdmin();
+                }).catch(e => showToast('Ошибка: ' + e.message));
                 return;
             }
             if (act === 'edit_demon_mode') {
@@ -3925,6 +4031,8 @@
             document.getElementById('fields_victor').style.display = a === 'add_victor' ? 'block' : 'none';
             document.getElementById('fields_victor_challenge').style.display = a === 'add_victor_challenge' ? 'block' : 'none';
             document.getElementById('fields_country').style.display = a === 'set_country' ? 'block' : 'none';
+            if (a === 'add_demon') populatePositionSelect('itemPosition', 'demons');
+            if (a === 'add_challenge') populatePositionSelect('itemPosition', 'challenges');
         }
         function closeAdmin() { document.getElementById('adminPanel').style.display='none'; }
         
@@ -4455,6 +4563,7 @@
                     ? 'linear-gradient(135deg,#f97316,#f472b6)'
                     : 'linear-gradient(135deg,#7b5ea7,#3d85c8)';
             }
+            populatePositionSelect('mPosition', isChal ? 'challenges' : 'demons');
         }
 
         function modToggleEditMode() {
@@ -4508,27 +4617,34 @@
             const name = document.getElementById('mName').value.trim();
             if (!name) { showToast('Введи название уровня!'); return; }
 
+            const levelID = normalizeLevelID(document.getElementById('mID').value);
+            const duplicate = findDuplicateLevelByID(levelID);
+            if (duplicate) {
+                showToast(duplicateLevelMessage(duplicate, levelID), 5500);
+                return;
+            }
+
             let r = document.getElementById('mVid').value.trim();
             let v = r.includes('v=') ? r.split('v=')[1].split('&')[0] : r.includes('youtu.be/') ? r.split('youtu.be/')[1].split('?')[0] : r;
             const targetList = isChal ? challenges : demons;
+            const insertIndex = getInsertIndex('mPosition', targetList);
 
-            db.ref(type).push({
+            addLevelAtPosition(type, {
                 name,
                 author: document.getElementById('mAuthor').value.trim(),
-                levelID: document.getElementById('mID').value.trim(),
+                levelID,
                 tag: document.getElementById('mTag').value.trim(),
                 verifier: document.getElementById('mVerifier').value.trim(),
                 img: document.getElementById('mImg').value.trim(),
                 vid: v,
-                points: document.getElementById('mPoints').value.trim(),
-                order: targetList.length,
-                addedAt: Date.now()
-            }).then(() => {
-                showToast(isChal ? '✅ Челлендж добавлен!' : '✅ Демон добавлен!');
+                points: document.getElementById('mPoints').value.trim()
+            }, insertIndex).then(() => {
+                showToast(`${isChal ? '✅ Челлендж' : '✅ Демон'} добавлен на позицию #${insertIndex + 1}`);
                 ['mName','mAuthor','mID','mTag','mVerifier','mImg','mVid','mPoints'].forEach(id => {
                     const el = document.getElementById(id);
                     if (el) el.value = '';
                 });
+                populatePositionSelect('mPosition', type);
                 document.getElementById('modQuickPanel').style.display = 'none';
             }).catch(e => showToast('Ошибка: ' + e.message));
         }
