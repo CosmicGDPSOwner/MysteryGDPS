@@ -1253,8 +1253,12 @@
         <h2 style="margin:0 0 4px;font-family:Orbitron,sans-serif;font-size:1.2rem;text-align:center;background:linear-gradient(135deg,#60a5fa,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">🛡️ МОД ПАНЕЛЬ</h2>
         <p id="modNickDisplay" style="text-align:center;color:#60a5fa;font-size:0.82rem;font-weight:700;margin:0 0 18px;"></p>
 
-        <div style="background:rgba(167,139,250,0.05);border:1px solid rgba(167,139,250,0.12);border-radius:14px;padding:14px;margin-bottom:12px;">
-            <p style="margin:0 0 10px;font-size:0.8rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1px;">➕ Добавить демона</p>
+        <div id="modAddLevelBox" style="background:rgba(167,139,250,0.05);border:1px solid rgba(167,139,250,0.12);border-radius:14px;padding:14px;margin-bottom:12px;">
+            <p id="modLevelFormTitle" style="margin:0 0 10px;font-size:0.8rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1px;">➕ Добавить уровень в лист</p>
+            <select id="mLevelType" onchange="updateModLevelFormType()" style="width:100%;padding:10px 12px;margin:4px 0 8px;background:#0a0d1e;border:1px solid rgba(167,139,250,0.2);color:white;border-radius:10px;font-family:Nunito;font-size:0.88rem;outline:none;">
+                <option value="demons">💀 Демон</option>
+                <option value="challenges">🔥 Челлендж</option>
+            </select>
             <input type="text" id="mName" placeholder="Название уровня" style="width:100%;padding:10px 12px;margin:4px 0;background:#0a0d1e;border:1px solid rgba(167,139,250,0.2);color:white;border-radius:10px;font-family:Nunito;font-size:0.88rem;outline:none;">
             <input type="text" id="mAuthor" placeholder="Автор" style="width:100%;padding:10px 12px;margin:4px 0;background:#0a0d1e;border:1px solid rgba(167,139,250,0.2);color:white;border-radius:10px;font-family:Nunito;font-size:0.88rem;outline:none;">
             <input type="text" id="mID" placeholder="ID уровня" style="width:100%;padding:10px 12px;margin:4px 0;background:#0a0d1e;border:1px solid rgba(167,139,250,0.2);color:white;border-radius:10px;font-family:Nunito;font-size:0.88rem;outline:none;">
@@ -1263,8 +1267,8 @@
             <input type="text" id="mImg" placeholder="Ссылка на картинку" style="width:100%;padding:10px 12px;margin:4px 0;background:#0a0d1e;border:1px solid rgba(167,139,250,0.2);color:white;border-radius:10px;font-family:Nunito;font-size:0.88rem;outline:none;">
             <input type="text" id="mVid" placeholder="Ссылка на YouTube" style="width:100%;padding:10px 12px;margin:4px 0;background:#0a0d1e;border:1px solid rgba(167,139,250,0.2);color:white;border-radius:10px;font-family:Nunito;font-size:0.88rem;outline:none;">
             <input type="text" id="mPoints" placeholder="⚡ Баллы сложности (напр. 0.31)" style="width:100%;padding:10px 12px;margin:4px 0 10px;background:#0a0d1e;border:1px solid rgba(167,139,250,0.2);color:white;border-radius:10px;font-family:Nunito;font-size:0.88rem;outline:none;">
-            <button onclick="modAddDemon()" style="width:100%;padding:12px;background:linear-gradient(135deg,#7b5ea7,#3d85c8);color:#fff;border:none;border-radius:10px;font-weight:900;font-size:0.85rem;text-transform:uppercase;cursor:pointer;font-family:Nunito;">
-                <i class="fas fa-plus"></i> Добавить
+            <button id="modAddLevelBtn" onclick="modAddLevel()" style="width:100%;padding:12px;background:linear-gradient(135deg,#7b5ea7,#3d85c8);color:#fff;border:none;border-radius:10px;font-weight:900;font-size:0.85rem;text-transform:uppercase;cursor:pointer;font-family:Nunito;">
+                <i class="fas fa-plus"></i> <span id="modAddLevelBtnText">Добавить демона</span>
             </button>
         </div>
 
@@ -4410,7 +4414,47 @@
         function openModQuickPanel() {
             const sel = document.getElementById('modVicDemon');
             if (sel) sel.innerHTML = demons.map(d => `<option value="${escapeHtml(d.key)}">${escapeHtml(d.name)}</option>`).join('');
+
+            // Настраиваем форму добавления уровня по правам текущего модератора.
+            const typeSel = document.getElementById('mLevelType');
+            const addBox = document.getElementById('modAddLevelBox');
+            if (typeSel) {
+                const canDemons = isAdmin || !!currentUserPermissions.canAddDemons;
+                const canChallenges = isAdmin || !!currentUserPermissions.canAddChallenges;
+                const demonOpt = typeSel.querySelector('option[value="demons"]');
+                const challengeOpt = typeSel.querySelector('option[value="challenges"]');
+
+                if (demonOpt) demonOpt.disabled = !canDemons;
+                if (challengeOpt) challengeOpt.disabled = !canChallenges;
+
+                if (canDemons) typeSel.value = 'demons';
+                else if (canChallenges) typeSel.value = 'challenges';
+
+                if (addBox) addBox.style.display = (canDemons || canChallenges) ? 'block' : 'none';
+                updateModLevelFormType();
+            }
+
             document.getElementById('modQuickPanel').style.display = 'block';
+        }
+
+        function updateModLevelFormType() {
+            const typeSel = document.getElementById('mLevelType');
+            if (!typeSel) return;
+            const isChal = typeSel.value === 'challenges';
+            const title = document.getElementById('modLevelFormTitle');
+            const btnText = document.getElementById('modAddLevelBtnText');
+            const btn = document.getElementById('modAddLevelBtn');
+
+            if (title) {
+                title.textContent = isChal ? '🔥 Добавить челлендж' : '➕ Добавить демона';
+                title.style.color = isChal ? '#fb923c' : 'var(--accent)';
+            }
+            if (btnText) btnText.textContent = isChal ? 'Добавить челлендж' : 'Добавить демона';
+            if (btn) {
+                btn.style.background = isChal
+                    ? 'linear-gradient(135deg,#f97316,#f472b6)'
+                    : 'linear-gradient(135deg,#7b5ea7,#3d85c8)';
+            }
         }
 
         function modToggleEditMode() {
@@ -4445,12 +4489,30 @@
             form.style.display = (isAlreadyOpen && isSameType) ? 'none' : 'block';
         }
 
-        function modAddDemon() {
+        function modAddLevel() {
+            if (!isModerator) { showToast('Нет доступа!'); return; }
+
+            const type = document.getElementById('mLevelType')?.value || 'demons';
+            const isChal = type === 'challenges';
+            const allowed = isAdmin || (isChal
+                ? !!currentUserPermissions.canAddChallenges
+                : !!currentUserPermissions.canAddDemons);
+
+            if (!allowed) {
+                showToast(isChal
+                    ? 'Нет прав на добавление челленджей'
+                    : 'Нет прав на добавление демонов');
+                return;
+            }
+
             const name = document.getElementById('mName').value.trim();
             if (!name) { showToast('Введи название уровня!'); return; }
+
             let r = document.getElementById('mVid').value.trim();
             let v = r.includes('v=') ? r.split('v=')[1].split('&')[0] : r.includes('youtu.be/') ? r.split('youtu.be/')[1].split('?')[0] : r;
-            db.ref('demons').push({
+            const targetList = isChal ? challenges : demons;
+
+            db.ref(type).push({
                 name,
                 author: document.getElementById('mAuthor').value.trim(),
                 levelID: document.getElementById('mID').value.trim(),
@@ -4459,11 +4521,14 @@
                 img: document.getElementById('mImg').value.trim(),
                 vid: v,
                 points: document.getElementById('mPoints').value.trim(),
-                order: demons.length,
+                order: targetList.length,
                 addedAt: Date.now()
             }).then(() => {
-                showToast('✅ Демон добавлен!');
-                ['mName','mAuthor','mID','mTag','mVerifier','mImg','mVid'].forEach(id => document.getElementById(id).value = '');
+                showToast(isChal ? '✅ Челлендж добавлен!' : '✅ Демон добавлен!');
+                ['mName','mAuthor','mID','mTag','mVerifier','mImg','mVid','mPoints'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.value = '';
+                });
                 document.getElementById('modQuickPanel').style.display = 'none';
             }).catch(e => showToast('Ошибка: ' + e.message));
         }
