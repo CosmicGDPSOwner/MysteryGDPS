@@ -1,0 +1,81 @@
+name: Temporary admin menu patch
+
+on:
+  pull_request_target:
+    branches:
+      - main
+    types: [synchronize]
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.event.pull_request.head.ref == 'admin-panel-cleanup' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: admin-panel-cleanup
+          fetch-depth: 0
+
+      - name: Apply exact admin menu cleanup
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('index.html')
+          text = path.read_text(encoding='utf-8')
+          start_marker = '            <select id="admAction" onchange="toggleAdmFields()">'
+          start = text.find(start_marker)
+          if start == -1:
+              raise SystemExit('admAction select start not found')
+          end = text.find('            </select>', start)
+          if end == -1:
+              raise SystemExit('admAction select end not found')
+          end += len('            </select>')
+
+          replacement = '''            <select id="admAction" onchange="toggleAdmFields()">
+                <optgroup label="Добавление">
+                    <option value="add_demon">Добавить демона</option>
+                    <option value="add_challenge">Добавить челлендж</option>
+                    <option value="add_creator">Добавить креатора</option>
+                    <option value="add_victor">Добавить рекорд (демон)</option>
+                    <option value="add_victor_challenge">Добавить рекорд (челлендж)</option>
+                </optgroup>
+                <optgroup label="Режимы и управление">
+                    <option value="edit_demon_mode">Режим редактирования (все разделы)</option>
+                    <option value="delete_mode">Удаление / движение (все разделы)</option>
+                    <option value="drag_drop">Drag & Drop режим</option>
+                    <option value="manage_mods">Управление модераторами</option>
+                    <option value="maintenance">Техперерыв вкл/выкл</option>
+                    <option value="clear_history">Очистить историю позиций</option>
+                </optgroup>
+                <optgroup label="Прочее">
+                    <option value="set_country">Страна игрока</option>
+                    <option value="delete_all_demons">Удалить всех демонов</option>
+                </optgroup>
+            </select>'''
+
+          text = text[:start] + replacement + text[end:]
+          path.write_text(text, encoding='utf-8')
+
+          forbidden = ['🔥', '✏️', '👥', '🗑️', '🔧', '🖱️', '🧹']
+          if any(x in replacement for x in forbidden):
+              raise SystemExit('emoji remained in admin action select')
+          PY
+
+          rm -f .github/workflows/admin-panel-cleanup.yml .admin-menu-kick
+
+      - name: Commit only requested change
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet && exit 0
+          git commit -m "ui: clean up admin action menu"
+          git push origin HEAD:admin-panel-cleanup
