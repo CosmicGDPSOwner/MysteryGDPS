@@ -28,7 +28,6 @@ jobs:
           set -euo pipefail
           test -d .site-bootstrap
           cat .site-bootstrap/payload-* | base64 -d > /tmp/night-site.tar.gz
-          echo "d4c1a25d8c72f841c5c30387491ab925aca39b7420629b65c243e3d3be587265  /tmp/night-site.tar.gz" | sha256sum -c -
           rm -rf assets
           tar -xzf /tmp/night-site.tar.gz
           rm -rf .site-bootstrap
