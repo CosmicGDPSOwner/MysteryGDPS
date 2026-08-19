@@ -4,22 +4,29 @@ on:
   push:
     branches:
       - site-split-redesign
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize, reopened]
 
 permissions:
   contents: write
 
 jobs:
   publish-split:
+    if: github.head_ref == 'site-split-redesign' || github.ref_name == 'site-split-redesign'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: site-split-redesign
           fetch-depth: 0
 
       - name: Restore tested site files
         shell: bash
         run: |
           set -euo pipefail
+          test -d .site-bootstrap || exit 0
           cat .site-bootstrap/payload-* | base64 -d > /tmp/night-site.tar.gz
           echo "d4c1a25d8c72f841c5c30387491ab925aca39b7420629b65c243e3d3be587265  /tmp/night-site.tar.gz" | sha256sum -c -
           rm -rf assets
@@ -41,4 +48,4 @@ jobs:
           git add -A
           git diff --cached --quiet && exit 0
           git commit -m "refactor: split Night GDPS site structure"
-          git push
+          git push origin HEAD:site-split-redesign
