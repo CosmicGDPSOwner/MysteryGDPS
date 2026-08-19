@@ -493,20 +493,26 @@
         </div>
         <div id="adminControls" style="display:none;">
             <select id="admAction" onchange="toggleAdmFields()">
-                <option value="add_demon">Добавить Демона</option>
-                <option value="add_challenge">🔥 Добавить Челлендж</option>
-                <option value="add_creator">Добавить Креатора</option>
-                <option value="add_victor">Добавить Рекорд (Демон)</option>
-                <option value="add_victor_challenge">🔥 Добавить Рекорд (Челлендж)</option>
-                <option value="delete_mode">Удаление / Движение (Все)</option>
-                <option value="edit_demon_mode">✏️ Режим редактирования (Все)</option>
-                <option value="manage_mods">👥 Управление модераторами</option>
-                <option value="delete_all_demons">🗑️ Удалить ВСЕХ демонов</option>
-                <option value="maintenance">🔧 Техперерыв вкл/выкл</option>
-                <option value="drag_drop">🖱️ Drag & Drop режим</option>
-                <option value="clear_history">🧹 Очистить историю позиций</option>
-                <option value="set_country">Страна игрока</option>
-            </select>
+      <optgroup label="Добавление">
+          <option value="add_demon">Добавить демона</option>
+          <option value="add_challenge">Добавить челлендж</option>
+          <option value="add_creator">Добавить креатора</option>
+          <option value="add_victor">Добавить рекорд (демон)</option>
+          <option value="add_victor_challenge">Добавить рекорд (челлендж)</option>
+      </optgroup>
+      <optgroup label="Режимы и управление">
+          <option value="edit_demon_mode">Режим редактирования (все разделы)</option>
+          <option value="delete_mode">Удаление / движение (все разделы)</option>
+          <option value="drag_drop">Drag & Drop режим</option>
+          <option value="manage_mods">Управление модераторами</option>
+          <option value="maintenance">Техперерыв вкл/выкл</option>
+          <option value="clear_history">Очистить историю позиций</option>
+      </optgroup>
+      <optgroup label="Прочее">
+          <option value="set_country">Страна игрока</option>
+          <option value="delete_all_demons">Удалить всех демонов</option>
+      </optgroup>
+  </select>
             <div id="fields_main">
                 <input type="text" id="itemName" placeholder="Название / Ник">
                 <input type="text" id="itemVal" placeholder="Автор / CP">
