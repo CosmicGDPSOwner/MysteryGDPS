@@ -66,7 +66,7 @@
             </a>
             <div class="nav-socials">
                 <div class="mod-indicator" id="modIndicator"><i class="fas fa-shield-alt"></i> <span id="modIndicatorText">Модератор</span></div>
-                <a href="https://t.me/nightgdps2" target="_blank" class="tg-icon" title="Telegram"><i class="fab fa-telegram"></i></a>
+                <a href="https://t.me/nightgdpsV2" target="_blank" class="tg-icon" title="Telegram"><i class="fab fa-telegram"></i></a>
                 <a href="https://www.youtube.com/@lichigmdj98" target="_blank" class="yt-icon" title="YouTube"><i class="fab fa-youtube"></i></a>
                 <a href="https://discord.gg/ttyvGFsw7t" target="_blank" class="dc-icon" title="Discord"><i class="fab fa-discord"></i></a>
             </div>
@@ -115,7 +115,7 @@
             <i class="fas fa-gauge"></i> Dashboard
         </a>
         <div class="m-socials">
-            <a href="https://t.me/nightgdps2" target="_blank" style="color:#00a2ed;"><i class="fab fa-telegram"></i></a>
+            <a href="https://t.me/nightgdpsV2" target="_blank" style="color:#00a2ed;"><i class="fab fa-telegram"></i></a>
             <a href="https://www.youtube.com/@lichigmdj98" target="_blank" style="color:#ff0000;"><i class="fab fa-youtube"></i></a>
             <a href="https://discord.gg/ttyvGFsw7t" target="_blank" style="color:#5865F2;"><i class="fab fa-discord"></i></a>
         </div>
@@ -130,30 +130,74 @@
     </div>
 
     <main id="homeSection" class="section-page active">
-        <header class="welcome-hero">
+        <header class="welcome-hero home-hero-v2">
+            <div class="home-server-type" id="homeServerType">Geometry Dash 2.2 Private Server</div>
             <h1><span class="h1-night" id="welcomeTitle">NIGHT GDPS</span></h1>
-            <p id="welcomeDesc">Окунись в мир самого амбициозного приватного сервера Geometry Dash. Стабильность, уникальные уровни и сильнейшее комьюнити игроков.</p>
-            <div class="hero-btns">
-                <button onclick="openSection('downloadSection')" class="btn-main" id="btnPlay">СКАЧАТЬ ИГРУ</button>
+            <p id="welcomeDesc">Все в одном лишь сайте</p>
+            <div class="hero-btns home-hero-actions">
+                <button onclick="openSection('downloadSection')" class="btn-main" id="btnPlay">СКАЧАТЬ</button>
                 <button onclick="openSection('listSection'); switchTab('demons');" class="btn-outline" id="btnList">DEMON LIST</button>
+                <a href="https://t.me/nightgdpsV2" target="_blank" rel="noopener" class="btn-outline home-telegram-btn" id="btnTelegram"><i class="fab fa-telegram"></i> TELEGRAM</a>
             </div>
         </header>
-        <section class="home-video-section">
-            <div class="home-video-label">
-                <span class="home-video-line"></span>
-                <span class="home-video-tag"><i class="fab fa-youtube" style="color:#ff0000; margin-right:8px;"></i>СМОТРЕТЬ НА YOUTUBE</span>
-                <span class="home-video-line"></span>
+
+        <section class="home-dashboard" aria-label="Быстрый доступ">
+            <div class="home-quick-grid">
+                <button class="home-quick-link" onclick="openSection('listSection'); switchTab('demons');">
+                    <span class="home-quick-icon"><i class="fas fa-skull"></i></span>
+                    <span id="homeQuickDemons">Demon List</span>
+                    <i class="fas fa-arrow-right home-quick-arrow"></i>
+                </button>
+                <button class="home-quick-link" onclick="openSection('listSection'); switchTab('challenges');">
+                    <span class="home-quick-icon"><i class="fas fa-bolt"></i></span>
+                    <span id="homeQuickChallenges">Challenge List</span>
+                    <i class="fas fa-arrow-right home-quick-arrow"></i>
+                </button>
+                <button class="home-quick-link" onclick="openSection('listSection'); switchTab('players');">
+                    <span class="home-quick-icon"><i class="fas fa-trophy"></i></span>
+                    <span id="homeQuickPlayers">Top Slayers</span>
+                    <i class="fas fa-arrow-right home-quick-arrow"></i>
+                </button>
+                <button class="home-quick-link" onclick="openSection('listSection'); switchTab('creatortop');">
+                    <span class="home-quick-icon"><i class="fas fa-hammer"></i></span>
+                    <span id="homeQuickCreators">Top Creators</span>
+                    <i class="fas fa-arrow-right home-quick-arrow"></i>
+                </button>
             </div>
-            <h2 class="home-video-title">Night GDPS | Новая Приватка</h2>
-            <div class="home-video-wrapper">
-                <iframe src="https://www.youtube.com/embed/dBuMLYkYsQM" title="Night GDPS | Новая Приватка" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+            <div class="home-stats-strip" aria-label="Статистика Night GDPS">
+                <div class="home-stat-item">
+                    <strong id="homeStatDemons">—</strong>
+                    <span id="homeStatDemonsLabel">демонов</span>
+                </div>
+                <div class="home-stat-item">
+                    <strong id="homeStatChallenges">—</strong>
+                    <span id="homeStatChallengesLabel">челленджей</span>
+                </div>
+                <div class="home-stat-item">
+                    <strong id="homeStatPlayers">—</strong>
+                    <span id="homeStatPlayersLabel">игроков</span>
+                </div>
+                <div class="home-stat-item">
+                    <strong id="homeStatCreators">—</strong>
+                    <span id="homeStatCreatorsLabel">креаторов</span>
+                </div>
             </div>
         </section>
 
-        <section class="reviews-section">
+        <section class="home-video-section home-video-v2">
+            <div class="home-section-label" id="homeVideoLabel">Видео</div>
+            <h2 class="home-video-title" id="homeTrailerTitle">Трейлер Night GDPS</h2>
+            <div class="home-video-wrapper">
+                <iframe src="https://www.youtube.com/embed/dBuMLYkYsQM" title="Трейлер Night GDPS" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+        </section>
+
+        <section class="reviews-section home-reviews-v2">
             <div class="reviews-header">
-                <h2>Отзывы игроков</h2>
-                <p>Поделись своим мнением о Night GDPS</p>
+                <div class="home-section-label" id="homeReviewsLabel">Отзывы</div>
+                <h2 id="homeReviewsTitle">Отзывы игроков</h2>
+                <p id="homeReviewsSub">Отзывы о сервере.</p>
             </div>
 
             <div class="review-form">
@@ -398,13 +442,13 @@
 
     <footer>
         <div class="footer-socials">
-            <a href="https://t.me/nightgdps2" target="_blank"><i class="fab fa-telegram"></i></a>
+            <a href="https://t.me/nightgdpsV2" target="_blank"><i class="fab fa-telegram"></i></a>
             <a href="https://www.youtube.com/@lichigmdj98" target="_blank"><i class="fab fa-youtube"></i></a>
             <a href="https://discord.gg/ttyvGFsw7t" target="_blank"><i class="fab fa-discord"></i></a>
         </div>
         <p style="color:var(--text-main);">© 2026 Night GDPS. Developed with passion.</p>
         <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center;">
-            <a href="https://t.me/nightgdps2/11198/11199" id="verifyLink" style="color:#555; text-decoration:none; font-size:0.85rem; transition:0.3s;" target="_blank">Критерии верификации</a>
+            <a href="https://t.me/nightgdpsV2" id="verifyLink" style="color:#555; text-decoration:none; font-size:0.85rem; transition:0.3s;" target="_blank">Критерии верификации</a>
             <span style="color:#333;font-size:0.75rem;">|</span>
             <a href="https://docs.google.com/document/d/10KPxp6qIB3V8H9Be4ouAaHGLpshWUUyA1NRtBxnGKcE/edit?usp=sharing" id="rateLink" style="color:#555; text-decoration:none; font-size:0.85rem; transition:0.3s;" target="_blank">Критерии рейта</a>
         </div>
@@ -492,26 +536,26 @@
         </div>
         <div id="adminControls" style="display:none;">
             <select id="admAction" onchange="toggleAdmFields()">
-      <optgroup label="Добавление">
-          <option value="add_demon">Добавить демона</option>
-          <option value="add_challenge">Добавить челлендж</option>
-          <option value="add_creator">Добавить креатора</option>
-          <option value="add_victor">Добавить рекорд (демон)</option>
-          <option value="add_victor_challenge">Добавить рекорд (челлендж)</option>
-      </optgroup>
-      <optgroup label="Режимы и управление">
-          <option value="edit_demon_mode">Режим редактирования (все разделы)</option>
-          <option value="delete_mode">Удаление / движение (все разделы)</option>
-          <option value="drag_drop">Drag & Drop режим</option>
-          <option value="manage_mods">Управление модераторами</option>
-          <option value="maintenance">Техперерыв вкл/выкл</option>
-          <option value="clear_history">Очистить историю позиций</option>
-      </optgroup>
-      <optgroup label="Прочее">
-          <option value="set_country">Страна игрока</option>
-          <option value="delete_all_demons">Удалить всех демонов</option>
-      </optgroup>
-  </select>
+                <optgroup label="Добавление">
+                    <option value="add_demon">Добавить демона</option>
+                    <option value="add_challenge">Добавить челлендж</option>
+                    <option value="add_creator">Добавить креатора</option>
+                    <option value="add_victor">Добавить рекорд (демон)</option>
+                    <option value="add_victor_challenge">Добавить рекорд (челлендж)</option>
+                </optgroup>
+                <optgroup label="Режимы и управление">
+                    <option value="edit_demon_mode">Режим редактирования (все разделы)</option>
+                    <option value="delete_mode">Удаление / движение (все разделы)</option>
+                    <option value="drag_drop">Drag & Drop режим</option>
+                    <option value="manage_mods">Управление модераторами</option>
+                    <option value="maintenance">Техперерыв вкл/выкл</option>
+                    <option value="clear_history">Очистить историю позиций</option>
+                </optgroup>
+                <optgroup label="Прочее">
+                    <option value="set_country">Страна игрока</option>
+                    <option value="delete_all_demons">Удалить всех демонов</option>
+                </optgroup>
+            </select>
             <div id="fields_main">
                 <input type="text" id="itemName" placeholder="Название / Ник">
                 <input type="text" id="itemVal" placeholder="Автор / CP">

@@ -1600,3 +1600,237 @@ select:focus-visible {
 @media (max-width: 640px) {
     .container.view-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
 }
+
+
+/* ============================================================
+   HOME V2 — compact server home, no marketing copy
+   ============================================================ */
+.home-hero-v2 {
+    min-height: 440px;
+    padding: 78px 20px 54px;
+}
+.home-server-type {
+    margin-bottom: 15px;
+    color: #7f8aa0;
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: 1.45px;
+    text-transform: uppercase;
+}
+.home-hero-v2 h1 {
+    font-size: clamp(3rem, 7.5vw, 5.4rem);
+    letter-spacing: .075em;
+}
+.home-hero-v2 p {
+    max-width: 560px;
+    margin: 16px 0 28px;
+    font-size: .98rem;
+    color: #8f9aaf;
+}
+.home-hero-actions {
+    align-items: center;
+}
+.home-hero-actions .btn-main,
+.home-hero-actions .btn-outline {
+    min-width: 138px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+}
+.home-telegram-btn {
+    color: #b8c0d2;
+}
+.home-telegram-btn i {
+    color: #2AABEE;
+    font-size: 1rem;
+}
+
+.home-dashboard {
+    width: min(1120px, calc(100% - 40px));
+    margin: -4px auto 64px;
+}
+.home-quick-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    overflow: hidden;
+    background: rgba(11, 15, 26, .72);
+}
+.home-quick-link {
+    min-height: 76px;
+    padding: 0 18px;
+    display: grid;
+    grid-template-columns: 28px 1fr 14px;
+    align-items: center;
+    gap: 10px;
+    border: 0;
+    border-right: 1px solid var(--line);
+    background: transparent;
+    color: #d9deea;
+    font-family: var(--font-ui);
+    font-size: .82rem;
+    font-weight: 700;
+    text-align: left;
+    cursor: pointer;
+    transition: background .16s ease, color .16s ease;
+}
+.home-quick-link:last-child { border-right: 0; }
+.home-quick-link:hover {
+    background: rgba(255,255,255,.035);
+    color: #fff;
+}
+.home-quick-icon {
+    width: 28px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: rgba(169,156,255,.075);
+    color: #a99cff;
+    font-size: .82rem;
+}
+.home-quick-arrow {
+    color: #4d5669;
+    font-size: .7rem;
+    transition: transform .16s ease, color .16s ease;
+}
+.home-quick-link:hover .home-quick-arrow {
+    transform: translateX(2px);
+    color: #8994aa;
+}
+.home-stats-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin-top: 10px;
+    border-top: 1px solid rgba(255,255,255,.055);
+    border-bottom: 1px solid rgba(255,255,255,.055);
+}
+.home-stat-item {
+    min-height: 68px;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 8px;
+    padding: 19px 12px;
+    border-right: 1px solid rgba(255,255,255,.055);
+}
+.home-stat-item:last-child { border-right: 0; }
+.home-stat-item strong {
+    color: #f2f4f8;
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+.home-stat-item span {
+    color: #6f7a8e;
+    font-size: .72rem;
+    font-weight: 600;
+    text-transform: lowercase;
+}
+.home-section-label {
+    margin-bottom: 8px;
+    color: #69748a;
+    font-size: .68rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+.home-video-v2 {
+    max-width: 1000px;
+    margin-bottom: 68px;
+    text-align: left;
+}
+.home-video-v2 .home-video-title {
+    margin: 0 0 18px;
+    color: #edf0f6;
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 2.2vw, 1.65rem);
+    font-weight: 700;
+}
+.home-video-v2 .home-video-wrapper {
+    border-radius: 12px;
+}
+.home-reviews-v2 .reviews-header {
+    text-align: left;
+}
+.home-reviews-v2 .reviews-header h2 {
+    margin: 0 0 5px;
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 2vw, 1.55rem);
+    color: #edf0f6;
+}
+.home-reviews-v2 .reviews-header p {
+    margin: 0;
+    color: #6f7a8e;
+    font-size: .82rem;
+}
+
+@media (max-width: 900px) {
+    .home-quick-grid { grid-template-columns: repeat(2, 1fr); }
+    .home-quick-link:nth-child(2) { border-right: 0; }
+    .home-quick-link:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+}
+
+@media (max-width: 600px) {
+    .home-hero-v2 {
+        min-height: 410px;
+        padding: 62px 16px 42px;
+    }
+    .home-server-type {
+        margin-bottom: 12px;
+        font-size: .62rem;
+        letter-spacing: 1.1px;
+    }
+    .home-hero-v2 h1 {
+        font-size: clamp(2.25rem, 12vw, 3.2rem);
+    }
+    .home-hero-v2 p {
+        margin: 13px 0 23px;
+        font-size: .86rem;
+    }
+    .home-hero-actions {
+        width: 100%;
+        max-width: 420px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+    .home-hero-actions .btn-main,
+    .home-hero-actions .btn-outline {
+        width: 100%;
+        min-width: 0;
+        max-width: none;
+    }
+    .home-hero-actions .home-telegram-btn {
+        grid-column: 1 / -1;
+    }
+    .home-dashboard {
+        width: calc(100% - 24px);
+        margin-bottom: 46px;
+    }
+    .home-quick-grid {
+        grid-template-columns: 1fr;
+        border-radius: 11px;
+    }
+    .home-quick-link {
+        min-height: 58px;
+        border-right: 0 !important;
+        border-bottom: 1px solid var(--line) !important;
+        padding: 0 14px;
+    }
+    .home-quick-link:last-child { border-bottom: 0 !important; }
+    .home-stats-strip {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .home-stat-item:nth-child(2) { border-right: 0; }
+    .home-stat-item:nth-child(-n+2) { border-bottom: 1px solid rgba(255,255,255,.055); }
+    .home-stat-item { min-height: 58px; padding: 15px 8px; }
+    .home-stat-item strong { font-size: 1.08rem; }
+    .home-video-v2,
+    .home-reviews-v2 { padding-left: 12px; padding-right: 12px; }
+}

@@ -314,6 +314,26 @@ const firebaseConfig = {
             </div>`;
         }
 
+        function updateHomeOverview() {
+            const setText = (id, value) => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = value;
+            };
+
+            setText('homeStatDemons', demons.length);
+            setText('homeStatChallenges', challenges.length);
+            setText('homeStatCreators', creators.length);
+
+            const players = new Set();
+            const collect = (level) => getLevelEntries(level).forEach(v => {
+                const name = (v.name || '').trim().toLowerCase();
+                if (name) players.add(name);
+            });
+            demons.forEach(collect);
+            challenges.forEach(collect);
+            setText('homeStatPlayers', players.size);
+        }
+
         function loadStats() {
             // Подсчёт демонов и челленджей уже в памяти
             const T = currentLang === 'EN';
@@ -1189,14 +1209,41 @@ const firebaseConfig = {
             document.getElementById('burgerBtn').classList.remove('open');
         }
 
-        function openSection(id) {
+        const NAV_SECTION_KEY = 'nightLastSection';
+        const NAV_TAB_KEY = 'nightLastListTab';
+        const VALID_NAV_SECTIONS = new Set(['homeSection', 'statsSection', 'downloadSection', 'listSection']);
+        const VALID_LIST_TABS = new Set(['demons', 'challenges', 'players', 'creatortop', 'playersearch']);
+
+        function openSection(id, remember = true) {
+            if (!VALID_NAV_SECTIONS.has(id)) return;
             document.querySelectorAll('.section-page').forEach(sec => sec.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
+            const target = document.getElementById(id);
+            if (!target) return;
+            target.classList.add('active');
+            if (remember) {
+                try { localStorage.setItem(NAV_SECTION_KEY, id); } catch (e) {}
+            }
             window.scrollTo(0,0);
             const drops = document.getElementsByClassName("dropdown-content");
             for (let i = 0; i < drops.length; i++) { drops[i].classList.remove('show'); }
             closeBurger();
             if (id === 'statsSection') loadStats();
+        }
+
+        function restoreNavigationState() {
+            // Прямые hash-ссылки (#demon/..., #challenge/..., #modloginpage) важнее сохранённого раздела.
+            if (window.location.hash) return;
+            let section = 'homeSection';
+            let tab = 'demons';
+            try {
+                const savedSection = localStorage.getItem(NAV_SECTION_KEY);
+                const savedTab = localStorage.getItem(NAV_TAB_KEY);
+                if (VALID_NAV_SECTIONS.has(savedSection)) section = savedSection;
+                if (VALID_LIST_TABS.has(savedTab)) tab = savedTab;
+            } catch (e) {}
+
+            openSection(section, false);
+            if (section === 'listSection') switchTab(tab, false);
         }
 
         function toggleDropdown(id, event) {
@@ -1222,6 +1269,7 @@ const firebaseConfig = {
             if(sel) sel.innerHTML = demons.map(d => `<option value="${escapeHtml(d.key)}">${escapeHtml(d.name)}</option>`).join('');
             populatePositionSelect('itemPosition', 'demons', document.getElementById('admAction')?.value === 'add_demon');
             populatePositionSelect('mPosition', 'demons', document.getElementById('mLevelType')?.value === 'demons');
+            updateHomeOverview();
             if (currentTab === 'demons') render();
         });
         
@@ -1234,12 +1282,14 @@ const firebaseConfig = {
             if (selC) selC.innerHTML = challenges.map(c => `<option value="${escapeHtml(c.key)}">${escapeHtml(c.name)}</option>`).join('');
             populatePositionSelect('itemPosition', 'challenges', document.getElementById('admAction')?.value === 'add_challenge');
             populatePositionSelect('mPosition', 'challenges', document.getElementById('mLevelType')?.value === 'challenges');
+            updateHomeOverview();
             if (currentTab === 'challenges') render();
         });
 
         db.ref('creators').on('value', s => {
             const val = s.val();
             creators = val ? Object.entries(val).map(([k, d]) => ({ key: k, ...d })).sort((a,b)=>parseInt(b.points)-parseInt(a.points)) : [];
+            updateHomeOverview();
             if (currentTab === 'creatortop') renderCreatorTop();
             else render();
         });
@@ -1988,8 +2038,13 @@ const firebaseConfig = {
             const translations = {
                 RU: {
                     welcomeT: "NIGHT GDPS",
-                    welcomeD: "Окунись в мир самого амбициозного приватного сервера Geometry Dash. Стабильность, уникальные уровни и сильнейшее комьюнити игроков.",
-                    play: "СКАЧАТЬ ИГРУ", list: "DEMON LIST",
+                    welcomeD: "Все в одном лишь сайте",
+                    homeServerType: "Geometry Dash 2.2 Private Server",
+                    homeVideoLabel: "Видео", homeTrailerTitle: "Трейлер Night GDPS",
+                    homeReviewsLabel: "Отзывы", homeReviewsTitle: "Отзывы игроков", homeReviewsSub: "Отзывы о сервере.",
+                    homeStatDemons: "демонов", homeStatChallenges: "челленджей", homeStatPlayers: "игроков", homeStatCreators: "креаторов",
+                    homeQuickDemons: "Demon List", homeQuickChallenges: "Challenge List", homeQuickPlayers: "Top Slayers", homeQuickCreators: "Top Creators",
+                    play: "СКАЧАТЬ", list: "DEMON LIST",
                     searchM: "Название / Автор", searchT: "По тегу", searchP: "Поиск уровня или автора...",
                     verify: "Критерии верификации", rate: "Критерии рейта", toast: "ID Скопировано!",
                     navLists: "Списки", navDownloadText: "Скачать", navHome: "Главная", navCriteria: "Критерии рейта",
@@ -2025,8 +2080,13 @@ const firebaseConfig = {
                 },
                 EN: {
                     welcomeT: "NIGHT GDPS",
-                    welcomeD: "Dive into the world of the most ambitious Geometry Dash private server. Stability, unique levels, and the strongest community.",
-                    play: "DOWNLOAD GAME", list: "DEMON LIST",
+                    welcomeD: "Everything in one website",
+                    homeServerType: "Geometry Dash 2.2 Private Server",
+                    homeVideoLabel: "Video", homeTrailerTitle: "Night GDPS Trailer",
+                    homeReviewsLabel: "Reviews", homeReviewsTitle: "Player reviews", homeReviewsSub: "Server reviews.",
+                    homeStatDemons: "demons", homeStatChallenges: "challenges", homeStatPlayers: "players", homeStatCreators: "creators",
+                    homeQuickDemons: "Demon List", homeQuickChallenges: "Challenge List", homeQuickPlayers: "Top Slayers", homeQuickCreators: "Top Creators",
+                    play: "DOWNLOAD", list: "DEMON LIST",
                     searchM: "Name / Author", searchT: "By Tag", searchP: "Search level or creator...",
                     verify: "Verification Criteria", rate: "Rate Criteria", toast: "ID Copied!",
                     navLists: "Lists", navDownloadText: "Download", navHome: "Home", navCriteria: "Rate Criteria",
@@ -2068,6 +2128,20 @@ const firebaseConfig = {
             // Hero / home
             set('welcomeTitle', t.welcomeT);
             set('welcomeDesc', t.welcomeD);
+            set('homeServerType', t.homeServerType);
+            set('homeVideoLabel', t.homeVideoLabel);
+            set('homeTrailerTitle', t.homeTrailerTitle);
+            set('homeReviewsLabel', t.homeReviewsLabel);
+            set('homeReviewsTitle', t.homeReviewsTitle);
+            set('homeReviewsSub', t.homeReviewsSub);
+            set('homeStatDemonsLabel', t.homeStatDemons);
+            set('homeStatChallengesLabel', t.homeStatChallenges);
+            set('homeStatPlayersLabel', t.homeStatPlayers);
+            set('homeStatCreatorsLabel', t.homeStatCreators);
+            set('homeQuickDemons', t.homeQuickDemons);
+            set('homeQuickChallenges', t.homeQuickChallenges);
+            set('homeQuickPlayers', t.homeQuickPlayers);
+            set('homeQuickCreators', t.homeQuickCreators);
             set('btnPlay', t.play);
             set('btnList', t.list);
             set('verifyLink', t.verify);
@@ -2375,8 +2449,15 @@ const firebaseConfig = {
         }
         function closeAdmin() { document.getElementById('adminPanel').style.display='none'; }
         
-        function switchTab(t) {
+        function switchTab(t, remember = true) {
+            if (!VALID_LIST_TABS.has(t)) return;
             currentTab = t;
+            if (remember) {
+                try {
+                    localStorage.setItem(NAV_SECTION_KEY, 'listSection');
+                    localStorage.setItem(NAV_TAB_KEY, t);
+                } catch (e) {}
+            }
             const tabs = {
                 demons: 'tabDemonsBtn', challenges: 'tabChallengesBtn',
                 creators: 'tabCreatorsBtn', players: 'tabPlayersBtn',
@@ -3129,9 +3210,10 @@ const firebaseConfig = {
                 const key  = demonMatch[2];
                 const list = type === 'demons' ? demons : challenges;
                 if (list.find(x => x.key === key)) {
-                    // Switch to correct tab first
+                    // Switch to correct section/tab first. Hash-link has priority over saved navigation state.
+                    openSection('listSection', false);
                     if (currentTab !== (type === 'demons' ? 'demons' : 'challenges')) {
-                        switchTab(type === 'demons' ? 'demons' : 'challenges');
+                        switchTab(type === 'demons' ? 'demons' : 'challenges', false);
                     }
                     showInfoByKey(key, type);
                 } else {
@@ -3140,8 +3222,9 @@ const firebaseConfig = {
                         const l = type === 'demons' ? demons : challenges;
                         if (l.find(x => x.key === key)) {
                             clearInterval(unsubscribe);
+                            openSection('listSection', false);
                             if (currentTab !== (type === 'demons' ? 'demons' : 'challenges')) {
-                                switchTab(type === 'demons' ? 'demons' : 'challenges');
+                                switchTab(type === 'demons' ? 'demons' : 'challenges', false);
                             }
                             showInfoByKey(key, type);
                         }
@@ -3167,6 +3250,7 @@ const firebaseConfig = {
 
         window.addEventListener('hashchange', checkHash);
         window.addEventListener('load', checkHash);
+        window.addEventListener('load', restoreNavigationState);
         if (window.location.hash) {
             setTimeout(checkHash, 400);
         }
