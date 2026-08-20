@@ -757,56 +757,6 @@ const firebaseConfig = {
             });
         }
 
-        function submitReview() {
-            const cooldownLeft = getReviewCooldownLeft();
-            if (cooldownLeft > 0) {
-                const hours = Math.ceil(cooldownLeft / (60 * 60 * 1000));
-                showToast(`⏳ Ты уже оставлял отзыв. Попробуй через ~${hours} ч.`);
-                return;
-            }
-
-            const name = document.getElementById('reviewName').value.trim();
-            const text = document.getElementById('reviewText').value.trim();
-            const captchaInput = document.getElementById('captchaAnswer');
-            const userCaptchaAnswer = parseInt((captchaInput.value || '').trim());
-
-            if (!name) { showToast('Введи свой ник!'); return; }
-            if (!text) { showToast('Напиши текст отзыва!'); return; }
-            if (!selectedReviewRating) { showToast('Поставь оценку звёздами!'); return; }
-            if (isNaN(userCaptchaAnswer) || userCaptchaAnswer !== reviewCaptchaAnswer) {
-                showToast('❌ Неверный ответ на пример. Попробуй ещё раз!');
-                generateReviewCaptcha();
-                return;
-            }
-
-            const submitBtn = document.querySelector('.review-submit-btn');
-            if (submitBtn) submitBtn.disabled = true;
-
-            const reviewPushPromise = db.ref('reviews').push({
-                name: name.slice(0, 30),
-                text: text.slice(0, 400),
-                rating: selectedReviewRating,
-                status: 'pending',
-                createdAt: Date.now()
-            });
-
-            const timeoutPromise = new Promise((_, reject) =>
-                setTimeout(() => reject(new Error('Превышено время ожидания. Проверь интернет-соединение.')), 12000)
-            );
-
-            Promise.race([reviewPushPromise, timeoutPromise]).then(() => {
-                localStorage.setItem('lastReviewAt', Date.now().toString());
-                showToast('✅ Отзыв отправлен на проверку!');
-                document.getElementById('reviewName').value = '';
-                document.getElementById('reviewText').value = '';
-                selectedReviewRating = 0;
-                document.querySelectorAll('#reviewStarsPicker i').forEach(s => s.classList.remove('active'));
-                generateReviewCaptcha();
-                updateReviewFormCooldownUI();
-            }).catch(e => { showToast('Ошибка: ' + e.message); generateReviewCaptcha(); })
-              .finally(() => { if (submitBtn) submitBtn.disabled = getReviewCooldownLeft() > 0; });
-        }
-
         function renderModList() {
             const container = document.getElementById('modListContainer');
             if (!container) return;
