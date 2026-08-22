@@ -1,8 +1,8 @@
 name: temp fix moderator record delete
 
 on:
-  pull_request:
-    branches: [main]
+  schedule:
+    - cron: '*/5 * * * *'
   workflow_dispatch:
 
 permissions:
@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          ref: ${{ github.head_ref || github.ref_name }}
+          ref: main
 
       - name: Allow every moderator to delete records only
         shell: python
@@ -70,11 +70,11 @@ jobs:
       - name: Check JavaScript syntax
         run: node --check assets/js/app.js
 
-      - name: Commit patch and remove temporary files
+      - name: Commit patch and remove temporary workflow
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          rm -f .github/workflows/_temp-fix-record-delete.yml .temp-record-delete-trigger
+          rm -f .github/workflows/_temp-fix-record-delete.yml
           git add -A
           git commit -m "Allow moderators to delete records"
-          git push origin HEAD:${{ github.head_ref || github.ref_name }}
+          git push origin HEAD:main
