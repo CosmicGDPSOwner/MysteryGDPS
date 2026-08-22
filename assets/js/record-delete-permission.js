@@ -1,12 +1,46 @@
 (() => {
     'use strict';
 
+    const createDeleteRecordsPermissionLabel = (id) => {
+        const label = document.createElement('label');
+        label.className = 'perm-check-label';
+        label.innerHTML = `
+            <input type="checkbox" id="${id}" checked>
+            <span><i class="fas fa-trash" style="color:#ff6868;margin-right:6px;"></i>Удалять рекорды</span>
+        `;
+        return label;
+    };
+
+    const ensurePermissionCheckboxes = () => {
+        const newModAnchor = document.getElementById('permAddRecords');
+        if (newModAnchor && !document.getElementById('permDeleteRecords')) {
+            const anchorLabel = newModAnchor.closest('label');
+            if (anchorLabel) {
+                anchorLabel.insertAdjacentElement(
+                    'afterend',
+                    createDeleteRecordsPermissionLabel('permDeleteRecords')
+                );
+            }
+        }
+
+        const editAnchor = document.getElementById('editPermAddRecords');
+        if (editAnchor && !document.getElementById('editPermDeleteRecords')) {
+            const anchorLabel = editAnchor.closest('label');
+            if (anchorLabel) {
+                anchorLabel.insertAdjacentElement(
+                    'afterend',
+                    createDeleteRecordsPermissionLabel('editPermDeleteRecords')
+                );
+            }
+        }
+    };
+
     const canCurrentUserDeleteRecords = () => {
         if (isAdmin) return true;
         if (!isModerator) return false;
 
-        // Existing moderators do not have this key yet. Treat an absent value as enabled
-        // so the new permission works immediately for the whole moderation team.
+        // Existing moderators do not have this key yet. An absent value therefore
+        // means enabled, so the new right is available to the whole team immediately.
         return currentUserPermissions.canDeleteRecords !== false;
     };
 
@@ -15,9 +49,12 @@
         return checkbox ? checkbox.checked : true;
     };
 
+    ensurePermissionCheckboxes();
+
     // Keep the existing permissions editor intact and add only the new granular flag.
     const originalOpenEditPermModal = openEditPermModal;
     openEditPermModal = function(uid) {
+        ensurePermissionCheckboxes();
         originalOpenEditPermModal(uid);
 
         const moderator = moderators.find(item => item.uid === uid);
@@ -30,6 +67,8 @@
 
     saveModPermissions = async function() {
         if (!isAdmin) return;
+
+        ensurePermissionCheckboxes();
 
         const uid = document.getElementById('editPermUid').value;
         const permissions = {
@@ -58,6 +97,8 @@
     // turn it off with the checkbox just like any other granular permission.
     addModerator = async function() {
         if (!isAdmin) return;
+
+        ensurePermissionCheckboxes();
 
         const mode = document.getElementById('newModMode').value;
         const email = document.getElementById('newModEmail').value.trim();
