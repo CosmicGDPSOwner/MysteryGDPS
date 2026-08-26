@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" class="night-access-locked">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,8 +27,20 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 
     <link rel="stylesheet" href="./assets/css/styles.css">
+    <link rel="stylesheet" href="./assets/css/turnstile-gate.css">
+    <script src="./assets/js/turnstile-config.js"></script>
 </head>
 <body>
+    <div id="nightAccessGate" role="dialog" aria-modal="true" aria-labelledby="nightAccessTitle">
+        <div class="night-access-card">
+            <div class="night-access-brand">NIGHT GDPS</div>
+            <h1 class="night-access-title" id="nightAccessTitle">Проверка безопасности</h1>
+            <p class="night-access-copy">Подтвердите, что соединение выполняется человеком. После успешной проверки сайт откроется автоматически.</p>
+            <div id="nightTurnstileMount"></div>
+            <div id="nightAccessStatus" class="night-access-status" aria-live="polite"></div>
+            <div class="night-access-meta">Проверка действует ограниченное время и не требует повторного прохождения при каждом переходе по сайту.</div>
+        </div>
+    </div>
     <div id="copyToast">ID Скопировано!</div>
 
     <div class="bg-wrapper">
@@ -53,11 +65,14 @@
                 <div class="dropdown-content" id="listsDrop">
                     <a onclick="openSection('listSection'); switchTab('demons'); closeAllDropdowns();" id="navDropDemons"><i class="fas fa-skull" style="margin-right:8px;color:#a78bfa;"></i><span id="navDropDemonsLabel">Demon List</span></a>
                     <a onclick="openSection('listSection'); switchTab('challenges'); closeAllDropdowns();" id="navDropChallenges"><i class="fas fa-fire" style="margin-right:8px;color:#f472b6;"></i><span id="navDropChallengesLabel">Challenge List</span></a>
+                    <a onclick="openSection('listSection'); switchTab('impossible'); closeAllDropdowns();" id="navDropImpossible"><i class="fas fa-ban" style="margin-right:8px;color:#ef4444;"></i><span id="navDropImpossibleLabel">Impossible Level List</span></a>
                     <a onclick="openSection('listSection'); switchTab('creatortop'); closeAllDropdowns();" id="navDropCreators"><i class="fas fa-hammer" style="margin-right:8px;color:#60a5fa;"></i><span id="navDropCreatorsLabel">Топ Креаторов</span></a>
                     <a onclick="openSection('listSection'); switchTab('players'); closeAllDropdowns();" id="navDropPlayers"><i class="fas fa-trophy" style="margin-right:8px;color:#fbbf24;"></i><span id="navDropPlayersLabel">Топ Слееров</span></a>
                 </div>
             </div>
             <button class="nav-item" onclick="openSection('statsSection')" id="navStats" style="font-size:0.82rem;">Статистика</button>
+            <button class="nav-item record-nav-action" id="recordNavButton" onclick="openRecordSubmissionSection()">Отправить рекорд</button>
+            <button class="account-nav-btn" id="accountNavButton" onclick="openAccountEntry()">Войти</button>
             <button class="btn-download-nav" onclick="openSection('downloadSection')">
                 <i class="fas fa-download"></i> <span id="navDownloadText">Скачать</span>
             </button>
@@ -102,11 +117,20 @@
         <button class="m-btn m-sub" onclick="openSection('listSection'); switchTab('challenges'); closeBurger();">
             <i class="fas fa-fire"></i> <span id="mNavChallenges">Challenge List</span>
         </button>
+        <button class="m-btn m-sub" onclick="openSection('listSection'); switchTab('impossible'); closeBurger();">
+            <i class="fas fa-ban"></i> <span id="mNavImpossible">Impossible Level List</span>
+        </button>
         <button class="m-btn m-sub" onclick="openSection('listSection'); switchTab('creatortop'); closeBurger();">
             <i class="fas fa-hammer"></i> <span id="mNavCreators">Топ Креаторов</span>
         </button>
         <button class="m-btn m-sub" onclick="openSection('listSection'); switchTab('players'); closeBurger();">
             <i class="fas fa-trophy"></i> <span id="mNavPlayers">Топ Слееров</span>
+        </button>
+        <button class="m-btn" onclick="openRecordSubmissionSection(); closeBurger();">
+            <i class="fas fa-upload"></i> Отправить рекорд
+        </button>
+        <button class="m-btn" id="mobileAccountButton" onclick="openAccountEntry(); closeBurger();">
+            <i class="fas fa-user"></i> Войти
         </button>
         <button class="m-btn purple" onclick="openSection('downloadSection'); closeBurger();">
             <i class="fas fa-download"></i> Скачать игру
@@ -330,6 +354,9 @@
             <button id="tabChallengesBtn" class="search-mode-btn" onclick="switchTab('challenges')" style="flex:1; max-width:160px; padding:11px 14px;">
                 <i class="fas fa-fire"></i> <span id="tabChallengesLabel">Челленджи</span>
             </button>
+            <button id="tabImpossibleBtn" class="search-mode-btn" onclick="switchTab('impossible')" style="flex:1; max-width:190px; padding:11px 14px;">
+                <i class="fas fa-ban"></i> <span id="tabImpossibleLabel">Impossible List</span>
+            </button>
             <button id="tabPlayersBtn" class="search-mode-btn" onclick="switchTab('players')" style="flex:1; max-width:160px; padding:11px 14px;">
                 <i class="fas fa-trophy"></i> <span id="tabPlayersLabel">Топ Слееров</span>
             </button>
@@ -440,6 +467,145 @@
         </div>
     </main>
 
+
+    <main id="recordSubmitSection" class="section-page">
+        <div class="account-shell">
+            <div class="account-page-head">
+                <div class="account-page-kicker">Demon List Records</div>
+                <h2>Отправить рекорд</h2>
+                <p>Заявка попадёт в отдельную очередь модерации. Принятый результат будет добавлен в официальный Demon List только после проверки.</p>
+            </div>
+            <div class="account-grid">
+                <div class="account-card">
+                    <h3 class="account-card-title">Данные прохождения</h3>
+                    <div class="account-field">
+                        <label class="account-label">Роль</label>
+                        <div class="role-switch">
+                            <button type="button" id="recordRoleVictor" class="role-option active" onclick="setRecordRole('victor')">Victor</button>
+                            <button type="button" id="recordRoleVerifier" class="role-option" onclick="setRecordRole('verifier')">Verifier</button>
+                        </div>
+                    </div>
+
+                    <div id="recordVictorFields">
+                        <div class="account-field">
+                            <label class="account-label" for="recordLevelSearch">Уровень</label>
+                            <input class="account-input" id="recordLevelSearch" type="text" autocomplete="off" placeholder="Начните вводить название уровня" oninput="searchRecordLevels()" onfocus="searchRecordLevels()">
+                            <input type="hidden" id="recordLevelKey">
+                            <input type="hidden" id="recordLevelType" value="demons">
+                            <div id="recordLevelResults" class="level-search-results"></div>
+                            <div class="account-hint" id="recordSelectedLevelHint">Выберите уровень из Demon, Challenge или Impossible List.</div>
+                        </div>
+                    </div>
+
+                    <div id="recordVerifierFields" style="display:none;">
+                        <div class="account-field">
+                            <label class="account-label" for="recordVerifierLevelName">Название уровня</label>
+                            <input class="account-input" id="recordVerifierLevelName" type="text" maxlength="80" placeholder="Название уровня" oninput="validateRecordForm()">
+                        </div>
+                        <div class="account-field">
+                            <label class="account-label" for="recordVerifierLevelId">ID уровня</label>
+                            <input class="account-input" id="recordVerifierLevelId" type="text" maxlength="24" placeholder="Необязательно" oninput="validateRecordForm()">
+                        </div>
+                    </div>
+
+                    <div class="account-field">
+                        <label class="account-label" for="recordAttempts">Попытки</label>
+                        <input class="account-input" id="recordAttempts" type="number" min="1" step="1" inputmode="numeric" placeholder="Количество попыток" oninput="validateRecordForm()">
+                    </div>
+                    <div class="account-field">
+                        <label class="account-label" for="recordPercentage">Процент</label>
+                        <input class="account-input" id="recordPercentage" type="number" min="1" max="100" step="1" value="100" oninput="validateRecordForm()">
+                    </div>
+                    <div class="account-field">
+                        <label class="account-label" for="recordYoutube">Ссылка на прохождение</label>
+                        <input class="account-input" id="recordYoutube" type="url" maxlength="240" placeholder="https://youtube.com/watch?v=..." oninput="validateRecordForm()">
+                        <div class="account-hint">Поддерживаются youtube.com, youtu.be и YouTube Shorts.</div>
+                    </div>
+                    <div class="account-field">
+                        <label class="account-label" for="recordComment">Комментарий</label>
+                        <textarea class="account-textarea" id="recordComment" maxlength="600" placeholder="Дополнительная информация для модератора"></textarea>
+                    </div>
+                    <div id="recordFormError" class="account-form-error"></div>
+                    <div id="recordFormSuccess" class="account-form-success"></div>
+                    <div class="account-actions">
+                        <button class="account-primary" id="recordSubmitButton" type="button" onclick="submitRecordApplication()" disabled>Отправить на проверку</button>
+                        <button class="account-secondary" type="button" onclick="openSection('accountSection')">Мои заявки</button>
+                    </div>
+                </div>
+
+                <div class="account-card">
+                    <h3 class="account-card-title">Аккаунт</h3>
+                    <div id="recordAccountSummary" class="account-profile-head"></div>
+                    <div class="account-hint">Заявка всегда привязывается к текущему Firebase UID. Статус и решение модератора нельзя изменить из пользовательского интерфейса.</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <main id="accountSection" class="section-page">
+        <div class="account-shell">
+            <div class="account-page-head">
+                <div class="account-page-kicker">Night GDPS Account</div>
+                <h2>Профиль</h2>
+                <p>Данные аккаунта, история заявок и решения модерации.</p>
+            </div>
+            <div class="account-grid">
+                <div>
+                    <div class="account-card" style="margin-bottom:18px;">
+                        <div id="accountProfileHeader" class="account-profile-head"></div>
+                        <div id="accountStats" class="account-stat-grid"></div>
+                    </div>
+                    <div class="account-card identity-card" style="margin-bottom:18px;">
+                        <div class="identity-card-head">
+                            <div>
+                                <h3 class="account-card-title" style="margin-bottom:5px;">Подтверждение игрока</h3>
+                                <p class="identity-subtext">Ник в аккаунте сайта не подтверждает личность в Night GDPS.</p>
+                            </div>
+                            <span id="identityStatusBadge" class="identity-status unverified">Не подтверждено</span>
+                        </div>
+                        <div id="identityStatusContent" class="identity-status-content"></div>
+                        <div id="identityClaimActions" class="account-actions" style="margin-top:14px;">
+                            <button id="identityClaimButton" class="account-primary" type="button" onclick="openIdentityClaimModal()">Подтвердить аккаунт Night GDPS</button>
+                        </div>
+                    </div>
+                    <div class="account-card">
+                        <h3 class="account-card-title">Мои заявки</h3>
+                        <div id="accountSubmissionList" class="submission-list"></div>
+                    </div>
+                </div>
+                <div class="account-card">
+                    <h3 class="account-card-title">Настройки профиля</h3>
+                    <div class="account-field">
+                        <label class="account-label" for="accountDisplayName">Отображаемый ник</label>
+                        <input class="account-input" id="accountDisplayName" maxlength="40">
+                    </div>
+                    <div class="account-field">
+                        <label class="account-label" for="accountGdpsName">Заявленный ник на Night GDPS</label>
+                        <input class="account-input" id="accountGdpsName" maxlength="40">
+                        <div class="account-hint">До подтверждения это только указанное вами имя и не связывает аккаунт с игроком.</div>
+                    </div>
+                    <div class="account-field">
+                        <label class="account-label" for="accountDemonListName">Заявленный ник в Demon List</label>
+                        <input class="account-input" id="accountDemonListName" maxlength="40">
+                    </div>
+                    <div class="account-field">
+                        <label class="account-label" for="accountAvatar">Аватар</label>
+                        <input class="account-input" id="accountAvatar" type="url" maxlength="300" placeholder="https://...">
+                    </div>
+                    <div class="account-field">
+                        <label class="account-label" for="accountBio">Описание</label>
+                        <textarea class="account-textarea" id="accountBio" maxlength="300"></textarea>
+                    </div>
+                    <div id="accountSaveMessage" class="account-form-success"></div>
+                    <div class="account-actions">
+                        <button class="account-primary" onclick="saveAccountProfile()">Сохранить</button>
+                        <button class="account-danger" onclick="logoutAccount()">Выйти</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
     <footer>
         <div class="footer-socials">
             <a href="https://t.me/nightgdpsV2" target="_blank"><i class="fab fa-telegram"></i></a>
@@ -465,11 +631,20 @@
         <h2 style="margin:0 0 4px;font-family:Orbitron,sans-serif;font-size:1.2rem;text-align:center;background:linear-gradient(135deg,#60a5fa,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">🛡️ МОД ПАНЕЛЬ</h2>
         <p id="modNickDisplay" style="text-align:center;color:#60a5fa;font-size:0.82rem;font-weight:700;margin:0 0 18px;"></p>
 
+        <button id="modRecordQueueBtn" class="mod-queue-button" style="display:none" onclick="openRecordModerationPanel()">
+            <span>Заявки на рекорды</span><span id="modRecordPendingCount" class="mod-queue-count">0</span>
+        </button>
+
+        <button id="modIdentityQueueBtn" class="mod-queue-button" style="display:none" onclick="openIdentityModerationPanel()">
+            <span>Подтверждение игроков</span><span id="modIdentityPendingCount" class="mod-queue-count">0</span>
+        </button>
+
         <div id="modAddLevelBox" style="background:rgba(167,139,250,0.05);border:1px solid rgba(167,139,250,0.12);border-radius:14px;padding:14px;margin-bottom:12px;">
             <p id="modLevelFormTitle" style="margin:0 0 10px;font-size:0.8rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1px;">➕ Добавить уровень в лист</p>
             <select id="mLevelType" onchange="updateModLevelFormType()" style="width:100%;padding:10px 12px;margin:4px 0 8px;background:#0a0d1e;border:1px solid rgba(167,139,250,0.2);color:white;border-radius:10px;font-family:Nunito;font-size:0.88rem;outline:none;">
-                <option value="demons">💀 Демон</option>
-                <option value="challenges">🔥 Челлендж</option>
+                <option value="demons">Демон</option>
+                <option value="challenges">Челлендж</option>
+                <option value="impossible">Impossible</option>
             </select>
             <input type="text" id="mName" placeholder="Название уровня" style="width:100%;padding:10px 12px;margin:4px 0;background:#0a0d1e;border:1px solid rgba(167,139,250,0.2);color:white;border-radius:10px;font-family:Nunito;font-size:0.88rem;outline:none;">
             <input type="text" id="mAuthor" placeholder="Автор" style="width:100%;padding:10px 12px;margin:4px 0;background:#0a0d1e;border:1px solid rgba(167,139,250,0.2);color:white;border-radius:10px;font-family:Nunito;font-size:0.88rem;outline:none;">
@@ -491,12 +666,15 @@
             <i class="fas fa-pen"></i> <span id="modEditBtnText">Включить редактирование</span>
         </button>
 
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px;">
             <button onclick="showModVictorForm('demon')" style="padding:13px 8px;background:rgba(167,139,250,0.07);border:1px solid rgba(167,139,250,0.2);color:#a78bfa;border-radius:12px;cursor:pointer;font-weight:900;font-size:0.78rem;text-transform:uppercase;font-family:Nunito;">
                 <i class="fas fa-trophy"></i> Рекорд (демон)
             </button>
             <button onclick="showModVictorForm('challenge')" style="padding:13px 8px;background:rgba(251,146,60,0.07);border:1px solid rgba(251,146,60,0.25);color:#fb923c;border-radius:12px;cursor:pointer;font-weight:900;font-size:0.78rem;text-transform:uppercase;font-family:Nunito;">
                 <i class="fas fa-fire"></i> Рекорд (чел.)
+            </button>
+            <button onclick="showModVictorForm('impossible')" style="padding:13px 8px;background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.24);color:#f87171;border-radius:12px;cursor:pointer;font-weight:900;font-size:0.72rem;text-transform:uppercase;font-family:Nunito;">
+                <i class="fas fa-ban"></i> Impossible
             </button>
         </div>
 
@@ -539,9 +717,11 @@
                 <optgroup label="Добавление">
                     <option value="add_demon">Добавить демона</option>
                     <option value="add_challenge">Добавить челлендж</option>
+                    <option value="add_impossible">Добавить Impossible уровень</option>
                     <option value="add_creator">Добавить креатора</option>
                     <option value="add_victor">Добавить рекорд (демон)</option>
                     <option value="add_victor_challenge">Добавить рекорд (челлендж)</option>
+                    <option value="add_victor_impossible">Добавить рекорд (Impossible)</option>
                 </optgroup>
                 <optgroup label="Режимы и управление">
                     <option value="edit_demon_mode">Режим редактирования (все разделы)</option>
@@ -584,6 +764,13 @@
                 <input type="text" id="chalVicPerc" placeholder="Проценты">
                 <input type="text" id="chalVicAtt" placeholder="Попытки">
                 <input type="text" id="chalVicVid" placeholder="Ссылка на YouTube видео (необязательно)">
+            </div>
+            <div id="fields_victor_impossible" style="display:none;">
+                <select id="selectImpossible" style="width:100%"></select>
+                <input type="text" id="impVicName" placeholder="Ник игрока">
+                <input type="text" id="impVicPerc" placeholder="Проценты">
+                <input type="text" id="impVicAtt" placeholder="Попытки">
+                <input type="text" id="impVicVid" placeholder="Ссылка на YouTube видео (необязательно)">
             </div>
             <div id="fields_country" style="display:none;">
                 <input type="text" id="countryNick" placeholder="Ник игрока (точно)">
@@ -874,6 +1061,146 @@
         </div>
     </div>
 
+
+    <div id="accountAuthModal" class="account-modal">
+        <div class="account-modal-box">
+            <button class="account-modal-close" onclick="closeAccountAuth()"><i class="fas fa-times"></i></button>
+            <h2 class="account-modal-title">Night GDPS Account</h2>
+            <p class="account-modal-sub">Войдите в существующий аккаунт или зарегистрируйте новый.</p>
+            <div class="auth-tabs">
+                <button id="accountLoginTab" class="auth-tab active" onclick="switchAccountAuth('login')">Вход</button>
+                <button id="accountRegisterTab" class="auth-tab" onclick="switchAccountAuth('register')">Регистрация</button>
+            </div>
+            <div class="account-field">
+                <label class="account-label">Email</label>
+                <input class="account-input" id="accountAuthEmail" type="email" autocomplete="email">
+            </div>
+            <div class="account-field">
+                <label class="account-label">Пароль</label>
+                <input class="account-input" id="accountAuthPassword" type="password" autocomplete="current-password" onkeydown="if(event.key==='Enter') submitAccountAuth()">
+            </div>
+            <div id="accountRegisterFields" style="display:none;">
+                <div class="account-field">
+                    <label class="account-label">Username</label>
+                    <input class="account-input" id="accountRegisterUsername" maxlength="24" autocomplete="username">
+                    <div class="account-hint">3–24 символа: латинские буквы, цифры, _ и -.</div>
+                </div>
+                <div class="account-field">
+                    <label class="account-label">Отображаемый ник</label>
+                    <input class="account-input" id="accountRegisterDisplayName" maxlength="40">
+                </div>
+                <div class="account-field">
+                    <label class="account-label">Ник на Night GDPS</label>
+                    <input class="account-input" id="accountRegisterGdpsName" maxlength="40">
+                </div>
+                <div class="account-field">
+                    <label class="account-label">Ник в Demon List</label>
+                    <input class="account-input" id="accountRegisterDemonListName" maxlength="40">
+                </div>
+            </div>
+            <div id="accountAuthError" class="account-form-error"></div>
+            <button id="accountAuthSubmit" class="account-primary" style="width:100%;" onclick="submitAccountAuth()">Войти</button>
+        </div>
+    </div>
+
+    <div id="identityClaimModal" class="account-modal">
+        <div class="account-modal-box identity-claim-box">
+            <button class="account-modal-close" onclick="closeIdentityClaimModal()"><i class="fas fa-times"></i></button>
+            <h2 class="account-modal-title">Подтверждение Night GDPS</h2>
+            <p class="account-modal-sub">Заявка будет проверена модератором. Один Night GDPS accountID может быть связан только с одним аккаунтом сайта.</p>
+
+            <div class="account-field">
+                <label class="account-label" for="identityClaimAccountId">Night GDPS accountID</label>
+                <input class="account-input" id="identityClaimAccountId" type="text" inputmode="numeric" maxlength="20" placeholder="Например: 1842">
+            </div>
+            <div class="account-field">
+                <label class="account-label" for="identityClaimGdpsName">Ник на Night GDPS</label>
+                <input class="account-input" id="identityClaimGdpsName" maxlength="40">
+            </div>
+            <div class="account-field">
+                <label class="account-label" for="identityClaimPlayerSearch">Профиль в Demon List</label>
+                <input class="account-input" id="identityClaimPlayerSearch" type="text" autocomplete="off" maxlength="40" placeholder="Необязательно, если профиля в листе ещё нет" oninput="searchIdentityPlayers()" onfocus="searchIdentityPlayers()">
+                <input type="hidden" id="identityClaimPlayerKey">
+                <div id="identityClaimPlayerResults" class="level-search-results"></div>
+                <div class="account-hint" id="identityClaimPlayerHint">Если вы уже есть в Demon List, выберите существующий профиль из списка.</div>
+            </div>
+            <div class="account-field">
+                <label class="account-label" for="identityClaimComment">Комментарий модератору</label>
+                <textarea class="account-textarea" id="identityClaimComment" maxlength="400" placeholder="Дополнительная информация для проверки"></textarea>
+            </div>
+            <div id="identityClaimError" class="account-form-error"></div>
+            <div class="account-actions">
+                <button class="account-secondary" type="button" onclick="closeIdentityClaimModal()">Отмена</button>
+                <button id="identityClaimSubmit" class="account-primary" type="button" onclick="submitIdentityClaim()">Отправить на проверку</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="identityModerationPanel" class="moderation-panel">
+        <div class="moderation-shell">
+            <div class="moderation-head">
+                <div><h2>Подтверждение игроков</h2><p>Привязка Firebase UID к Night GDPS accountID и официальному профилю Demon List.</p></div>
+                <button class="moderation-close" onclick="closeIdentityModerationPanel()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="moderation-tabs">
+                <button class="moderation-tab active" data-identity-tab="pending" onclick="switchIdentityModerationTab('pending')">Ожидают</button>
+                <button class="moderation-tab" data-identity-tab="approved" onclick="switchIdentityModerationTab('approved')">Подтверждены</button>
+                <button class="moderation-tab" data-identity-tab="rejected" onclick="switchIdentityModerationTab('rejected')">Отклонены</button>
+            </div>
+            <div id="identityModerationList" class="moderation-list"></div>
+        </div>
+    </div>
+
+    <div id="identityDecisionModal" class="account-modal">
+        <div class="account-modal-box">
+            <button class="account-modal-close" onclick="closeIdentityDecisionModal()"><i class="fas fa-times"></i></button>
+            <h2 id="identityDecisionTitle" class="account-modal-title">Решение по привязке</h2>
+            <p id="identityDecisionText" class="account-modal-sub"></p>
+            <div id="identityDecisionReasonWrap" class="account-field" style="display:none;">
+                <label class="account-label" for="identityDecisionReason">Причина отказа</label>
+                <textarea id="identityDecisionReason" class="account-textarea" maxlength="400"></textarea>
+            </div>
+            <div id="identityDecisionError" class="account-form-error"></div>
+            <div class="account-actions">
+                <button class="account-secondary" onclick="closeIdentityDecisionModal()">Отмена</button>
+                <button id="identityDecisionConfirm" class="account-primary" onclick="confirmIdentityDecision()">Подтвердить</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="recordModerationPanel" class="moderation-panel">
+        <div class="moderation-shell">
+            <div class="moderation-head">
+                <div><h2>Заявки на рекорды</h2><p>Отдельная очередь пользовательских заявок Demon List.</p></div>
+                <button class="moderation-close" onclick="closeRecordModerationPanel()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="moderation-tabs">
+                <button class="moderation-tab active" data-record-tab="pending" onclick="switchRecordModerationTab('pending')">Ожидают</button>
+                <button class="moderation-tab" data-record-tab="needs_proof" onclick="switchRecordModerationTab('needs_proof')">Нужны пруфы</button>
+                <button class="moderation-tab" data-record-tab="approved" onclick="switchRecordModerationTab('approved')">Приняты</button>
+                <button class="moderation-tab" data-record-tab="rejected" onclick="switchRecordModerationTab('rejected')">Отклонены</button>
+            </div>
+            <div id="recordModerationList" class="moderation-list"></div>
+        </div>
+    </div>
+
+    <div id="recordDecisionModal" class="account-modal">
+        <div class="account-modal-box">
+            <button class="account-modal-close" onclick="closeRecordDecisionModal()"><i class="fas fa-times"></i></button>
+            <h2 id="recordDecisionTitle" class="account-modal-title">Решение по заявке</h2>
+            <p id="recordDecisionText" class="account-modal-sub"></p>
+            <div id="recordDecisionReasonWrap" class="account-field">
+                <label id="recordDecisionReasonLabel" class="account-label" for="recordDecisionReason">Сообщение пользователю</label>
+                <textarea id="recordDecisionReason" class="account-textarea" maxlength="600"></textarea>
+            </div>
+            <div id="recordDecisionError" class="account-form-error"></div>
+            <div class="account-actions">
+                <button class="account-secondary" onclick="closeRecordDecisionModal()">Отмена</button>
+                <button id="recordDecisionConfirm" class="account-primary" onclick="confirmRecordDecision()">Подтвердить</button>
+            </div>
+        </div>
+    </div>
+
     <div id="detailModal" class="modal"><div class="modal-content" id="modalData"></div></div>
 
     <div id="modLoginPage">
@@ -911,6 +1238,7 @@
         <div style="background:rgba(167,139,250,0.08); border:1px solid rgba(167,139,250,0.2); border-radius:12px; padding:12px 24px; color:#a78bfa; font-weight:700; font-size:0.9rem; letter-spacing:1px; font-family:'Orbitron';">🌙 NIGHT GDPS</div>
     </div>
 
+    <script src="./assets/js/turnstile-gate.js"></script>
     <script src="./assets/js/app.js"></script>
 </body>
 </html>

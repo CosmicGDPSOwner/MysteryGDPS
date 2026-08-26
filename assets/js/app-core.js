@@ -69,35 +69,38 @@ const firebaseConfig = {
         // Обычным посетителям кнопка входа не показывается.
 
         // ===== AUTH STATE =====
-        auth.onAuthStateChanged(user => {
+        auth.onAuthStateChanged(async user => {
+            _auth.reset();
+            currentUserRole = null;
+            currentUserPermissions = {};
+            isDeleteMode = false;
+            isEditMode = false;
+            isDragDropMode = false;
+
             if (user) {
-                db.ref('moderators/' + user.uid).once('value', snap => {
-                    const modData = snap.val();
+                try {
+                    const modSnap = await db.ref('moderators/' + user.uid).once('value');
+                    const modData = modSnap.val();
                     if (modData) {
                         currentUserRole = modData.role || 'moderator';
                         _auth.setMod(true);
                         _auth.setAdmin(currentUserRole === 'admin');
-                        // Загружаем гранулярные права; для admin — полный доступ
                         currentUserPermissions = currentUserRole === 'admin'
                             ? { canAddDemons: true, canAddChallenges: true, canAddRecords: true, canDeleteReviews: true }
                             : (modData.permissions || {});
                     } else {
-                        // Аккаунт есть в Firebase Auth, но прав модератора ему не выдали
-                        auth.signOut();
-                        showToast('⛔ У этого аккаунта нет прав модератора. Обратись к администратору.');
-                        return;
+                        // Обычный Firebase Auth аккаунт остаётся авторизованным как пользователь сайта.
+                        currentUserRole = 'user';
                     }
-                    updateUIForRole();
-                });
-            } else {
-                _auth.reset();
-                currentUserRole = null;
-                currentUserPermissions = {};
-                isDeleteMode = false;
-                isEditMode = false;
-                isDragDropMode = false;
-                updateUIForRole();
-                render();
+                } catch (e) {
+                    console.error('Role lookup failed:', e);
+                    currentUserRole = 'user';
+                }
+            }
+
+            updateUIForRole();
+            if (window.NightAccounts && typeof window.NightAccounts.handleAuthState === 'function') {
+                window.NightAccounts.handleAuthState(user);
             }
         });
 
@@ -137,6 +140,7 @@ const firebaseConfig = {
                 if (modTrigger) modTrigger.style.display = 'none';
                 modInd.style.display = 'none';
             }
+            if (window.NightAccounts && typeof window.NightAccounts.syncModeratorUI === 'function') window.NightAccounts.syncModeratorUI();
             render();
         }
 
@@ -1161,7 +1165,7 @@ const firebaseConfig = {
 
         const NAV_SECTION_KEY = 'nightLastSection';
         const NAV_TAB_KEY = 'nightLastListTab';
-        const VALID_NAV_SECTIONS = new Set(['homeSection', 'statsSection', 'downloadSection', 'listSection']);
+        const VALID_NAV_SECTIONS = new Set(['homeSection', 'statsSection', 'downloadSection', 'listSection', 'accountSection', 'recordSubmitSection']);
         const VALID_LIST_TABS = new Set(['demons', 'challenges', 'players', 'creatortop', 'playersearch']);
 
         function openSection(id, remember = true) {
@@ -1178,6 +1182,8 @@ const firebaseConfig = {
             for (let i = 0; i < drops.length; i++) { drops[i].classList.remove('show'); }
             closeBurger();
             if (id === 'statsSection') loadStats();
+            if (id === 'accountSection' && window.NightAccounts) window.NightAccounts.renderAccountSection();
+            if (id === 'recordSubmitSection' && window.NightAccounts) window.NightAccounts.prepareRecordSubmissionSection();
         }
 
         function restoreNavigationState() {

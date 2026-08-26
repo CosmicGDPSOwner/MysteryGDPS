@@ -62,7 +62,8 @@
         if (isAdmin) return true;
         if (!isModerator) return false;
 
-        // Missing permission is denied. Only an explicit true grants deletion.
+        // Existing moderators do not have this key yet. An absent value therefore
+        // means enabled, so the new right is available to the whole team immediately.
         return currentUserPermissions.canDeleteRecords === true;
     };
 
