@@ -34,7 +34,7 @@ The old `avatar` rule may remain for backward compatibility. The website no long
 ```json
 "accountIds": {
   ".read": "auth != null",
-  ".write": "auth != null && (root.child('moderators').child(auth.uid).child('role').val() === 'admin' || (data.child('initialized').val() === true && newData.child('initialized').val() === true && newData.child('initializedAt').val() === data.child('initializedAt').val() && data.child('counter').isNumber() && newData.child('counter').val() === data.child('counter').val() + 1 && root.child('users').child(auth.uid).child('usernameKey').isString() && !data.child('byUsername').child(root.child('users').child(auth.uid).child('usernameKey').val()).exists() && newData.child('byUsername').child(root.child('users').child(auth.uid).child('usernameKey').val()).val() === newData.child('counter').val() && newData.child('byUsername').numChildren() === data.child('byUsername').numChildren() + 1 && newData.child('byId').numChildren() === data.child('byId').numChildren() + 1))",
+  ".write": "auth != null && (root.child('moderators').child(auth.uid).child('role').val() === 'admin' || (data.child('initialized').val() === true && newData.child('initialized').val() === true && newData.child('initializedAt').val() === data.child('initializedAt').val() && data.child('counter').isNumber() && newData.child('counter').val() === data.child('counter').val() + 1 && root.child('users').child(auth.uid).child('usernameKey').isString() && !data.child('byUsername').child(root.child('users').child(auth.uid).child('usernameKey').val()).exists() && newData.child('byUsername').child(root.child('users').child(auth.uid).child('usernameKey').val()).val() === newData.child('counter').val() && newData.child('byId').child(newData.child('counter').val() + '').val() === root.child('users').child(auth.uid).child('usernameKey').val()))",
   "initialized": {
     ".validate": "root.child('moderators').child(auth.uid).child('role').val() === 'admin' || (data.exists() && newData.val() === data.val())"
   },
@@ -51,7 +51,7 @@ The old `avatar` rule may remain for backward compatibility. The website no long
   },
   "byId": {
     "$id": {
-      ".validate": "root.child('moderators').child(auth.uid).child('role').val() === 'admin' || (data.exists() && newData.val() === data.val()) || (!data.exists() && newData.isString() && newData.val() === root.child('users').child(auth.uid).child('usernameKey').val())"
+      ".validate": "root.child('moderators').child(auth.uid).child('role').val() === 'admin' || (data.exists() && newData.val() === data.val()) || (!data.exists() && newData.isString() && $id === newData.parent().parent().child('counter').val() + '' && newData.val() === root.child('users').child(auth.uid).child('usernameKey').val())"
     }
   },
   "$other": {
