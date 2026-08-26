@@ -1,0 +1,46 @@
+name: Patch GitHub Pages cache key
+
+on:
+  push:
+    paths:
+      - '.github/workflows/patch-pages-cache.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch-index:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+
+      - name: Version root app script
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path('index.html')
+          content = path.read_text(encoding='utf-8')
+          old = '<script src="./assets/js/app.js"></script>'
+          new = '<script src="./assets/js/app.js?v=20260826-3"></script>'
+
+          count = content.count(old)
+          if count != 1:
+              raise SystemExit(f'Expected exactly one app.js script tag, found {count}')
+
+          path.write_text(content.replace(old, new, 1), encoding='utf-8')
+
+      - name: Commit patch
+        run: |
+          if git diff --quiet -- index.html; then
+            echo "No index.html change required"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "fix: bust GitHub Pages app cache"
+          git push origin HEAD:main
