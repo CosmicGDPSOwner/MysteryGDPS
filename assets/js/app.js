@@ -6,6 +6,6 @@
     document.write(
         '<script src="./assets/js/app-core.js"></script>' +
         '<script src="./assets/js/record-delete-permission.js"></script>' +
-        '<script src="./assets/js/verification-status.js?v=20260826-2"></script>'
+        '<script src="./assets/js/verification-status.js?v=20260826-3"></script>'
     );
 })();
