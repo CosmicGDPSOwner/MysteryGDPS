@@ -23,6 +23,7 @@
             await loadScript('./assets/js/staff-identity-click-fix.js?v=staff-identity-fix-2');
             await loadScript('./assets/js/account-country.js?v=country-profile-1');
             await loadScript('./assets/js/account-public-id.js?v=account-id-1');
+            await loadScript('./assets/js/identity-account-id-limit.js?v=id-limit-10000-1');
             await loadScript('./assets/js/record-delete-permission.js');
             await loadScript('./assets/js/impossible-list.js?v=prod-1');
             await loadScript('./assets/js/moderator-level-write-fix.js?v=mod-level-write-1');
