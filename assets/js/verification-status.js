@@ -14,7 +14,7 @@
             justify-content: space-between;
             gap: 12px;
             padding: 10px 14px;
-            margin: 0 0 16px;
+            margin: 16px 0 0;
             border: 1px solid rgba(148, 163, 184, 0.16);
             border-radius: 10px;
             background: rgba(15, 23, 42, 0.36);
@@ -148,12 +148,9 @@
 
         status.append(label, value);
 
-        const header = modalData.firstElementChild;
-        if (header) {
-            header.insertAdjacentElement('afterend', status);
-        } else {
-            modalData.prepend(status);
-        }
+        // Keep verification metadata away from the modal header controls
+        // (close/copy buttons) by rendering it after all level details.
+        modalData.appendChild(status);
     };
 
     const originalShowInfoByKey = showInfoByKey;
