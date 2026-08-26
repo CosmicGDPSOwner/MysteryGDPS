@@ -1,0 +1,80 @@
+/* Night GDPS access gate */
+html.night-access-locked,
+html.night-access-locked body {
+    background: #05070f;
+    min-height: 100%;
+}
+html.night-access-locked body > *:not(#nightAccessGate):not(script) {
+    visibility: hidden !important;
+}
+#nightAccessGate {
+    position: fixed;
+    inset: 0;
+    z-index: 2147483000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background:
+        radial-gradient(circle at 50% 20%, rgba(99,102,241,.10), transparent 34%),
+        #05070f;
+    font-family: 'Manrope', system-ui, sans-serif;
+    color: #e6ebf5;
+}
+#nightAccessGate[hidden] { display: none !important; }
+.night-access-card {
+    width: min(440px, 100%);
+    padding: 30px;
+    border-radius: 18px;
+    border: 1px solid rgba(148,163,184,.14);
+    background: rgba(12,16,29,.94);
+    box-shadow: 0 22px 70px rgba(0,0,0,.34);
+    text-align: center;
+}
+.night-access-brand {
+    font-family: 'Sora', 'Manrope', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 800;
+    letter-spacing: .12em;
+    color: #dce4f5;
+    margin-bottom: 22px;
+}
+.night-access-title {
+    margin: 0 0 9px;
+    font-family: 'Sora', 'Manrope', sans-serif;
+    font-size: clamp(1.25rem, 4vw, 1.55rem);
+    font-weight: 750;
+    color: #f2f5fb;
+}
+.night-access-copy {
+    margin: 0 auto 24px;
+    max-width: 340px;
+    color: #8c98ad;
+    font-size: .88rem;
+    line-height: 1.65;
+}
+#nightTurnstileMount {
+    min-height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.night-access-status {
+    min-height: 21px;
+    margin-top: 15px;
+    color: #8290a8;
+    font-size: .78rem;
+    line-height: 1.5;
+}
+.night-access-status.error { color: #f5a3a3; }
+.night-access-meta {
+    margin-top: 21px;
+    padding-top: 17px;
+    border-top: 1px solid rgba(148,163,184,.10);
+    color: #657188;
+    font-size: .70rem;
+    line-height: 1.5;
+}
+@media (max-width: 520px) {
+    .night-access-card { padding: 24px 18px; border-radius: 15px; }
+}
