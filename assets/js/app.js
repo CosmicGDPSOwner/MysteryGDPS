@@ -20,6 +20,7 @@
 
             await loadScript('./assets/js/app-core.js');
             await loadScript('./assets/js/accounts-records.js?v=identity-turnstile-prod-1');
+            await loadScript('./assets/js/staff-account-profile-fix.js?v=staff-profile-fix-1');
             await loadScript('./assets/js/record-delete-permission.js');
             await loadScript('./assets/js/impossible-list.js?v=prod-1');
             await loadScript('./assets/js/verification-status.js?v=20260826-3');
