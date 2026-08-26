@@ -11,7 +11,30 @@
         return label;
     };
 
+
+    const createImpossiblePermissionLabel = (id) => {
+        const label = document.createElement('label');
+        label.className = 'perm-check-label';
+        label.innerHTML = `
+            <input type="checkbox" id="${id}" checked>
+            <span><i class="fas fa-ban" style="color:#f87171;margin-right:6px;"></i>Добавлять уровни в Impossible List</span>
+        `;
+        return label;
+    };
+
     const ensurePermissionCheckboxes = () => {
+        const newImpossibleAnchor = document.getElementById('permAddChallenges');
+        if (newImpossibleAnchor && !document.getElementById('permAddImpossible')) {
+            const anchorLabel = newImpossibleAnchor.closest('label');
+            if (anchorLabel) anchorLabel.insertAdjacentElement('afterend', createImpossiblePermissionLabel('permAddImpossible'));
+        }
+
+        const editImpossibleAnchor = document.getElementById('editPermAddChallenges');
+        if (editImpossibleAnchor && !document.getElementById('editPermAddImpossible')) {
+            const anchorLabel = editImpossibleAnchor.closest('label');
+            if (anchorLabel) anchorLabel.insertAdjacentElement('afterend', createImpossiblePermissionLabel('editPermAddImpossible'));
+        }
+
         const newModAnchor = document.getElementById('permAddRecords');
         if (newModAnchor && !document.getElementById('permDeleteRecords')) {
             const anchorLabel = newModAnchor.closest('label');
@@ -39,9 +62,8 @@
         if (isAdmin) return true;
         if (!isModerator) return false;
 
-        // Existing moderators do not have this key yet. An absent value therefore
-        // means enabled, so the new right is available to the whole team immediately.
-        return currentUserPermissions.canDeleteRecords !== false;
+        // Missing permission is denied. Only an explicit true grants deletion.
+        return currentUserPermissions.canDeleteRecords === true;
     };
 
     const readDeleteRecordsCheckbox = (id) => {
@@ -62,7 +84,9 @@
         if (!checkbox || !moderator) return;
 
         const permissions = moderator.permissions || {};
-        checkbox.checked = permissions.canDeleteRecords !== false;
+        checkbox.checked = permissions.canDeleteRecords === true;
+        const impossibleCheckbox = document.getElementById('editPermAddImpossible');
+        if (impossibleCheckbox) impossibleCheckbox.checked = permissions.canAddImpossible === true;
     };
 
     saveModPermissions = async function() {
@@ -74,6 +98,7 @@
         const permissions = {
             canAddDemons: document.getElementById('editPermAddDemons').checked,
             canAddChallenges: document.getElementById('editPermAddChallenges').checked,
+            canAddImpossible: document.getElementById('editPermAddImpossible') ? document.getElementById('editPermAddImpossible').checked : true,
             canAddRecords: document.getElementById('editPermAddRecords').checked,
             canDeleteRecords: readDeleteRecordsCheckbox('editPermDeleteRecords'),
             canDeleteReviews: document.getElementById('editPermDeleteReviews').checked
@@ -111,6 +136,7 @@
             ? {
                 canAddDemons: document.getElementById('permAddDemons').checked,
                 canAddChallenges: document.getElementById('permAddChallenges').checked,
+                canAddImpossible: document.getElementById('permAddImpossible') ? document.getElementById('permAddImpossible').checked : true,
                 canAddRecords: document.getElementById('permAddRecords').checked,
                 canDeleteRecords: readDeleteRecordsCheckbox('permDeleteRecords'),
                 canDeleteReviews: document.getElementById('permDeleteReviews').checked
@@ -118,6 +144,7 @@
             : {
                 canAddDemons: true,
                 canAddChallenges: true,
+                canAddImpossible: true,
                 canAddRecords: true,
                 canDeleteRecords: true,
                 canDeleteReviews: true
@@ -130,6 +157,8 @@
             document.getElementById('newModNick').value = '';
             document.getElementById('permAddDemons').checked = true;
             document.getElementById('permAddChallenges').checked = true;
+            const impossibleCheckbox = document.getElementById('permAddImpossible');
+            if (impossibleCheckbox) impossibleCheckbox.checked = true;
             document.getElementById('permAddRecords').checked = true;
 
             const deleteRecordsCheckbox = document.getElementById('permDeleteRecords');
@@ -217,9 +246,16 @@
             if (!badges || badges.querySelector('[data-delete-records-permission]')) return;
 
             const permissions = moderator.permissions || {};
+            if (!badges.querySelector('[data-impossible-permission]')) {
+                const impossibleBadge = document.createElement('span');
+                impossibleBadge.dataset.impossiblePermission = '1';
+                impossibleBadge.className = `perm-badge ${permissions.canAddImpossible === true ? 'on' : 'off'}`;
+                impossibleBadge.innerHTML = '<i class="fas fa-ban"></i> Impossible List';
+                badges.appendChild(impossibleBadge);
+            }
             const badge = document.createElement('span');
             badge.dataset.deleteRecordsPermission = '1';
-            badge.className = `perm-badge ${permissions.canDeleteRecords !== false ? 'on' : 'off'}`;
+            badge.className = `perm-badge ${permissions.canDeleteRecords === true ? 'on' : 'off'}`;
             badge.innerHTML = '<i class="fas fa-trash"></i> Удаление рекордов';
             badges.appendChild(badge);
         });
@@ -259,7 +295,7 @@
             return;
         }
 
-        if (!['demons', 'challenges'].includes(type)) {
+        if (!['demons', 'challenges', 'impossible'].includes(type)) {
             showToast('Недопустимый путь удаления!');
             return;
         }
