@@ -22,6 +22,7 @@
             await loadScript('./assets/js/accounts-records.js?v=identity-staff-fix-2');
             await loadScript('./assets/js/staff-identity-click-fix.js?v=staff-identity-fix-2');
             await loadScript('./assets/js/account-country.js?v=country-profile-1');
+            await loadScript('./assets/js/account-public-id.js?v=account-id-1');
             await loadScript('./assets/js/record-delete-permission.js');
             await loadScript('./assets/js/impossible-list.js?v=prod-1');
             await loadScript('./assets/js/verification-status.js?v=20260826-3');
