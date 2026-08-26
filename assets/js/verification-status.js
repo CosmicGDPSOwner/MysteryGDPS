@@ -90,7 +90,7 @@
     document.head.appendChild(style);
 
     const findLevel = (key, type) => {
-        const list = type === 'challenges' ? challenges : demons;
+        const list = type === 'challenges' ? challenges : type === 'impossible' ? (window.impossibleLevels || []) : demons;
         return list.find(level => String(level.key) === String(key));
     };
 
