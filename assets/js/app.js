@@ -19,15 +19,12 @@
             }
 
             await loadScript('./assets/js/app-core.js');
-            await loadScript('./assets/js/accounts-records.js?v=identity-turnstile-prod-1');
-            await loadScript('./assets/js/staff-account-profile-fix.js?v=staff-profile-fix-1');
+            await loadScript('./assets/js/accounts-records.js?v=identity-staff-fix-2');
+            await loadScript('./assets/js/staff-identity-click-fix.js?v=staff-identity-fix-2');
             await loadScript('./assets/js/record-delete-permission.js');
             await loadScript('./assets/js/impossible-list.js?v=prod-1');
             await loadScript('./assets/js/verification-status.js?v=20260826-3');
 
-            // app-core historically registered some startup handlers while the page
-            // was still parsing. When the access gate delays boot, replay only the
-            // lifecycle events that have already happened.
             if (document.readyState !== 'loading') {
                 document.dispatchEvent(new Event('DOMContentLoaded'));
             }
