@@ -27,6 +27,36 @@
         return currentUserPermissions && currentUserPermissions[key] === true;
     }
 
+    function numericOrder(item, fallback) {
+        const value = Number(item?.order);
+        return Number.isFinite(value) ? value : fallback;
+    }
+
+    // Lists are rendered after sorting by numeric `order`. Using a midpoint lets a
+    // moderator insert at an arbitrary visible position without rewriting any
+    // existing level. This keeps a moderator write scoped to exactly one level node.
+    function orderForInsertion(list, insertIndex) {
+        const length = list.length;
+        if (!length) return 0;
+
+        const index = Math.max(0, Math.min(length, Number(insertIndex) || 0));
+        if (index === 0) {
+            return numericOrder(list[0], 0) - 1;
+        }
+        if (index >= length) {
+            return numericOrder(list[length - 1], length - 1) + 1;
+        }
+
+        const before = numericOrder(list[index - 1], index - 1);
+        const after = numericOrder(list[index], index);
+        if (after > before) return before + (after - before) / 2;
+
+        // Historical data should normally have increasing orders. If two entries
+        // already share an order, stay close to the requested predecessor without
+        // modifying either existing record.
+        return before + 0.000001;
+    }
+
     async function directModeratorInsert(type, data, insertIndex) {
         if (!['demons', 'challenges', 'impossible'].includes(type)) {
             throw new Error('Неизвестный тип списка.');
@@ -37,18 +67,17 @@
 
         const list = listFor(type);
         const safeIndex = Math.max(0, Math.min(list.length, Number(insertIndex) || 0));
+        const order = orderForInsertion(list, safeIndex);
         const today = new Date().toISOString().slice(0, 10);
         const newRef = db.ref(type).push();
         const newHistoryKey = newRef.child('history').push().key;
-        let created = false;
 
         try {
-            // Write exactly at /<list>/<level>. This is deliberate: moderator
-            // permissions are granted at the individual level node, while the
-            // original root fan-out can be rejected as one atomic operation.
+            // One level-scoped write only. No root fan-out and no writes to existing
+            // levels, so Firebase only evaluates the permission for the new node.
             await newRef.set({
                 ...data,
-                order: safeIndex,
+                order,
                 addedAt: Date.now(),
                 history: {
                     [newHistoryKey]: {
@@ -57,49 +86,31 @@
                     }
                 }
             });
-            created = true;
-
-            // Reorder existing levels using one level-scoped update per item.
-            // The level rule can verify that victors remain unchanged.
-            const shifts = [];
-            list.forEach((item, idx) => {
-                if (idx < safeIndex || !item || !item.key) return;
-                const newOrder = idx + 1;
-                if (Number(item.order) === newOrder) return;
-
-                const hKey = db.ref(`${type}/${item.key}/history`).push().key;
-                shifts.push(
-                    db.ref(`${type}/${item.key}`).update({
-                        order: newOrder,
-                        [`history/${hKey}`]: {
-                            pos: newOrder + 1,
-                            date: today
-                        }
-                    })
-                );
-            });
-
-            await Promise.all(shifts);
             return newRef.key;
         } catch (error) {
-            // If creating the new level succeeded but a following shift failed,
-            // remove the newly created level when possible instead of leaving a
-            // half-completed insertion behind.
-            if (created) {
-                try { await newRef.remove(); } catch (_) {}
-            }
-
             if (error?.code === 'PERMISSION_DENIED' || /permission/i.test(String(error?.message || ''))) {
                 const permission = requiredPermission(type);
-                throw new Error(`Firebase отклонил запись. Проверь у модератора permissions/${permission} = true.`);
+                let storedPermission = null;
+                try {
+                    const user = auth.currentUser;
+                    if (user) {
+                        const snap = await db.ref(`moderators/${user.uid}/permissions/${permission}`).once('value');
+                        storedPermission = snap.val();
+                    }
+                } catch (_) {}
+
+                if (storedPermission !== true) {
+                    throw new Error(`Firebase отклонил запись: permissions/${permission} в базе не равен true.`);
+                }
+                throw new Error(`Firebase Rules отклонили создание уровня, хотя permissions/${permission} = true. Нужен актуальный набор Rules.`);
             }
             throw error;
         }
     }
 
     window.addLevelAtPosition = function patchedAddLevelAtPosition(type, data, insertIndex) {
-        // Admin keeps the original atomic fan-out. Only moderator writes need
-        // the level-scoped path strategy.
+        // Admin keeps the original atomic implementation. Only moderator writes use
+        // the single-node strategy because their Firebase permissions are granular.
         if (window.isAdmin || !window.isModerator) {
             return originalAddLevelAtPosition(type, data, insertIndex);
         }
