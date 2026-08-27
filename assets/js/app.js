@@ -26,7 +26,7 @@
             await loadScript('./assets/js/identity-account-id-limit.js?v=id-limit-10000-1');
             await loadScript('./assets/js/record-delete-permission.js');
             await loadScript('./assets/js/impossible-list.js?v=prod-1');
-            await loadScript('./assets/js/moderator-level-write-fix.js?v=mod-level-write-1');
+            await loadScript('./assets/js/moderator-level-write-fix.js?v=mod-level-write-2');
             await loadScript('./assets/js/verification-status.js?v=20260826-3');
 
             if (document.readyState !== 'loading') {
