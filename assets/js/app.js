@@ -25,7 +25,7 @@
             await loadScript('./assets/js/account-public-id.js?v=account-id-1');
             await loadScript('./assets/js/identity-account-id-limit.js?v=id-limit-10000-1');
             await loadScript('./assets/js/record-delete-permission.js');
-            await loadScript('./assets/js/impossible-list.js?v=prod-1');
+            await loadScript('./assets/js/impossible-list.js?v=fps-2');
             await loadScript('./assets/js/moderator-level-write-fix.js?v=mod-level-write-2');
             await loadScript('./assets/js/profile-relink-admin-rename.js?v=relink-rename-1');
             await loadScript('./assets/js/verification-status.js?v=20260826-3');
