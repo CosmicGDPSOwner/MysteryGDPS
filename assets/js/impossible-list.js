@@ -5,45 +5,6 @@
     window.impossibleLevels = window.impossibleLevels || [];
     const impossible = () => window.impossibleLevels;
 
-    // ===== FPS: сортировка и фильтры Impossible List =====
-    const fpsState = { sort: 'default', exact: null, noFpsOnly: false };
-    const fpsNum = d => {
-        const raw = (d && d.fps !== undefined && d.fps !== null) ? String(d.fps).trim() : '';
-        if (raw === '') return null;
-        const v = parseInt(raw, 10);
-        return isNaN(v) ? null : v;
-    };
-    function syncFpsFilterSection() {
-        const sec = document.getElementById('filterFpsSection');
-        if (sec) sec.style.display = (currentTab === 'impossible') ? 'block' : 'none';
-    }
-    window.setFpsSort = function(mode) {
-        fpsState.sort = mode;
-        document.querySelectorAll('#filterFpsPills .filter-pill').forEach(b => b.classList.toggle('active', b.dataset.fpssort === mode));
-        render();
-    };
-    window.onFpsNoToggle = function() {
-        const el = document.getElementById('filterNoFps');
-        fpsState.noFpsOnly = !!(el && el.checked);
-        render();
-    };
-    window.applyFpsExact = function() {
-        const el = document.getElementById('filterFpsExact');
-        const raw = el ? String(el.value || '').trim() : '';
-        fpsState.exact = (raw === '' || isNaN(parseInt(raw, 10))) ? null : parseInt(raw, 10);
-        render();
-    };
-    window.resetFpsFilters = function() {
-        fpsState.sort = 'default'; fpsState.exact = null; fpsState.noFpsOnly = false;
-        const ex = document.getElementById('filterFpsExact'); if (ex) ex.value = '';
-        const nf = document.getElementById('filterNoFps'); if (nf) nf.checked = false;
-        document.querySelectorAll('#filterFpsPills .filter-pill').forEach(b => b.classList.toggle('active', b.dataset.fpssort === 'default'));
-    };
-    if (typeof window.resetFilters === 'function') {
-        const originalResetFilters = window.resetFilters;
-        window.resetFilters = function() { window.resetFpsFilters(); return originalResetFilters(); };
-    }
-
     const canManageImpossible = () => !!(isAdmin || (isModerator && currentUserPermissions.canAddImpossible === true));
     const canDeleteRecords = () => !!(isAdmin || (isModerator && currentUserPermissions.canDeleteRecords === true));
 
@@ -116,16 +77,13 @@
         document.getElementById('searchBoxWrap').style.display = 'block';
         document.getElementById('top50Banner').style.display = 'none';
         document.getElementById('txtHero').innerText = impossibleLabel();
-        syncFpsFilterSection();
         render();
     }
 
     const originalSwitchTab = switchTab;
     switchTab = function(tab, remember = true) {
         if (tab === 'impossible') return setImpossibleTabUi(remember);
-        const res = originalSwitchTab(tab, remember);
-        syncFpsFilterSection();
-        return res;
+        return originalSwitchTab(tab, remember);
     };
 
     function impossibleFiltered() {
@@ -142,8 +100,6 @@
             const p = parseFloat(d.points);
             if (filterState.ptsMin !== null && (isNaN(p) || p < filterState.ptsMin)) return false;
             if (filterState.ptsMax !== null && (isNaN(p) || p > filterState.ptsMax)) return false;
-            if (fpsState.noFpsOnly && fpsNum(d) !== null) return false;
-            if (fpsState.exact !== null) { const f = fpsNum(d); if (f === null || f !== fpsState.exact) return false; }
             return true;
         });
     }
@@ -190,8 +146,6 @@
         container.innerHTML = '';
         container.style.display = 'grid';
         const filtered = impossibleFiltered();
-        if (fpsState.sort === 'fps_desc') filtered.sort((a, b) => (fpsNum(b) || 0) - (fpsNum(a) || 0));
-        else if (fpsState.sort === 'fps_asc') filtered.sort((a, b) => (fpsNum(a) || 0) - (fpsNum(b) || 0));
         if (!filtered.length) {
             container.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:48px 20px;color:#64748b;border:1px solid rgba(148,163,184,.10);border-radius:16px;background:rgba(255,255,255,.02);">${currentLang === 'EN' ? 'Impossible List is empty.' : 'Impossible List пока пуст.'}</div>`;
             return;
@@ -217,14 +171,13 @@
                 controls = `<div class="admin-controls"><button class="ctrl-btn btn-up" onclick="moveItem(${realIndex},-1,'impossible')"><i class="fas fa-arrow-up"></i></button><button class="ctrl-btn btn-down" onclick="moveItem(${realIndex},1,'impossible')"><i class="fas fa-arrow-down"></i></button><button class="ctrl-btn btn-edit" onclick="openEditModal('${d.key}','impossible')"><i class="fas fa-pen"></i></button>${isAdmin ? `<button class="ctrl-btn btn-history" onclick="event.stopPropagation();clearItemPositionHistory('${d.key}','impossible')"><i class="fas fa-broom"></i></button>` : ''}</div>`;
             }
             const pts = parseFloat(d.points);
-            const fps = fpsNum(d);
             const verifier = String(d.verifier || '').trim();
             card.onclick = event => {
                 if (levelViewMode !== 'grid') return;
                 if (event.target.closest('button,a,.level-id-box,.admin-controls')) return;
                 showInfoByKey(d.key, 'impossible');
             };
-            card.innerHTML = `${controls}<div class="card-img-wrap">${d.tag ? `<div class="demon-tag">${escapeHtml(d.tag)}</div>` : ''}<img src="${escapeHtml(d.img || '')}" class="card-img" loading="lazy" decoding="async" alt="${escapeHtml(d.name || '')}" onerror="this.onerror=null;this.removeAttribute('src')">${statusBadgeHtml(d.status)}</div><div class="card-body"><div class="card-rank-name"><span class="card-rank">#${realIndex+1}</span><span class="card-title">${escapeHtml(d.name || '')}</span></div><div class="card-meta"><span class="card-author">${escapeHtml(d.author || '')}</span>${verifier ? `<span class="card-meta-sep">|</span><span class="card-verifier-name">${escapeHtml(verifier)}</span>` : ''}</div><div class="card-actions"><div class="level-id-box" onclick="copyID('${escapeHtml(d.levelID || '')}')" style="margin:0;padding:6px 12px;font-size:.78rem;"><i class="fas fa-hashtag" style="font-size:.68rem;"></i> ${escapeHtml(d.levelID || '—')}</div>${fps !== null ? `<div class="level-id-box" style="margin:0;padding:6px 12px;font-size:.78rem;color:#60a5fa;border-color:rgba(96,165,250,.35);background:rgba(96,165,250,.08);cursor:default;" title="${currentLang === 'EN' ? 'Possible at this FPS' : 'Возможен на этом FPS'}"><i class="fas fa-film" style="font-size:.68rem;"></i> ${fps} FPS</div>` : ''}<button class="btn-more" onclick="showInfoByKey('${d.key}','impossible')" style="padding:7px 16px;font-size:.78rem;">${currentLang === 'EN' ? 'DETAILS' : 'ПОДРОБНЕЕ'}</button></div></div>`;
+            card.innerHTML = `${controls}<div class="card-img-wrap">${d.tag ? `<div class="demon-tag">${escapeHtml(d.tag)}</div>` : ''}<img src="${escapeHtml(d.img || '')}" class="card-img" loading="lazy" decoding="async" alt="${escapeHtml(d.name || '')}" onerror="this.onerror=null;this.removeAttribute('src')">${statusBadgeHtml(d.status)}</div><div class="card-body"><div class="card-rank-name"><span class="card-rank">#${realIndex+1}</span><span class="card-title">${escapeHtml(d.name || '')}</span></div><div class="card-meta"><span class="card-author">${escapeHtml(d.author || '')}</span>${verifier ? `<span class="card-meta-sep">|</span><span class="card-verifier-name">${escapeHtml(verifier)}</span>` : ''}${!isNaN(pts) ? `<span class="card-meta-sep">·</span><span class="card-pts-max">${pts.toFixed(2)}</span><span style="color:#4b5563;font-size:.75rem;margin-left:3px;">pts</span>` : ''}</div><div class="card-actions"><div class="level-id-box" onclick="copyID('${escapeHtml(d.levelID || '')}')" style="margin:0;padding:6px 12px;font-size:.78rem;"><i class="fas fa-hashtag" style="font-size:.68rem;"></i> ${escapeHtml(d.levelID || '—')}</div><button class="btn-more" onclick="showInfoByKey('${d.key}','impossible')" style="padding:7px 16px;font-size:.78rem;">${currentLang === 'EN' ? 'DETAILS' : 'ПОДРОБНЕЕ'}</button></div></div>`;
             fragment.appendChild(card);
         });
         container.appendChild(fragment);
@@ -238,7 +191,7 @@
 
     const originalOpenEditModal = openEditModal;
     openEditModal = function(key, type = 'demons') {
-        if (type !== 'impossible') { const w = document.getElementById('editFPSWrap'); if (w) w.style.display = 'none'; return originalOpenEditModal(key, type); }
+        if (type !== 'impossible') return originalOpenEditModal(key, type);
         if (!isModerator || !canManageImpossible()) return;
         const d = impossible().find(x => x.key === key);
         if (!d) return;
@@ -253,10 +206,6 @@
         document.getElementById('editVid').value = d.vid ? `https://youtube.com/watch?v=${d.vid}` : '';
         document.getElementById('editPoints').value = d.points || '';
         document.getElementById('editStatus').value = d.status || '';
-        const editFpsWrap = document.getElementById('editFPSWrap');
-        if (editFpsWrap) editFpsWrap.style.display = 'block';
-        const editFpsInput = document.getElementById('editFPS');
-        if (editFpsInput) editFpsInput.value = (d.fps !== undefined && d.fps !== null && String(d.fps).trim() !== '') ? d.fps : '';
         updateImgPreview();
         document.getElementById('editDemonModal').style.display = 'block';
         document.getElementById('editDemonModal').scrollTop = 0;
@@ -354,7 +303,7 @@
         const recordHtml = records.length ? records.map(([rk,r]) => `<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:10px;"><div style="display:flex;flex-direction:column;gap:5px;flex:1;min-width:0;"><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"><b style="color:#fff;font-size:.92rem;">${escapeHtml(r.name || '')}</b><span style="background:rgba(167,139,250,.12);color:var(--accent);font-size:.72rem;font-weight:900;padding:2px 8px;border-radius:6px;font-family:'Orbitron';">${escapeHtml(r.perc || '100%')}</span>${r.att ? `<span style="color:#4b5563;font-size:.75rem;">${escapeHtml(r.att)} att</span>` : ''}</div>${r.vid ? `<a href="https://youtube.com/watch?v=${encodeURIComponent(r.vid)}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:5px;color:#f87171;font-size:.72rem;font-weight:700;text-decoration:none;width:fit-content;"><i class="fab fa-youtube"></i> Видео</a>` : ''}</div><div style="display:flex;gap:6px;align-items:center;">${isEditMode && isModerator ? `<button style="background:transparent;border:none;color:#f39c12;cursor:pointer;" onclick="openEditRecordModal('${d.key}','${rk}','impossible')"><i class="fas fa-pen"></i></button>` : ''}${isEditMode && canDeleteRecords() ? `<button style="background:transparent;border:none;color:#ff4d4d;cursor:pointer;" onclick="deleteVictor('${d.key}','${rk}','impossible')"><i class="fas fa-trash"></i></button>` : ''}</div></div>`).join('') : `<p style="color:#4b5563;text-align:center;padding:20px 0;font-size:.88rem;">${currentLang === 'EN' ? 'No records yet' : 'Рекордов пока нет'}</p>`;
         const historyData = d.history ? Object.values(d.history).sort((a,b) => String(a.date||'').localeCompare(String(b.date||''))) : [];
         const historyList = historyData.length ? `<div style="margin-top:20px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:14px 16px;"><div style="font-size:.72rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">${currentLang === 'EN' ? 'Position history' : 'История позиций'}</div><div style="display:flex;gap:6px;flex-wrap:wrap;">${historyData.slice(-12).map(h => `<span style="padding:4px 7px;border-radius:6px;background:rgba(148,163,184,.07);color:#94a3b8;font-size:.72rem;">#${escapeHtml(h.pos)} ${escapeHtml(h.date || '')}</span>`).join('')}</div></div>` : '';
-        document.getElementById('modalData').innerHTML = `<button class="modal-close-pin" onclick="document.getElementById('detailModal').style.display='none';history.replaceState(null,'',window.location.pathname+window.location.search)"><i class="fas fa-times"></i></button><button class="modal-close-pin" onclick="copyDemonLink()" style="right:56px;background:rgba(59,130,246,.12);border-color:rgba(59,130,246,.3);color:#60a5fa;" id="shareDemonBtn"><i class="fas fa-link"></i></button>${idx>0 ? `<button onclick="showInfoByKey('${list[idx-1].key}','impossible')" style="position:absolute;top:50%;left:-16px;transform:translateY(-50%);background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.25);color:var(--accent);width:32px;height:32px;border-radius:50%;cursor:pointer;"><i class="fas fa-chevron-left"></i></button>` : ''}${idx<list.length-1 ? `<button onclick="showInfoByKey('${list[idx+1].key}','impossible')" style="position:absolute;top:50%;right:-16px;transform:translateY(-50%);background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.25);color:var(--accent);width:32px;height:32px;border-radius:50%;cursor:pointer;"><i class="fas fa-chevron-right"></i></button>` : ''}<div style="text-align:center;margin:0 44px 16px 0;"><div style="display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;"><span style="background:rgba(239,68,68,.10);border:1px solid rgba(239,68,68,.22);color:#f87171;font-family:'Orbitron';font-weight:900;font-size:.8rem;padding:4px 12px;border-radius:8px;">#${idx+1}</span><h2 style="font-family:'Orbitron';font-size:clamp(1.1rem,4vw,1.6rem);font-weight:900;color:#fff;margin:0;">${escapeHtml(d.name || '')}</h2></div><p style="color:#6b7280;font-size:.82rem;margin:6px 0 0;">created by <span style="color:#94a3b8;font-weight:700;">${escapeHtml(d.author || '—')}</span></p></div>${d.vid ? `<div style="position:relative;width:100%;aspect-ratio:16/9;border-radius:12px;overflow:hidden;margin-bottom:16px;border:1px solid rgba(167,139,250,.15);"><iframe style="position:absolute;inset:0;width:100%;height:100%;border:none;" src="https://www.youtube.com/embed/${encodeURIComponent(d.vid)}" allowfullscreen loading="lazy"></iframe></div>` : ''}${d.verifier ? `<div style="display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.3);border-radius:10px;padding:10px 18px;margin-bottom:16px;"><i class="fas fa-check-circle" style="color:#4ade80;font-size:1rem;"></i><span style="font-size:.88rem;color:#86efac;">${currentLang === 'EN' ? 'Verified by' : 'Верифицировано'} <b style="color:#4ade80;font-weight:900;">${escapeHtml(d.verifier)}</b></span></div>` : ''}<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;"><div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:14px;text-align:center;cursor:pointer;" onclick="copyID('${escapeHtml(d.levelID || '')}')"><div style="font-size:.62rem;color:#6b7280;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;">ID</div><div style="font-family:'Orbitron';font-size:1rem;font-weight:900;color:#fff;">${escapeHtml(d.levelID || '—')}</div></div><div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:14px;text-align:center;"><div style="font-size:.62rem;color:#6b7280;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;">${currentLang === 'EN' ? 'Possible at FPS' : 'Возможен на FPS'}</div><div style="font-family:'Orbitron';font-size:1rem;font-weight:900;color:#60a5fa;">${fpsNum(d) !== null ? fpsNum(d) + ' FPS' : '—'}</div></div></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;"><i class="fas fa-trophy" style="color:#fbbf24;font-size:.9rem;"></i><span style="font-size:.78rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:1.5px;">${currentLang === 'EN' ? 'Records' : 'Рекорды'}</span><span style="font-size:.72rem;color:#4b5563;">${records.length} total</span></div><div style="display:flex;flex-direction:column;gap:8px;max-height:260px;overflow-y:auto;padding-right:4px;">${recordHtml}</div>${historyList}`;
+        document.getElementById('modalData').innerHTML = `<button class="modal-close-pin" onclick="document.getElementById('detailModal').style.display='none';history.replaceState(null,'',window.location.pathname+window.location.search)"><i class="fas fa-times"></i></button><button class="modal-close-pin" onclick="copyDemonLink()" style="right:56px;background:rgba(59,130,246,.12);border-color:rgba(59,130,246,.3);color:#60a5fa;" id="shareDemonBtn"><i class="fas fa-link"></i></button>${idx>0 ? `<button onclick="showInfoByKey('${list[idx-1].key}','impossible')" style="position:absolute;top:50%;left:-16px;transform:translateY(-50%);background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.25);color:var(--accent);width:32px;height:32px;border-radius:50%;cursor:pointer;"><i class="fas fa-chevron-left"></i></button>` : ''}${idx<list.length-1 ? `<button onclick="showInfoByKey('${list[idx+1].key}','impossible')" style="position:absolute;top:50%;right:-16px;transform:translateY(-50%);background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.25);color:var(--accent);width:32px;height:32px;border-radius:50%;cursor:pointer;"><i class="fas fa-chevron-right"></i></button>` : ''}<div style="text-align:center;margin:0 44px 16px 0;"><div style="display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;"><span style="background:rgba(239,68,68,.10);border:1px solid rgba(239,68,68,.22);color:#f87171;font-family:'Orbitron';font-weight:900;font-size:.8rem;padding:4px 12px;border-radius:8px;">#${idx+1}</span><h2 style="font-family:'Orbitron';font-size:clamp(1.1rem,4vw,1.6rem);font-weight:900;color:#fff;margin:0;">${escapeHtml(d.name || '')}</h2></div><p style="color:#6b7280;font-size:.82rem;margin:6px 0 0;">created by <span style="color:#94a3b8;font-weight:700;">${escapeHtml(d.author || '—')}</span></p></div>${d.vid ? `<div style="position:relative;width:100%;aspect-ratio:16/9;border-radius:12px;overflow:hidden;margin-bottom:16px;border:1px solid rgba(167,139,250,.15);"><iframe style="position:absolute;inset:0;width:100%;height:100%;border:none;" src="https://www.youtube.com/embed/${encodeURIComponent(d.vid)}" allowfullscreen loading="lazy"></iframe></div>` : ''}<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;"><div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:14px;text-align:center;cursor:pointer;" onclick="copyID('${escapeHtml(d.levelID || '')}')"><div style="font-size:.62rem;color:#6b7280;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;">ID</div><div style="font-family:'Orbitron';font-size:1rem;font-weight:900;color:#fff;">${escapeHtml(d.levelID || '—')}</div></div><div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:14px;text-align:center;"><div style="font-size:.62rem;color:#6b7280;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;">${currentLang === 'EN' ? 'Verifier' : 'Верифер'}</div><div style="font-size:.9rem;font-weight:800;color:#e2e8f0;">${escapeHtml(d.verifier || '—')}</div></div></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;"><i class="fas fa-trophy" style="color:#fbbf24;font-size:.9rem;"></i><span style="font-size:.78rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:1.5px;">${currentLang === 'EN' ? 'Records' : 'Рекорды'}</span><span style="font-size:.72rem;color:#4b5563;">${records.length} total</span></div><div style="display:flex;flex-direction:column;gap:8px;max-height:260px;overflow-y:auto;padding-right:4px;">${recordHtml}</div>${historyList}`;
         history.replaceState(null, '', `#impossible/${key}`);
         document.getElementById('detailModal').style.display = 'block';
         document.getElementById('detailModal').scrollTop = 0;
@@ -377,9 +326,7 @@
     const originalUpdateModLevelFormType = updateModLevelFormType;
     updateModLevelFormType = function() {
         const type = document.getElementById('mLevelType')?.value;
-        const mFpsField = document.getElementById('mFPS');
-        if (type !== 'impossible') { if (mFpsField) mFpsField.style.display = 'none'; return originalUpdateModLevelFormType(); }
-        if (mFpsField) mFpsField.style.display = 'block';
+        if (type !== 'impossible') return originalUpdateModLevelFormType();
         const title = document.getElementById('modLevelFormTitle');
         const btnText = document.getElementById('modAddLevelBtnText');
         if (title) { title.textContent = 'Добавить уровень в Impossible List'; title.style.color = '#f87171'; }
@@ -398,8 +345,6 @@
         const duplicate = findDuplicateLevelByID(levelID);
         if (duplicate) { showToast(duplicateLevelMessage(duplicate, levelID), 5500); return; }
         const index = getInsertIndex('mPosition', impossible());
-        const mFpsRaw = (document.getElementById('mFPS')?.value || '').trim();
-        const mFpsVal = (mFpsRaw !== '' && !isNaN(parseInt(mFpsRaw, 10))) ? parseInt(mFpsRaw, 10) : null;
         addLevelAtPosition('impossible', {
             name,
             author: document.getElementById('mAuthor').value.trim(),
@@ -408,8 +353,7 @@
             verifier: document.getElementById('mVerifier').value.trim(),
             img: document.getElementById('mImg').value.trim(),
             vid: youtubeId(document.getElementById('mVid').value),
-            points: document.getElementById('mPoints').value.trim(),
-            fps: mFpsVal
+            points: document.getElementById('mPoints').value.trim()
         }, index).then(() => {
             ['mName','mAuthor','mID','mTag','mVerifier','mImg','mVid','mPoints','mFPS'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
             populatePositionSelect('mPosition','impossible');
@@ -467,14 +411,11 @@
     const originalToggleAdmFields = toggleAdmFields;
     toggleAdmFields = function() {
         const action = document.getElementById('admAction').value;
-        const itemFps = document.getElementById('itemFPS');
         if (!['add_impossible','add_victor_impossible'].includes(action)) {
             const impossibleFields = document.getElementById('fields_victor_impossible');
             if (impossibleFields) impossibleFields.style.display = 'none';
-            if (itemFps) itemFps.style.display = 'none';
             return originalToggleAdmFields();
         }
-        if (itemFps) itemFps.style.display = action === 'add_impossible' ? 'block' : 'none';
         document.getElementById('fields_main').style.display = action === 'add_impossible' ? 'block' : 'none';
         document.getElementById('fields_demon').style.display = action === 'add_impossible' ? 'block' : 'none';
         document.getElementById('fields_victor').style.display = 'none';
@@ -500,8 +441,6 @@
             const duplicate = findDuplicateLevelByID(levelID);
             if (duplicate) { showToast(duplicateLevelMessage(duplicate, levelID), 5500); return; }
             const index = getInsertIndex('itemPosition', impossible());
-            const iFpsRaw = (document.getElementById('itemFPS')?.value || '').trim();
-            const iFpsVal = (iFpsRaw !== '' && !isNaN(parseInt(iFpsRaw, 10))) ? parseInt(iFpsRaw, 10) : null;
             return addLevelAtPosition('impossible', {
                 name,
                 author: document.getElementById('itemVal').value.trim(),
@@ -510,8 +449,7 @@
                 verifier: document.getElementById('itemVerifier').value.trim(),
                 img: document.getElementById('itemImgURL').value.trim(),
                 vid: youtubeId(document.getElementById('itemVid').value),
-                points: document.getElementById('itemPoints').value.trim(),
-                fps: iFpsVal
+                points: document.getElementById('itemPoints').value.trim()
             }, index).then(() => { showToast(`Impossible уровень добавлен на позицию #${index+1}`); closeAdmin(); }).catch(e => showToast('Ошибка: '+e.message));
         }
         if (action === 'add_victor_impossible') {

@@ -418,23 +418,6 @@
                     <label class="switch"><input type="checkbox" id="filterNew" onchange="onFilterChange()"><span class="switch-slider"></span></label>
                 </div>
 
-                <div id="filterFpsSection" style="display:none;">
-                    <div class="filter-section-label"><i class="fas fa-film" style="margin-right:4px;"></i> FPS (Impossible List)</div>
-                    <div class="filter-pills" id="filterFpsPills">
-                        <button class="filter-pill active" data-fpssort="default" onclick="setFpsSort('default')"><i class="fas fa-list"></i> Обычный порядок</button>
-                        <button class="filter-pill" data-fpssort="fps_desc" onclick="setFpsSort('fps_desc')"><i class="fas fa-sort-amount-down"></i> FPS ↓</button>
-                        <button class="filter-pill" data-fpssort="fps_asc" onclick="setFpsSort('fps_asc')"><i class="fas fa-sort-amount-up"></i> FPS ↑</button>
-                    </div>
-                    <div class="filter-toggle-row">
-                        <span><i class="fas fa-ban"></i> Только уровни без FPS</span>
-                        <label class="switch"><input type="checkbox" id="filterNoFps" onchange="onFpsNoToggle()"><span class="switch-slider"></span></label>
-                    </div>
-                    <div style="display:flex;gap:8px;align-items:center;margin-top:10px;">
-                        <input type="number" id="filterFpsExact" placeholder="Точный FPS (напр. 240)" style="flex:1;padding:9px 12px;background:#0a0d1e;border:1px solid rgba(167,139,250,0.2);color:white;border-radius:10px;font-family:Nunito;font-size:0.85rem;outline:none;">
-                        <button class="filter-pill" onclick="applyFpsExact()" style="flex-shrink:0;"><i class="fas fa-check"></i> ОК</button>
-                    </div>
-                </div>
-                
                 <button class="filter-reset-btn" onclick="resetFilters()" id="filterResetBtn">Сбросить фильтры</button>
             </div>
         </div>
@@ -671,7 +654,6 @@
             <input type="text" id="mImg" placeholder="Ссылка на картинку" style="width:100%;padding:10px 12px;margin:4px 0;background:#0a0d1e;border:1px solid rgba(167,139,250,0.2);color:white;border-radius:10px;font-family:Nunito;font-size:0.88rem;outline:none;">
             <input type="text" id="mVid" placeholder="Ссылка на YouTube" style="width:100%;padding:10px 12px;margin:4px 0;background:#0a0d1e;border:1px solid rgba(167,139,250,0.2);color:white;border-radius:10px;font-family:Nunito;font-size:0.88rem;outline:none;">
             <input type="text" id="mPoints" placeholder="⚡ Баллы сложности (напр. 0.31)" style="width:100%;padding:10px 12px;margin:4px 0;background:#0a0d1e;border:1px solid rgba(167,139,250,0.2);color:white;border-radius:10px;font-family:Nunito;font-size:0.88rem;outline:none;">
-            <input type="number" id="mFPS" placeholder="🎮 FPS (необязательно)" style="width:100%;padding:10px 12px;margin:4px 0;background:#0a0d1e;border:1px solid rgba(167,139,250,0.2);color:white;border-radius:10px;font-family:Nunito;font-size:0.88rem;outline:none;">
             <select id="mPosition" style="width:100%;padding:10px 12px;margin:4px 0 10px;background:#0a0d1e;border:1px solid rgba(167,139,250,0.2);color:white;border-radius:10px;font-family:Nunito;font-size:0.88rem;outline:none;">
                 <option value="end">📍 Позиция: в конец</option>
             </select>
@@ -768,7 +750,6 @@
                     <input type="text" id="itemImgURL" placeholder="Ссылка на картинку">
                     <input type="text" id="itemVid" placeholder="Ссылка на YouTube">
                     <input type="text" id="itemPoints" placeholder="⚡ Баллы сложности (напр. 0.31)">
-                    <input type="number" id="itemFPS" placeholder="🎮 FPS (необязательно)">
                     <select id="itemPosition">
                         <option value="end">📍 Позиция: в конец</option>
                     </select>
@@ -838,12 +819,6 @@
             <input type="text" id="editPoints" class="edit-field-input" placeholder="напр. 0.31 или 1.50">
             <p style="color:#555;font-size:0.75rem;margin:4px 0 0;line-height:1.4;">Отображается на карточке. Можно оставить пустым.</p>
 
-            <div id="editFPSWrap" style="display:none;">
-                <label class="edit-field-label">FPS (на каком FPS возможен уровень)</label>
-                <input type="number" id="editFPS" class="edit-field-input" placeholder="напр. 240">
-                <p style="color:#555;font-size:0.75rem;margin:4px 0 0;line-height:1.4;">Необязательно. Отображается на карточке и в подробностях уровня.</p>
-            </div>
-            
             <label class="edit-field-label">Статус уровня</label>
             <select id="editStatus" class="edit-field-input" style="cursor:pointer;">
                 <option value="">— Нет статуса —</option>
