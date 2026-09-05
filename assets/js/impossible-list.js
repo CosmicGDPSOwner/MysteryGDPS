@@ -19,17 +19,14 @@
 
     function impossibleLabel() { return currentLang === 'EN' ? 'IMPOSSIBLE LEVEL LIST' : 'IMPOSSIBLE LEVEL LIST'; }
 
-    // Let saved navigation accept the new list.
     try { VALID_LIST_TABS.add('impossible'); } catch (_) {}
 
-    // Permissions used by edit/drag modes.
     const originalCanEditTab = canEditTab;
     canEditTab = function(tab) {
         if (tab === 'impossible') return canManageImpossible();
         return originalCanEditTab(tab);
     };
 
-    // Duplicate Level ID protection includes the Impossible List.
     const originalFindDuplicateLevelByID = findDuplicateLevelByID;
     findDuplicateLevelByID = function(levelID) {
         const existing = originalFindDuplicateLevelByID(levelID);
@@ -45,7 +42,6 @@
         return originalDuplicateLevelMessage(dup, levelID);
     };
 
-    // Position selector for moderator/admin forms.
     const originalPopulatePositionSelect = populatePositionSelect;
     populatePositionSelect = function(selectId, type, shouldUpdate = true) {
         if (type !== 'impossible') return originalPopulatePositionSelect(selectId, type, shouldUpdate);
@@ -169,7 +165,7 @@
                 card.ondragend = handleDragEnd;
             }
             let controls = '';
-            if (isDeleteMode && isAdmin) {
+            if (isDeleteMode && (isAdmin || canManageImpossible())) {
                 controls = `<div class="admin-controls"><button class="ctrl-btn btn-up" onclick="moveItem(${realIndex},-1,'impossible')"><i class="fas fa-arrow-up"></i></button><button class="ctrl-btn btn-down" onclick="moveItem(${realIndex},1,'impossible')"><i class="fas fa-arrow-down"></i></button><button class="ctrl-btn btn-edit" onclick="openEditModal('${d.key}','impossible')"><i class="fas fa-pen"></i></button><button class="ctrl-btn btn-history" onclick="event.stopPropagation();clearItemPositionHistory('${d.key}','impossible')"><i class="fas fa-broom"></i></button><button class="ctrl-btn btn-del" onclick="deleteItem('${d.key}','impossible')"><i class="fas fa-trash"></i></button></div>`;
             } else if (isEditMode && canEdit) {
                 controls = `<div class="admin-controls"><button class="ctrl-btn btn-up" onclick="moveItem(${realIndex},-1,'impossible')"><i class="fas fa-arrow-up"></i></button><button class="ctrl-btn btn-down" onclick="moveItem(${realIndex},1,'impossible')"><i class="fas fa-arrow-down"></i></button><button class="ctrl-btn btn-edit" onclick="openEditModal('${d.key}','impossible')"><i class="fas fa-pen"></i></button>${isAdmin ? `<button class="ctrl-btn btn-history" onclick="event.stopPropagation();clearItemPositionHistory('${d.key}','impossible')"><i class="fas fa-broom"></i></button>` : ''}</div>`;
@@ -193,7 +189,6 @@
         return originalRender();
     };
 
-    // Editing a level reuses the current edit modal and save routine.
     const originalOpenEditModal = openEditModal;
     openEditModal = function(key, type = 'demons') {
         if (type !== 'impossible') return originalOpenEditModal(key, type);
@@ -214,6 +209,32 @@
         updateImgPreview();
         document.getElementById('editDemonModal').style.display = 'block';
         document.getElementById('editDemonModal').scrollTop = 0;
+    };
+
+    const originalSaveDemonEdit = saveDemonEdit;
+    saveDemonEdit = function() {
+        const type = document.getElementById('editItemType').value;
+        if (type !== 'impossible') return originalSaveDemonEdit();
+        const key = document.getElementById('editDemonKey').value;
+        const name = document.getElementById('editName').value.trim();
+        if (!name) { showToast('Введи название уровня'); return; }
+        const author = document.getElementById('editAuthor').value.trim();
+        const verifier = document.getElementById('editVerifier').value.trim();
+        const levelID = document.getElementById('editLevelID').value.trim();
+        const tag = document.getElementById('editTag').value.trim();
+        const img = document.getElementById('editImg').value.trim();
+        let vidRaw = document.getElementById('editVid').value.trim();
+        let vid = vidRaw;
+        if (vidRaw.includes('v=')) vid = vidRaw.split('v=')[1].split('&')[0];
+        else if (vidRaw.includes('youtu.be/')) vid = vidRaw.split('youtu.be/')[1].split('?')[0];
+        const points = document.getElementById('editPoints').value.trim();
+        const status = document.getElementById('editStatus').value;
+        const fpsRaw = (document.getElementById('editFPS')?.value || '').trim();
+        const fpsVal = (fpsRaw !== '' && !isNaN(parseInt(fpsRaw, 10))) ? parseInt(fpsRaw, 10) : null;
+        db.ref('impossible/' + key).update({ name, author, verifier, levelID, tag, img, vid, points, status, fps: fpsVal }).then(() => {
+            showToast('Успешно обновлено!');
+            closeEditModal();
+        }).catch(e => showToast('Ошибка: ' + e.message));
     };
 
     const originalOpenEditRecordModal = openEditRecordModal;
@@ -253,7 +274,7 @@
     const originalDeleteItem = deleteItem;
     deleteItem = function(key, path) {
         if (path !== 'impossible') return originalDeleteItem(key, path);
-        if (!isAdmin) { showToast('Нет доступа!'); return; }
+        if (!(isAdmin || canManageImpossible())) { showToast('Нет доступа!'); return; }
         if (confirm(currentLang === 'EN' ? 'Delete this Impossible level?' : 'Удалить этот Impossible уровень?')) db.ref(`impossible/${key}`).remove();
     };
 
@@ -269,7 +290,6 @@
         db.ref(`impossible/${key}/history`).remove().then(() => showToast('История позиций очищена')).catch(e => showToast('Ошибка: ' + e.message));
     };
 
-    // Detail view with record edit/delete parity.
     const originalShowInfoByKey = showInfoByKey;
     showInfoByKey = function(key, type = 'demons') {
         if (type !== 'impossible') return originalShowInfoByKey(key, type);
@@ -289,7 +309,6 @@
         document.getElementById('detailModal').scrollTop = 0;
     };
 
-    // Moderator quick panel.
     const originalOpenModQuickPanel = openModQuickPanel;
     openModQuickPanel = function() {
         originalOpenModQuickPanel();
@@ -336,7 +355,7 @@
             vid: youtubeId(document.getElementById('mVid').value),
             points: document.getElementById('mPoints').value.trim()
         }, index).then(() => {
-            ['mName','mAuthor','mID','mTag','mVerifier','mImg','mVid','mPoints'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+            ['mName','mAuthor','mID','mTag','mVerifier','mImg','mVid','mPoints','mFPS'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
             populatePositionSelect('mPosition','impossible');
             document.getElementById('modQuickPanel').style.display='none';
             showToast(`Impossible уровень добавлен на позицию #${index+1}`);
@@ -376,7 +395,6 @@
         }).catch(e => showToast('Ошибка: ' + e.message));
     };
 
-    // Admin panel additions.
     const originalOpenAdmin = openAdmin;
     openAdmin = function() {
         originalOpenAdmin();
@@ -456,7 +474,6 @@
         db.ref().update(updates).then(() => { showToast('История позиций очищена'); closeAdmin(); }).catch(e => showToast('Ошибка: '+e.message));
     };
 
-    // Language labels for the added navigation only.
     const originalSetLang = setLang;
     setLang = function(lang) {
         originalSetLang(lang);
@@ -470,7 +487,6 @@
         if (currentTab === 'impossible') document.getElementById('txtHero').innerText = impossibleLabel();
     };
 
-    // Deep link: #impossible/KEY
     function handleImpossibleHash() {
         const match = window.location.hash.match(/^#impossible\/(.+)$/);
         if (!match) return;
@@ -486,7 +502,6 @@
     window.addEventListener('hashchange', handleImpossibleHash);
     window.addEventListener('load', handleImpossibleHash);
 
-    // Realtime listener.
     db.ref('impossible').on('value', snap => {
         const val = snap.val();
         window.impossibleLevels = val ? Object.entries(val).map(([key,d]) => ({ key, ...d, name:fixStr(d.name), creator:fixStr(d.creator) })).sort((a,b)=>(a.order||0)-(b.order||0)) : [];
