@@ -1710,7 +1710,7 @@ const firebaseConfig = {
             topBanner.style.display = isDem ? 'block' : 'none';
 
             const canEdit = canEditTab(currentTab);
-            const canDelete = isAdmin;
+            const canDelete = isAdmin || canEditTab(currentTab);
 
             if(isDem || isChal) {
                 const listToRender = isDem ? demons : challenges;
@@ -2637,8 +2637,11 @@ const firebaseConfig = {
             }).join('');
         }
         function deleteItem(k, p) {
-            if (!isAdmin) { showToast('Нет доступа!'); return; }
-            const allowed = ['demons', 'challenges', 'creators', 'reviews', 'players'];
+            const levelLists = ['demons', 'challenges', 'impossible'];
+            if (levelLists.includes(p)) {
+                if (!(isAdmin || canEditTab(p))) { showToast('Нет доступа!'); return; }
+            } else if (!isAdmin) { showToast('Нет доступа!'); return; }
+            const allowed = ['demons', 'challenges', 'impossible', 'creators', 'reviews', 'players'];
             if (!allowed.includes(p)) { showToast('Недопустимый путь!'); return; }
             if (confirm("Подтверждаете удаление?")) db.ref(p + '/' + k).remove();
         }
@@ -2960,18 +2963,20 @@ const firebaseConfig = {
             populatePositionSelect('mPosition', isChal ? 'challenges' : 'demons');
         }
 
-        function modToggleEditMode() {
-            isEditMode = !isEditMode;
-            if (isEditMode) isDeleteMode = false;
-            const btn = document.getElementById('modEditBtnText');
-            if (btn) btn.textContent = isEditMode ? 'Выключить редактирование' : 'Включить редактирование';
-            const editBtn = document.getElementById('modEditBtn');
-            if (editBtn) {
-                editBtn.style.background = isEditMode ? 'rgba(243,156,18,0.25)' : 'rgba(243,156,18,0.1)';
-                editBtn.style.borderColor = isEditMode ? 'rgba(243,156,18,0.6)' : 'rgba(243,156,18,0.3)';
+        function modToggleDeleteMode() {
+            if (!isModerator) return;
+            if (!isAdmin && !canEditTab('demons') && !canEditTab('challenges') && !canEditTab('impossible')) { showToast('Нет прав на удаление уровней'); return; }
+            isDeleteMode = !isDeleteMode;
+            if (isDeleteMode) isEditMode = false;
+            const btnText = document.getElementById('modDeleteBtnText');
+            if (btnText) btnText.textContent = isDeleteMode ? 'Выключить удаление' : 'Включить удаление';
+            const btn = document.getElementById('modDeleteBtn');
+            if (btn) {
+                btn.style.background = isDeleteMode ? 'rgba(231,76,60,0.25)' : 'rgba(231,76,60,0.1)';
+                btn.style.borderColor = isDeleteMode ? 'rgba(231,76,60,0.6)' : 'rgba(231,76,60,0.3)';
             }
             render();
-            showToast(isEditMode ? '✏️ Режим редактирования включён' : '✏️ Режим редактирования выключён');
+            showToast(isDeleteMode ? '🗑️ Режим удаления включён' : '🗑️ Режим удаления выключен');
             document.getElementById('modQuickPanel').style.display = 'none';
         }
 
